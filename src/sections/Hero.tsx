@@ -1,10 +1,47 @@
 import { AnimatedBorderButton } from "@/components/AnimatedBorderButton";
 import { Button } from "@/components/Button";
 import { ArrowRight, ChevronDown, Download } from "lucide-react";
+import type { ReactElement } from "react";
+import type { IconType } from "react-icons";
 import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 
+interface SocialLink {
+  icon: IconType;
+  href: string;
+  label: string;
+}
+
+interface FloatingDot {
+  id: number;
+  left: string;
+  top: string;
+  animation: string;
+  animationDelay: string;
+}
+
+const DOT_COUNT = 30;
+const DOT_COLOR = "#20B2A6";
+
+// Generated once at module load so positions stay stable across re-renders.
+const floatingDots: readonly FloatingDot[] = Array.from(
+  { length: DOT_COUNT },
+  (_, id) => ({
+    id,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animation: `slow-drift ${15 + Math.random() * 20}s ease-in-out infinite`,
+    animationDelay: `${Math.random() * 50}s`,
+  }),
+);
+
+const socialLinks: readonly SocialLink[] = [
+  { icon: FaGithub, href: "#", label: "GitHub" },
+  { icon: FaLinkedin, href: "#", label: "LinkedIn" },
+  { icon: FaTwitter, href: "#", label: "Twitter" },
+];
+
 //skills
-const skills = [
+const skills: readonly string[] = [
   "React",
   "Next.js",
   "TypeScript",
@@ -25,7 +62,7 @@ const skills = [
   "GitHub Actions",
 ];
 
-export const Hero = () => {
+export const Hero = (): ReactElement => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Bg */}
@@ -40,19 +77,16 @@ export const Hero = () => {
 
       {/* Green Dots */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
+        {floatingDots.map((dot) => (
           <div
+            key={dot.id}
             className="absolute w-1.5 h-1.5 rounded-full opacity-60"
             style={{
-              backgroundColor: "#20B2A6",
-              // eslint-disable-next-line react-hooks/purity
-              left: `${Math.random() * 100}%`,
-              // eslint-disable-next-line react-hooks/purity
-              top: `${Math.random() * 100}%`,
-              // eslint-disable-next-line react-hooks/purity
-              animation: `slow-drift ${15 + Math.random() * 20}s ease-in-out infinite`,
-              // eslint-disable-next-line react-hooks/purity
-              animationDelay: `${Math.random() * 50}s`,
+              backgroundColor: DOT_COLOR,
+              left: dot.left,
+              top: dot.top,
+              animation: dot.animation,
+              animationDelay: dot.animationDelay,
             }}
           />
         ))}
@@ -104,17 +138,14 @@ export const Hero = () => {
             {/* Social Links */}
             <div className="flex items-center gap-4 animate-fade-in animation-delay-400">
               <span className="text-sm text-muted-foreground">Follow: </span>
-              {[
-                { icon: FaGithub, href: "#" },
-                { icon: FaLinkedin, href: "#" },
-                { icon: FaTwitter, href: "#" },
-              ].map((social, idx) => (
+              {socialLinks.map(({ icon: Icon, href, label }) => (
                 <a
-                  key={idx}
-                  href={social.href}
+                  key={label}
+                  href={href}
+                  aria-label={label}
                   className="p-2 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all duration-300"
                 >
-                  {<social.icon className="w-5 h-5" />}
+                  <Icon className="w-5 h-5" />
                 </a>
               ))}
             </div>
@@ -164,7 +195,7 @@ export const Hero = () => {
           <div className="relative overflow-hiden">
             <div className="flex animate-marquee">
               {[...skills, ...skills].map((skill, idx) => (
-                <div key={idx} className="flex-shrink-0 px-8 py-4">
+                <div key={`${skill}-${idx}`} className="flex-shrink-0 px-8 py-4">
                   <span className="text-xl font-semibild text-muted-foreground/50 hover:text-muted-foreground transition-colors">
                     {skill}
                   </span>
