@@ -4,12 +4,13 @@ interface ButtonProps {
   className?: string;
   size?: "sm" | "default" | "lg";
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
 export const Button: FC<ButtonProps> = ({
   className,
   size = "default",
-  children,
+  children
 }: ButtonProps): ReactElement => {
   const baseClasses = "relative overflow-hidden rounded-full font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25";
 
