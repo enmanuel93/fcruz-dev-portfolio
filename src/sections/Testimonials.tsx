@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import React, { type ReactElement } from "react";
+import React, { useState, type ReactElement } from "react";
 
 interface Testimonial {
   quote: string;
@@ -43,7 +43,21 @@ const testimonials: readonly Testimonial[] = [
   },
 ];
 
+const DEFAULT_IDX_NUMBER = 0;
+
 export const Testimonials = (): ReactElement => {
+  const [activeIdx, setActiveIdx] = useState<number>(DEFAULT_IDX_NUMBER);
+
+  const next = (): void => {
+    setActiveIdx((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const previous = (): void => {
+    setActiveIdx(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+    );
+  };
+
   return (
     <section id="testimonials" className="py-32 relative overflow-hidden">
       <div
@@ -75,19 +89,19 @@ export const Testimonials = (): ReactElement => {
                 <Quote className="w-6 h-6 text-primary-foreground" />
               </div>
               <blockquote className="text-xl md:text-2xl font-medium leading-relaxed mb-8 pt-4">
-                "{testimonials[0].quote}"
+                "{testimonials[activeIdx].quote}"
               </blockquote>
 
               <div className="flex items-center gap-4">
                 <img
-                  src={testimonials[0].avatar}
-                  alt={testimonials[0].author}
+                  src={testimonials[activeIdx].avatar}
+                  alt={testimonials[activeIdx].author}
                   className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20"
                 />
                 <div>
-                  <div className="font-semibold">{testimonials[0].author}</div>
+                  <div className="font-semibold">{testimonials[activeIdx].author}</div>
                   <div className="text-sm text-muted-foreground">
-                    {testimonials[0].role}
+                    {testimonials[activeIdx].role}
                   </div>
                 </div>
               </div>
@@ -95,15 +109,30 @@ export const Testimonials = (): ReactElement => {
 
             {/* Testimonials Navigation */}
             <div className="flex items-center justify-center gap-4 mt-8">
-              <button className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all">
+              <button
+                className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all"
+                onClick={previous}
+              >
                 <ChevronLeft />
               </button>
-              
-              <div>
-                <button />
+
+              <div className="flex gap-2">
+                {testimonials.map((_, idx: number) => (
+                  <button
+                    onClick={() => setActiveIdx(idx)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      idx === activeIdx
+                        ? "w-8 bg-primary"
+                        : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    }`}
+                  />
+                ))}
               </div>
 
-              <button className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all">
+              <button
+                className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all"
+                onClick={next}
+              >
                 <ChevronRight />
               </button>
             </div>
