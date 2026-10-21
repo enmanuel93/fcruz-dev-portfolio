@@ -6,8 +6,11 @@ import { Hero } from "@/sections/Hero";
 import { Projects } from "@/sections/Projects";
 import { Testimonials } from "@/sections/Testimonials";
 import { Footer } from "@/layout/Footer";
+import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 
 function App() {
+  useRevealOnScroll();
+
   return (
     <div className="min-h-screen overflow-x-hidden">
       <Navbar />

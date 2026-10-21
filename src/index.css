@@ -121,6 +121,13 @@
     animation: fade-in 0.8s ease-out both;
   }
 
+  /* Hidden until useRevealOnScroll marks it visible; removing the animation
+     and adding it back restarts it, so it replays each time it re-enters. */
+  .animate-fade-in:not(.is-visible) {
+    animation: none;
+    opacity: 0;
+  }
+
   .animate-float {
     animation: float 4s ease-in-out infinite;
   }
