@@ -120,19 +120,21 @@ src/
 │       └── useContactForm.ts  # Lógica de EmailJS fuera del JSX
 │
 ├── data/                      # ⭐ AQUÍ VA TODA MI INFORMACIÓN
-│   ├── profile.ts             # Nombre, rol, bio, foto, CV, años de experiencia
+│   ├── profile.ts             # Nombre, rol, bio, foto, CV, años de experiencia, texto de About
 │   ├── navigation.ts          # Links de navegación (Navbar + Footer)
 │   ├── socials.ts             # GitHub, LinkedIn, etc. (Hero + Footer)
+│   ├── highlights.ts          # Tarjetas de About
 │   ├── skills.ts
 │   ├── projects.ts
 │   ├── experience.ts
-│   └── testimonials.ts
+│   ├── testimonials.ts
+│   └── contact.ts             # Email, teléfono, ubicación
 │
 ├── types/
 │   └── content.ts             # Project, Experience, Testimonial, SocialLink...
 │
 ├── hooks/
-│   └── useInView.ts           # Animar secciones al entrar en pantalla
+│   └── useRevealOnScroll.ts   # Animar secciones al entrar en pantalla
 │
 ├── lib/
 │   ├── cn.ts                  # Unir clases de Tailwind (clsx + tailwind-merge)
@@ -144,7 +146,21 @@ src/
 ├── styles/
 │   └── index.css
 └── vite-env.d.ts
+
+public/                        # Archivos servidos tal cual, con URL fija (sin procesar por Vite)
+├── documents/                 # ⭐ AQUÍ VA MI CV y otros documentos descargables
+│   └── cv.pdf                 # → disponible en /documents/cv.pdf
+├── projects/                  # Capturas de los proyectos
+├── profile-photo.jpg
+├── hero-bg.jpg
+└── favicon.svg
+
+tests/
+├── setup.ts                   # jest-dom + IntersectionObserver para jsdom
+└── unit/                      # Misma estructura que src/ (lib, config, data, hooks, app, components, sections)
 ```
+
+> ✅ **Implementado** en la rama `refactor/content-architecture`. Comandos: `npm test` (una vez), `npm run test:watch` (modo watch), `npm run typecheck`.
 
 ### Ejemplo: datos separados del componente
 
@@ -223,6 +239,12 @@ Esta separación hace evidente dónde buscar algo y evita dependencias circulare
 
 **¿Por qué un hook `useContactForm` y un `config/env.ts`?**
 Separar la lógica (enviar email, manejar errores, estados de carga) de la vista permite cambiar el proveedor de email (de EmailJS a Resend o Formspree) sin tocar el JSX. Y centralizar `import.meta.env` en un solo archivo hace que una variable faltante se detecte en un único lugar con un mensaje claro, en vez de fallar silenciosamente en medio de un componente.
+
+**¿Por qué el CV va en `public/documents/` y no en `src/assets/`?**
+- **URL fija:** lo que está en `public/` se publica tal cual. `public/documents/cv.pdf` siempre estará en `/documents/cv.pdf`. En cambio, Vite renombra los archivos de `src/assets/` con un hash (`cv-a1b2c3.pdf`), así que la URL cambia en cada versión y un link compartido (por ejemplo, en LinkedIn) dejaría de funcionar.
+- **Actualizar sin tocar código:** para subir una versión nueva del CV basta con reemplazar el archivo con el mismo nombre. No hay que editar ningún componente.
+- **Carpeta propia:** `documents/` separa los archivos descargables de las imágenes del sitio (`projects/`, la foto, el fondo), así que es obvio dónde va cada cosa. Si mañana agrego un certificado o una carta de recomendación, van ahí mismo.
+- **La ruta vive en `data/profile.ts` (`cvUrl`):** si cambio el nombre del archivo, solo actualizo ese valor.
 
 ---
 
