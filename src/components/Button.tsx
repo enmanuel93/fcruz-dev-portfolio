@@ -5,12 +5,15 @@ interface ButtonProps {
   size?: "sm" | "default" | "lg";
   children: React.ReactNode;
   onClick?: () => void;
+  type?: "button" | "submit" | "reset" | undefined;
+  disabled?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
   className,
   size = "default",
-  children
+  children,
+  type = "button"
 }: ButtonProps): ReactElement => {
   const baseClasses = "relative overflow-hidden rounded-full font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25";
 
@@ -26,7 +29,7 @@ export const Button: FC<ButtonProps> = ({
     .join(" ");
 
   return (
-    <button className={classes}>
+    <button className={classes} type={type}>
       <span className="relative flex items-center justify-center gap-2">
         {children}
       </span>
