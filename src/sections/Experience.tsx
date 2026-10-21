@@ -1,4 +1,5 @@
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
+import { getAnimationDelay } from "@/lib/animation";
 
 interface Experience {
   period: string;
@@ -9,8 +10,7 @@ interface Experience {
   current: boolean;
 }
 
-const INCREMENT: number = 1;
-const MILISECONS_AMOUNT: number = 150;
+const ANIMATION_STEP_MS = 150;
 
 const experiences: readonly Experience[] = [
   {
@@ -85,11 +85,9 @@ export const Experience = (): ReactElement => {
           <div className="space-y-12">
             {experiences.map((exp: Experience, idx: number) => (
               <div
-                key={idx}
+                key={`${exp.company}-${exp.period}`}
                 className="relative grid md:grid-cols-2 gap-8 animate-fade-in"
-                style={{
-                  animationDelay: `${(idx + INCREMENT) * MILISECONS_AMOUNT}ms`,
-                }}
+                style={{ animationDelay: getAnimationDelay(idx, ANIMATION_STEP_MS) }}
               >
                 {/* Timeline Dot */}
                 <div className="absolute left-0 md:left-1/2 top-0 w-3 h-3 bg-primary rounded-full -translate-x-1/2 ring-4 ring-background z-10">
@@ -122,9 +120,9 @@ export const Experience = (): ReactElement => {
                         idx % 2 === 0 ? "md:justify-end" : ""
                       }`}
                     >
-                      {exp.technologies.map((tech: string, techIdx: number) => (
+                      {exp.technologies.map((tech: string) => (
                         <span
-                          key={techIdx}
+                          key={tech}
                           className="px-3 py-1 bg-surface text-xs rounded-full text-muted-foreground"
                         >
                           {tech}

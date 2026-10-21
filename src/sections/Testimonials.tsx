@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import React, { useState, type ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 
 interface Testimonial {
   quote: string;
@@ -67,7 +67,7 @@ export const Testimonials = (): ReactElement => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-secondary-foreground text-sm font-medium tracking-wider uppercase animate-fade-in">
             What People Say
           </span>
@@ -110,15 +110,21 @@ export const Testimonials = (): ReactElement => {
             {/* Testimonials Navigation */}
             <div className="flex items-center justify-center gap-4 mt-8">
               <button
+                type="button"
+                aria-label="Previous testimonial"
                 className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all"
                 onClick={previous}
               >
-                <ChevronLeft />
+                <ChevronLeft aria-hidden="true" />
               </button>
 
               <div className="flex gap-2">
-                {testimonials.map((_, idx: number) => (
+                {testimonials.map((testimonial, idx: number) => (
                   <button
+                    key={testimonial.author}
+                    type="button"
+                    aria-label={`Show testimonial ${idx + 1} of ${testimonials.length}`}
+                    aria-current={idx === activeIdx}
                     onClick={() => setActiveIdx(idx)}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
                       idx === activeIdx
@@ -130,10 +136,12 @@ export const Testimonials = (): ReactElement => {
               </div>
 
               <button
+                type="button"
+                aria-label="Next testimonial"
                 className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all"
                 onClick={next}
               >
-                <ChevronRight />
+                <ChevronRight aria-hidden="true" />
               </button>
             </div>
           </div>

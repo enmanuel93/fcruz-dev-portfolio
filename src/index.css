@@ -176,6 +176,22 @@
     box-shadow: 0 0 20px color-mix(in srgb, #26c4b8 20%, transparent);
   }
 
+  /* Respect the OS "reduce motion" setting: no looping or entrance animations. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   .timeline-glow {
     box-shadow: 0 0 40px
         color-mix(in srgb, var(--color-primary) 35%, transparent),

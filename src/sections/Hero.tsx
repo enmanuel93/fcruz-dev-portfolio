@@ -22,6 +22,8 @@ interface FloatingDot {
 const DOT_COUNT = 30;
 const DOT_COLOR = "#20B2A6";
 const CONTACT_HREF = "#contact";
+// Place the CV file at public/cv.pdf.
+const CV_HREF = "/cv.pdf";
 
 // Generated once at module load so positions stay stable across re-renders.
 const floatingDots: readonly FloatingDot[] = Array.from(
@@ -101,7 +103,7 @@ export const Hero = (): ReactElement => {
             <div className="animate-fade-in">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-primary">
                 <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                Software Enginee • React Specialist
+                Software Engineer • React Specialist
               </span>
             </div>
 
@@ -117,7 +119,7 @@ export const Hero = (): ReactElement => {
                 </span>
               </h1>
 
-              <p className="text-lg text-muted-foreground max-w-lg animate-fade-in animate-delay-200">
+              <p className="text-lg text-muted-foreground max-w-lg animate-fade-in animation-delay-200">
                 Hi, I'm Pedro Machado — a software engineer specializing in
                 React, Next.js, and TypeScript. I build scalable, performant web
                 applications that users love.
@@ -130,7 +132,7 @@ export const Hero = (): ReactElement => {
                 Contact Me <ArrowRight className="w-5 h-5" />
               </Button>
 
-              <AnimatedBorderButton>
+              <AnimatedBorderButton href={CV_HREF} download>
                 <Download className="w-5 h-5" />
                 Download CV
               </AnimatedBorderButton>
@@ -193,11 +195,11 @@ export const Hero = (): ReactElement => {
           <p className="text-sm text-muted-foreground mb-6 text-center">
             Technologies I work with
           </p>
-          <div className="relative overflow-hiden">
+          <div className="relative overflow-hidden">
             <div className="flex animate-marquee">
               {[...skills, ...skills].map((skill, idx) => (
                 <div key={`${skill}-${idx}`} className="flex-shrink-0 px-8 py-4">
-                  <span className="text-xl font-semibild text-muted-foreground/50 hover:text-muted-foreground transition-colors">
+                  <span className="text-xl font-semibold text-muted-foreground/50 hover:text-muted-foreground transition-colors">
                     {skill}
                   </span>
                 </div>

@@ -1,5 +1,6 @@
 import { Code2, Lightbulb, Rocket, Users, type LucideIcon } from "lucide-react";
 import type { ReactElement } from "react";
+import { getAnimationDelay } from "@/lib/animation";
 
 interface Highlight {
   icon: LucideIcon;
@@ -7,8 +8,7 @@ interface Highlight {
   description: string;
 }
 
-const INCREMENT: number = 1;
-const MILISECONS_AMOUNT: number = 100;
+const ANIMATION_STEP_MS = 100;
 
 const highlights: readonly Highlight[] = [
   {
@@ -90,9 +90,11 @@ export const About = (): ReactElement => {
           {/* Right Column */}
           <div className="grid sm:grid-cols-2 gap-6">
             {highlights.map((item: Highlight, idx: number) => (
-              <div key={idx} className="glass p-6 rounded-2xl animate-fade-in" style={{
-                animationDelay: `${(idx + INCREMENT) * MILISECONS_AMOUNT}ms`
-              }}>
+              <div
+                key={item.title}
+                className="glass p-6 rounded-2xl animate-fade-in"
+                style={{ animationDelay: getAnimationDelay(idx, ANIMATION_STEP_MS) }}
+              >
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 hover:bg-primary/20">
                   <item.icon className="w-6 h-6 text-primary" />
                 </div>

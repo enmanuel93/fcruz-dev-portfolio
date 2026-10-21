@@ -1,7 +1,8 @@
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { AnimatedBorderButton } from "@/components/AnimatedBorderButton";
+import { getAnimationDelay } from "@/lib/animation";
 
 interface Project {
   title: string;
@@ -12,8 +13,9 @@ interface Project {
   github: string;
 }
 
-const INCREMENT: number = 1;
-const MILISECONS_AMOUNT: number = 100;
+const ANIMATION_STEP_MS = 100;
+// Replace with your GitHub profile URL.
+const ALL_PROJECTS_HREF = "https://github.com/";
 
 const projects: readonly Project[] = [
   {
@@ -83,9 +85,9 @@ export const Projects = (): ReactElement => {
         <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project: Project, idx: number) => (
             <div
-              key={idx}
+              key={project.title}
               className="group glass rounded-2xl overflow-hidden animate-fade-in md:row-span-1"
-              style={{ animationDelay: `${(idx + INCREMENT) * MILISECONS_AMOUNT}ms` }}
+              style={{ animationDelay: getAnimationDelay(idx, ANIMATION_STEP_MS) }}
             >
               {/* Image */}
               <div className="relative overflow-hidden aspect-video">
@@ -99,19 +101,21 @@ export const Projects = (): ReactElement => {
                 bg-gradient-to-t from-card via-card/50
                  to-transparent opacity-60"
                 />
-                {/* Overlay Links */}
-                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Overlay Links: always visible on touch screens, on hover/focus from md up */}
+                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-300">
                   <a
                     href={project.link}
+                    aria-label={`View ${project.title} live demo`}
                     className="p-3 rounded-full glass hover:bg-primary hover:text-primary-foreground transition-all"
                   >
-                    <ArrowUpRight className="w-5 h-5" />
+                    <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
                   </a>
                   <a
                     href={project.github}
+                    aria-label={`View ${project.title} source code on GitHub`}
                     className="p-3 rounded-full glass hover:bg-primary hover:text-primary-foreground transition-all"
                   >
-                    <FaGithub className="w-5 h-5" />
+                    <FaGithub className="w-5 h-5" aria-hidden="true" />
                   </a>
                 </div>
               </div>
@@ -133,9 +137,9 @@ export const Projects = (): ReactElement => {
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag: string, tagIdx: number) => (
+                  {project.tags.map((tag: string) => (
                     <span
-                      key={tagIdx}
+                      key={tag}
                       className="px-4 py-1.5 rounded-full bg-surface text-xs font-medium border border-border/50 text-muted-foreground hover:border-primary/50 hover:text-primary transition-all duration-300"
                     >
                       {tag}
@@ -149,7 +153,7 @@ export const Projects = (): ReactElement => {
 
         {/* View All CTA(Call to Action) */}
         <div className="text-center mt-12 animate-fade-in animation-delay-500">
-          <AnimatedBorderButton>
+          <AnimatedBorderButton href={ALL_PROJECTS_HREF} target="_blank">
             View All Projects
             <ArrowUpRight className="w-5 h-5" />
           </AnimatedBorderButton>

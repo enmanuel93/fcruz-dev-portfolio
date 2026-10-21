@@ -1,4 +1,4 @@
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const socialLinks = [

@@ -197,6 +197,8 @@ export const Contact = () => {
                 <input
                   id="email"
                   name="email"
+                  type="email"
+                  autoComplete="email"
                   required
                   placeholder="your@email.com"
                   className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
@@ -267,9 +269,9 @@ export const Contact = () => {
                 Contact Information
               </h3>
               <div className="space-y-4">
-                {contactInfo.map((item, i) => (
+                {contactInfo.map((item) => (
                   <a
-                    key={i}
+                    key={item.label}
                     href={item.href}
                     className="flex items-center gap-4 p-4 rounded-xl hover:bg-surface transition-colors group"
                   >
