@@ -21,6 +21,7 @@ interface FloatingDot {
 
 const DOT_COUNT = 30;
 const DOT_COLOR = "#20B2A6";
+const CONTACT_HREF = "#contact";
 
 // Generated once at module load so positions stay stable across re-renders.
 const floatingDots: readonly FloatingDot[] = Array.from(
@@ -125,7 +126,7 @@ export const Hero = (): ReactElement => {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-4 animate-fade-in animation-delay-300">
-              <Button size="lg">
+              <Button href={CONTACT_HREF} size="lg">
                 Contact Me <ArrowRight className="w-5 h-5" />
               </Button>
 

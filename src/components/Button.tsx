@@ -1,21 +1,32 @@
-import React, { type FC, type ReactElement } from "react";
+import type { FC, ReactElement, ReactNode } from "react";
 
-interface ButtonProps {
+interface BaseButtonProps {
   className?: string;
   size?: "sm" | "default" | "lg";
-  children: React.ReactNode;
+  children: ReactNode;
   onClick?: () => void;
-  type?: "button" | "submit" | "reset" | undefined;
+  id?: string;
+}
+
+// With `href` it renders a link (navigation); without it, a native button (actions).
+interface ButtonAsLinkProps extends BaseButtonProps {
+  href: string;
+  type?: never;
+  disabled?: never;
+}
+
+interface ButtonAsButtonProps extends BaseButtonProps {
+  href?: undefined;
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
 }
 
-export const Button: FC<ButtonProps> = ({
-  className,
-  size = "default",
-  children,
-  type = "button"
-}: ButtonProps): ReactElement => {
-  const baseClasses = "relative overflow-hidden rounded-full font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25";
+type ButtonProps = ButtonAsLinkProps | ButtonAsButtonProps;
+
+export const Button: FC<ButtonProps> = (props: ButtonProps): ReactElement => {
+  const { className, size = "default", children, onClick, id } = props;
+
+  const baseClasses = "relative inline-flex overflow-hidden rounded-full font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed";
 
   const sizeClasses = {
     sm: "px-4 py-2 text-sm",
@@ -28,11 +39,29 @@ export const Button: FC<ButtonProps> = ({
     .filter(Boolean)
     .join(" ");
 
+  const content = (
+    <span className="relative flex w-full items-center justify-center gap-2">
+      {children}
+    </span>
+  );
+
+  if (props.href !== undefined) {
+    return (
+      <a href={props.href} id={id} className={classes} onClick={onClick}>
+        {content}
+      </a>
+    );
+  }
+
   return (
-    <button className={classes} type={type}>
-      <span className="relative flex items-center justify-center gap-2">
-        {children}
-      </span>
+    <button
+      id={id}
+      className={classes}
+      type={props.type ?? "button"}
+      disabled={props.disabled}
+      onClick={onClick}
+    >
+      {content}
     </button>
   );
 };

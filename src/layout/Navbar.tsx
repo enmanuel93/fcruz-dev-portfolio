@@ -9,6 +9,7 @@ interface NavLink {
 
 const SCROLL_THRESHOLD = 50;
 const MOBILE_MENU_ID = "mobile-menu";
+const CONTACT_HREF = "#contact";
 
 const navLinks: readonly NavLink[] = [
   { href: "#about", label: "About" },
@@ -58,7 +59,9 @@ export const Navbar = (): ReactElement => {
 
         {/* CTA Button */}
         <div className="hidden md:block">
-          <Button size="sm">Contact Me</Button>
+          <Button href={CONTACT_HREF} size="sm">
+            Contact Me
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -89,7 +92,9 @@ export const Navbar = (): ReactElement => {
               </a>
             ))}
 
-            <Button onClick={() => setIsMobileMenuOpen(false)}>Contact Me</Button>
+            <Button href={CONTACT_HREF} onClick={() => setIsMobileMenuOpen(false)}>
+              Contact Me
+            </Button>
           </div>
         </div>
       )}
