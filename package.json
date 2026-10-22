@@ -10,6 +10,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "verify": "npm run lint && npm test && npm run build",
+    "check:staged": "node scripts/check-staged.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
