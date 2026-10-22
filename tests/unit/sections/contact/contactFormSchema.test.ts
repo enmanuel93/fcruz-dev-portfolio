@@ -14,7 +14,7 @@ const validValues: ContactFormValues = {
   message: "Let's work together.",
 };
 
-// Messages reported for one field, so each case checks a single rule.
+// Error messages for a single field.
 const errorsFor = (
   field: keyof ContactFormValues,
   value: string,

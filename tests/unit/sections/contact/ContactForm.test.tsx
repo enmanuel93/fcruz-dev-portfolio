@@ -12,7 +12,7 @@ import {
 
 vi.mock("@emailjs/browser", () => ({ default: { send: vi.fn() } }));
 
-// A mutable stand-in for the env config, so a test can blank out a value.
+// Editable copy of the env config so a test can remove a value.
 const testConfig = vi.hoisted(() => ({
   serviceId: "service_test",
   templateId: "template_test",
@@ -26,8 +26,7 @@ vi.mock("@/config/env", async (importOriginal) => ({
 
 const sendMock = vi.mocked(emailjs.send);
 
-// No delay between keystrokes: the default timers make typing slow enough to
-// time out when the whole suite runs in parallel.
+// No typing delay; with the default one, tests time out when the whole suite runs.
 const user = userEvent.setup({ delay: null });
 
 const fillAndSubmit = async (): Promise<void> => {
@@ -40,7 +39,7 @@ const fillAndSubmit = async (): Promise<void> => {
 describe("ContactForm", () => {
   beforeEach(() => {
     sendMock.mockReset();
-    // The hook logs failures on purpose; keep the test output clean.
+    // The hook logs send errors on purpose; hide them from the test output.
     vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -158,7 +157,6 @@ describe("ContactForm", () => {
     const email = screen.getByLabelText("Email");
     await waitFor(() => expect(email).toHaveAttribute("aria-invalid", "true"));
     expect(email).toHaveAccessibleDescription("Please enter your email.");
-    // The first invalid field receives focus so keyboard users land on it.
     expect(screen.getByLabelText("Name")).toHaveFocus();
   });
 
@@ -207,7 +205,7 @@ describe("ContactForm", () => {
     await fillAndSubmit();
 
     expect(sendMock).not.toHaveBeenCalled();
-    // The thrown Error has no `text`, so the visitor sees the generic message.
+    // A plain Error has no `text`, so the generic message is shown.
     expect(await screen.findByRole("status")).toHaveTextContent(
       FALLBACK_ERROR_MESSAGE,
     );

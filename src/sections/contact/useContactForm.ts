@@ -23,8 +23,7 @@ export const MISSING_CONFIG_MESSAGE =
 
 const IDLE_STATUS: SubmitStatus = { type: null, message: "" };
 
-// EmailJS rejects with an object like { status, text } rather than an Error,
-// so its `text` is the most useful thing to show the visitor.
+// EmailJS fails with { status, text } instead of an Error; `text` explains what went wrong.
 const getErrorMessage = (error: unknown): string => {
   if (
     typeof error === "object" &&
@@ -38,8 +37,6 @@ const getErrorMessage = (error: unknown): string => {
   return FALLBACK_ERROR_MESSAGE;
 };
 
-// Kept outside the hook so the email provider can be swapped without touching
-// the form logic.
 const sendContactMessage = async (values: ContactFormValues): Promise<void> => {
   if (!isEmailJsConfigured(emailJsConfig)) {
     throw new Error(MISSING_CONFIG_MESSAGE);
@@ -47,7 +44,7 @@ const sendContactMessage = async (values: ContactFormValues): Promise<void> => {
 
   const { serviceId, templateId, publicKey } = emailJsConfig;
 
-  // The keys must match the variables used in the EmailJS template.
+  // These keys must match the variable names in the EmailJS template.
   await emailjs.send(
     serviceId,
     templateId,
@@ -63,9 +60,7 @@ const sendContactMessage = async (values: ContactFormValues): Promise<void> => {
 export const useContactForm = () => {
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(IDLE_STATUS);
 
-  // React Hook Form owns the field values (uncontrolled inputs, no re-render per
-  // keystroke); Zod validates them. "onTouched" waits until a field is left
-  // before showing its error, then re-validates on every change.
+  // "onTouched": show a field's error after the user leaves it, then update it while they type.
   const {
     register,
     handleSubmit,
@@ -77,8 +72,7 @@ export const useContactForm = () => {
     mode: "onTouched",
   });
 
-  // handleSubmit only calls this with values that passed the schema, already
-  // trimmed, and prevents the native form submission itself.
+  // Only runs when every field is valid; the values are already trimmed.
   const onValidSubmit = async (values: ContactFormValues): Promise<void> => {
     setSubmitStatus(IDLE_STATUS);
 

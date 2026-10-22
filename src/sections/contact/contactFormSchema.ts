@@ -5,10 +5,8 @@ export const NAME_MAX_LENGTH = 50;
 export const MESSAGE_MIN_LENGTH = 10;
 export const MESSAGE_MAX_LENGTH = 1000;
 
-// Single source of truth for the contact form: the validation rules, the error
-// messages shown under each field and (via z.infer) the form's TypeScript type.
-// Values are trimmed first, so "   " counts as empty and EmailJS gets clean text.
-// `abort: true` stops at "required", so an empty field gets one message, not two.
+// Values are trimmed before validation, so a field with only spaces counts as empty.
+// `abort` and `pipe` stop at the first failed rule, so each field shows one message.
 export const contactFormSchema = z.object({
   name: z
     .string()
@@ -16,8 +14,6 @@ export const contactFormSchema = z.object({
     .min(1, { error: "Please enter your name.", abort: true })
     .min(NAME_MIN_LENGTH, `Name must be at least ${NAME_MIN_LENGTH} characters.`)
     .max(NAME_MAX_LENGTH, `Name must be at most ${NAME_MAX_LENGTH} characters.`),
-  // pipe() only runs the email check once the value is non-empty, so an empty
-  // field shows "required" instead of "invalid".
   email: z
     .string()
     .trim()
