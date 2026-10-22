@@ -6,12 +6,11 @@ export const MESSAGE_MIN_LENGTH = 10;
 export const MESSAGE_MAX_LENGTH = 1000;
 
 // Values are trimmed before validation, so a field with only spaces counts as empty.
-// `abort` and `pipe` stop at the first failed rule, so each field shows one message.
+// `pipe` skips the email format check while the field is empty, so it shows one message.
 export const contactFormSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, { error: "Please enter your name.", abort: true })
     .min(NAME_MIN_LENGTH, `Name must be at least ${NAME_MIN_LENGTH} characters.`)
     .max(NAME_MAX_LENGTH, `Name must be at most ${NAME_MAX_LENGTH} characters.`),
   email: z
@@ -22,7 +21,6 @@ export const contactFormSchema = z.object({
   message: z
     .string()
     .trim()
-    .min(1, { error: "Please enter a message.", abort: true })
     .min(MESSAGE_MIN_LENGTH, `Message must be at least ${MESSAGE_MIN_LENGTH} characters.`)
     .max(MESSAGE_MAX_LENGTH, `Message must be at most ${MESSAGE_MAX_LENGTH} characters.`),
 });

@@ -46,13 +46,13 @@ describe("contactFormSchema", () => {
     });
   });
 
-  it.each(["name", "email", "message"] as const)(
-    "reports only 'required' for an empty or blank %s",
-    (field) => {
-      expect(errorsFor(field, "   ")).toHaveLength(1);
-      expect(errorsFor(field, "   ")[0]).toMatch(/^Please enter/);
-    },
-  );
+  it.each([
+    ["name", `Name must be at least ${NAME_MIN_LENGTH} characters.`],
+    ["email", "Please enter your email."],
+    ["message", `Message must be at least ${MESSAGE_MIN_LENGTH} characters.`],
+  ] as const)("reports a single message for a blank %s", (field, expected) => {
+    expect(errorsFor(field, "   ")).toEqual([expected]);
+  });
 
   it.each(["ada", "ada@", "@example.com", "ada@example"])(
     "rejects the invalid email %s",

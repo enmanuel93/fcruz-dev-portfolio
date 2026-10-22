@@ -3,7 +3,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ContactForm } from "@/sections/contact/ContactForm";
-import { MESSAGE_MIN_LENGTH } from "@/sections/contact/contactFormSchema";
+import {
+  MESSAGE_MIN_LENGTH,
+  NAME_MIN_LENGTH,
+} from "@/sections/contact/contactFormSchema";
 import {
   FALLBACK_ERROR_MESSAGE,
   MISSING_CONFIG_MESSAGE,
@@ -143,9 +146,13 @@ describe("ContactForm", () => {
 
     await user.click(screen.getByRole("button", { name: "Send Message" }));
 
-    expect(await screen.findByText("Please enter your name.")).toBeInTheDocument();
+    expect(
+      await screen.findByText(`Name must be at least ${NAME_MIN_LENGTH} characters.`),
+    ).toBeInTheDocument();
     expect(screen.getByText("Please enter your email.")).toBeInTheDocument();
-    expect(screen.getByText("Please enter a message.")).toBeInTheDocument();
+    expect(
+      screen.getByText(`Message must be at least ${MESSAGE_MIN_LENGTH} characters.`),
+    ).toBeInTheDocument();
     expect(sendMock).not.toHaveBeenCalled();
   });
 
