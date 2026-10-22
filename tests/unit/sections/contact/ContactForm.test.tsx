@@ -1,8 +1,9 @@
 import emailjs from "@emailjs/browser";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ContactForm } from "@/sections/contact/ContactForm";
+import { MESSAGE_MIN_LENGTH } from "@/sections/contact/contactFormSchema";
 import {
   FALLBACK_ERROR_MESSAGE,
   MISSING_CONFIG_MESSAGE,
@@ -115,6 +116,88 @@ describe("ContactForm", () => {
     expect(await screen.findByRole("status")).toHaveTextContent(
       FALLBACK_ERROR_MESSAGE,
     );
+  });
+
+  it("sends trimmed values", async () => {
+    sendMock.mockResolvedValue({ status: 200, text: "OK" });
+    render(<ContactForm />);
+
+    await user.type(screen.getByLabelText("Name"), "  Ada Lovelace  ");
+    await user.type(screen.getByLabelText("Email"), " ada@example.com ");
+    await user.type(screen.getByLabelText("Message"), "  Let's work together.  ");
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+    expect(sendMock).toHaveBeenCalledWith(
+      "service_test",
+      "template_test",
+      {
+        from_name: "Ada Lovelace",
+        from_email: "ada@example.com",
+        message: "Let's work together.",
+      },
+      "public_test",
+    );
+  });
+
+  it("shows an error under every empty field and does not send", async () => {
+    render(<ContactForm />);
+
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+    expect(await screen.findByText("Please enter your name.")).toBeInTheDocument();
+    expect(screen.getByText("Please enter your email.")).toBeInTheDocument();
+    expect(screen.getByText("Please enter a message.")).toBeInTheDocument();
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("links each invalid field to its error message", async () => {
+    render(<ContactForm />);
+
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+    const email = screen.getByLabelText("Email");
+    await waitFor(() => expect(email).toHaveAttribute("aria-invalid", "true"));
+    expect(email).toHaveAccessibleDescription("Please enter your email.");
+    // The first invalid field receives focus so keyboard users land on it.
+    expect(screen.getByLabelText("Name")).toHaveFocus();
+  });
+
+  it("validates a field once it loses focus and clears the error when fixed", async () => {
+    render(<ContactForm />);
+    const email = screen.getByLabelText("Email");
+
+    await user.type(email, "not-an-email");
+    await user.tab();
+
+    expect(
+      await screen.findByText("Please enter a valid email address."),
+    ).toBeInTheDocument();
+
+    await user.clear(email);
+    await user.type(email, "ada@example.com");
+
+    await waitFor(() =>
+      expect(
+        screen.queryByText("Please enter a valid email address."),
+      ).not.toBeInTheDocument(),
+    );
+    expect(email).not.toHaveAttribute("aria-invalid");
+  });
+
+  it("rejects a message that is too short", async () => {
+    render(<ContactForm />);
+
+    await user.type(screen.getByLabelText("Name"), "Ada Lovelace");
+    await user.type(screen.getByLabelText("Email"), "ada@example.com");
+    await user.type(screen.getByLabelText("Message"), "Hi");
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+    expect(
+      await screen.findByText(
+        `Message must be at least ${MESSAGE_MIN_LENGTH} characters.`,
+      ),
+    ).toBeInTheDocument();
+    expect(sendMock).not.toHaveBeenCalled();
   });
 
   it("does not call EmailJS when the configuration is incomplete", async () => {

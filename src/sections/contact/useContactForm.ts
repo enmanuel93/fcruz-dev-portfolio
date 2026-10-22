@@ -1,12 +1,13 @@
 import emailjs from "@emailjs/browser";
-import { useState, type ChangeEvent, type SubmitEvent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { emailJsConfig, isEmailJsConfigured } from "@/config/env";
-
-export interface ContactFormData {
-  name: string;
-  email: string;
-  message: string;
-}
+import {
+  contactFormSchema,
+  EMPTY_CONTACT_FORM,
+  type ContactFormValues,
+} from "./contactFormSchema";
 
 export interface SubmitStatus {
   type: "success" | "error" | null;
@@ -20,7 +21,6 @@ export const FALLBACK_ERROR_MESSAGE =
 export const MISSING_CONFIG_MESSAGE =
   "EmailJS configuration is missing. Please check your environment variables.";
 
-const EMPTY_FORM: ContactFormData = { name: "", email: "", message: "" };
 const IDLE_STATUS: SubmitStatus = { type: null, message: "" };
 
 // EmailJS rejects with an object like { status, text } rather than an Error,
@@ -38,53 +38,65 @@ const getErrorMessage = (error: unknown): string => {
   return FALLBACK_ERROR_MESSAGE;
 };
 
+// Kept outside the hook so the email provider can be swapped without touching
+// the form logic.
+const sendContactMessage = async (values: ContactFormValues): Promise<void> => {
+  if (!isEmailJsConfigured(emailJsConfig)) {
+    throw new Error(MISSING_CONFIG_MESSAGE);
+  }
+
+  const { serviceId, templateId, publicKey } = emailJsConfig;
+
+  // The keys must match the variables used in the EmailJS template.
+  await emailjs.send(
+    serviceId,
+    templateId,
+    {
+      from_name: values.name,
+      from_email: values.email,
+      message: values.message,
+    },
+    publicKey,
+  );
+};
+
 export const useContactForm = () => {
-  const [formData, setFormData] = useState<ContactFormData>(EMPTY_FORM);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(IDLE_STATUS);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ): void => {
-    const { name, value } = e.target;
+  // React Hook Form owns the field values (uncontrolled inputs, no re-render per
+  // keystroke); Zod validates them. "onTouched" waits until a field is left
+  // before showing its error, then re-validates on every change.
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: EMPTY_CONTACT_FORM,
+    mode: "onTouched",
+  });
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-
-    setIsLoading(true);
+  // handleSubmit only calls this with values that passed the schema, already
+  // trimmed, and prevents the native form submission itself.
+  const onValidSubmit = async (values: ContactFormValues): Promise<void> => {
     setSubmitStatus(IDLE_STATUS);
 
     try {
-      if (!isEmailJsConfigured(emailJsConfig)) {
-        throw new Error(MISSING_CONFIG_MESSAGE);
-      }
-
-      const { serviceId, templateId, publicKey } = emailJsConfig;
-
-      // The keys must match the variables used in the EmailJS template.
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        publicKey,
-      );
-
+      await sendContactMessage(values);
       setSubmitStatus({ type: "success", message: SUCCESS_MESSAGE });
-      setFormData(EMPTY_FORM);
+      reset();
     } catch (error: unknown) {
       console.error("EmailJS error:", error);
       setSubmitStatus({ type: "error", message: getErrorMessage(error) });
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  return { formData, isLoading, submitStatus, handleChange, handleSubmit };
+  return {
+    register,
+    errors,
+    isSubmitting,
+    submitStatus,
+    onSubmit: handleSubmit(onValidSubmit),
+  };
 };

@@ -2,33 +2,68 @@ import { AlertCircle, CheckCircle, Send } from "lucide-react";
 import type { ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
+import type { ContactFormValues } from "./contactFormSchema";
 import { useContactForm } from "./useContactForm";
 
 const fieldClasses =
   "w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all";
+const invalidFieldClasses =
+  "border-red-500/60 focus:border-red-500 focus:ring-red-500";
+
+// Ids that tie each field to its error text through aria-describedby.
+const errorId = (field: keyof ContactFormValues): string => `${field}-error`;
+
+const FieldError = ({
+  field,
+  message,
+}: {
+  field: keyof ContactFormValues;
+  message?: string;
+}): ReactElement | null => {
+  if (!message) return null;
+
+  return (
+    <p
+      id={errorId(field)}
+      className="mt-2 flex items-center gap-1.5 text-sm text-red-400"
+    >
+      <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+      {message}
+    </p>
+  );
+};
 
 export const ContactForm = (): ReactElement => {
-  const { formData, isLoading, submitStatus, handleChange, handleSubmit } =
+  const { register, errors, isSubmitting, submitStatus, onSubmit } =
     useContactForm();
 
   const isSuccess = submitStatus.type === "success";
 
+  // Props every field shares: invalid state for assistive tech plus the link
+  // to the error message, only while there is one.
+  const a11yProps = (field: keyof ContactFormValues) => ({
+    "aria-invalid": errors[field] ? true : undefined,
+    "aria-describedby": errors[field] ? errorId(field) : undefined,
+  });
+
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
+    // noValidate: Zod is the single source of validation, so the browser's own
+    // bubbles (which ignore the site's styling) don't fire first.
+    <form className="space-y-6" noValidate onSubmit={onSubmit}>
       <div>
         <label htmlFor="name" className="block text-sm font-medium mb-2">
           Name
         </label>
         <input
           id="name"
-          name="name"
           type="text"
-          required
+          autoComplete="name"
           placeholder="Your name..."
-          className={fieldClasses}
-          value={formData.name}
-          onChange={handleChange}
+          className={cn(fieldClasses, errors.name && invalidFieldClasses)}
+          {...a11yProps("name")}
+          {...register("name")}
         />
+        <FieldError field="name" message={errors.name?.message} />
       </div>
       <div>
         <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -36,15 +71,14 @@ export const ContactForm = (): ReactElement => {
         </label>
         <input
           id="email"
-          name="email"
           type="email"
           autoComplete="email"
-          required
           placeholder="your@email.com"
-          className={fieldClasses}
-          value={formData.email}
-          onChange={handleChange}
+          className={cn(fieldClasses, errors.email && invalidFieldClasses)}
+          {...a11yProps("email")}
+          {...register("email")}
         />
+        <FieldError field="email" message={errors.email?.message} />
       </div>
       <div>
         <label htmlFor="message" className="block text-sm font-medium mb-2">
@@ -52,18 +86,21 @@ export const ContactForm = (): ReactElement => {
         </label>
         <textarea
           id="message"
-          name="message"
           rows={5}
-          required
           placeholder="Your message..."
-          className={cn(fieldClasses, "resize-none")}
-          value={formData.message}
-          onChange={handleChange}
+          className={cn(
+            fieldClasses,
+            "resize-none",
+            errors.message && invalidFieldClasses,
+          )}
+          {...a11yProps("message")}
+          {...register("message")}
         />
+        <FieldError field="message" message={errors.message?.message} />
       </div>
 
-      <Button className="w-full" type="submit" size="lg" disabled={isLoading}>
-        {isLoading ? (
+      <Button className="w-full" type="submit" size="lg" disabled={isSubmitting}>
+        {isSubmitting ? (
           <>Sending...</>
         ) : (
           <>
