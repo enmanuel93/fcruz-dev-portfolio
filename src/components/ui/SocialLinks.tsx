@@ -19,12 +19,15 @@ export const SocialLinks = ({
           key={label}
           href={href}
           aria-label={label}
+          // Web profiles open in a new tab; mailto: and tel: links don't need one.
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
           className={cn(
-            "p-2 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all",
+            "flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground",
             linkClassName,
           )}
         >
-          <Icon className="w-5 h-5" aria-hidden="true" />
+          <Icon className="size-[18px]" aria-hidden="true" />
         </a>
       ))}
     </>

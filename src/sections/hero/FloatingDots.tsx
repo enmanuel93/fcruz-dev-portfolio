@@ -8,8 +8,8 @@ interface FloatingDot {
   animationDelay: string;
 }
 
-const DOT_COUNT = 30;
-const DOT_COLOR = "#20B2A6";
+const DOT_COUNT = 24;
+const DOT_COLOR = "var(--color-accent)";
 
 // Generated once at module load so positions stay stable across re-renders.
 const floatingDots: readonly FloatingDot[] = Array.from(
@@ -25,11 +25,11 @@ const floatingDots: readonly FloatingDot[] = Array.from(
 
 export const FloatingDots = (): ReactElement => {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       {floatingDots.map((dot) => (
         <div
           key={dot.id}
-          className="absolute w-1.5 h-1.5 rounded-full opacity-60"
+          className="absolute size-1 rounded-full opacity-40"
           style={{
             backgroundColor: DOT_COLOR,
             left: dot.left,

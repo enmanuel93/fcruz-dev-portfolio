@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { experiences } from "@/data/experience";
 import { highlights } from "@/data/highlights";
-import { footerLinks, navLinks } from "@/data/navigation";
+import { navLinks } from "@/data/navigation";
 import { projects } from "@/data/projects";
+import { skills } from "@/data/skills";
 import { testimonials } from "@/data/testimonials";
 
 // The components use these fields as React keys. A duplicate would not crash,
@@ -28,12 +29,16 @@ describe("content data", () => {
     expectUnique(highlights.map(({ title }) => title));
   });
 
+  it("has unique skill names", () => {
+    expectUnique(skills.map(({ name }) => name));
+  });
+
   it("has unique tags within each project", () => {
     projects.forEach(({ tags }) => expectUnique(tags));
   });
 
   it("only uses in-page anchors for navigation", () => {
-    [...navLinks, ...footerLinks].forEach(({ href }) => {
+    navLinks.forEach(({ href }) => {
       expect(href).toMatch(/^#[a-z]+$/);
     });
   });

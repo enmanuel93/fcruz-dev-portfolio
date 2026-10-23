@@ -1,70 +1,118 @@
 @import "tailwindcss";
+@import "@fontsource-variable/geist";
 
 @theme {
-  --color-background: #0f1418;
-  --color-foreground: #f0f2f5;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
 
-  --color-card: #141a1f;
+  --color-background: #0a0a12;
+  --color-foreground: #ecebf7;
 
-  --color-primary: #20b2a6;
+  --color-surface: #12111d;
+  --color-surface-raised: #191826;
+
+  --color-border: #262438;
+  --color-border-strong: #3b3563;
+
+  --color-primary: #6d4aff;
+  --color-primary-hover: #7d5eff;
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: #1f2830;
-  --color-secondary-foreground: #20b2a6;
+  /* Violet for text and icons on the dark ground (passes 4.5:1, unlike --color-primary). */
+  --color-accent: #a493ff;
 
-  --color-muted: #252e37;
-  --color-muted-foreground: #7a8491;
-
-  --color-border: #242b32;
+  --color-muted-foreground: #9a98b0;
+  --color-success: #3ddc84;
 
   --radius: 0.75rem;
 
-  --color-highlight: #f5a623;
-  --color-surface: #1a2329;
+  --animate-fade-in: fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-portrait-reveal: portrait-reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    color-scheme: dark;
+    scrollbar-color: var(--color-border-strong) var(--color-background);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    caret-color: var(--color-accent);
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+    color: var(--color-primary-foreground);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   button {
     cursor: pointer;
   }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: "Inter", sans-serif;
-  }
-
-  .font-serif {
-    font-family: "Playfair Display", serif;
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 }
 
 @layer components {
-  .glass {
-    background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
-    backdrop-filter: blur(16px);
-    border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+  .panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
   }
 
+  /* Navbar once the page scrolls: the blur keeps links readable over content. */
   .glass-strong {
-    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
-    backdrop-filter: blur(24px);
-    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+    background-color: color-mix(in srgb, var(--color-background) 80%, transparent);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .glow-text {
-    text-shadow: 0 0 30px
-      color-mix(in srgb, var(--color-primary) 50%, transparent);
+  .dot-field {
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--color-accent) 45%, transparent) 1.2px,
+      transparent 1.2px
+    );
+    background-size: 18px 18px;
   }
 
-  .glow-border {
-    box-shadow: 0 0 20px
-        color-mix(in srgb, var(--color-primary) 20%, transparent),
-      inset 0 0 20px color-mix(in srgb, var(--color-primary) 5%, transparent);
+  /* A violet light that runs around the border on hover (AnimatedBorderButton). */
+  .animated-border {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--color-background), var(--color-background)) padding-box,
+      linear-gradient(var(--color-border-strong), var(--color-border-strong)) border-box;
+  }
+
+  .animated-border:hover {
+    background:
+      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+      conic-gradient(
+          from var(--border-angle),
+          var(--color-border-strong) 0deg 250deg,
+          var(--color-accent) 310deg,
+          var(--color-border-strong) 360deg
+        )
+        border-box;
+    animation: border-spin 2.5s linear infinite;
   }
 }
 
@@ -72,8 +120,8 @@
   @keyframes fade-in {
     from {
       opacity: 0;
-      transform: translateY(20px);
-      filter: blur(10px);
+      transform: translateY(16px);
+      filter: blur(6px);
     }
     to {
       opacity: 1;
@@ -104,21 +152,28 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-8px);
     }
   }
 
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
+  /* The hero portrait opens from the bottom up while it settles into focus. */
+  @keyframes portrait-reveal {
+    from {
+      clip-path: inset(100% 0 0 0 round 1.75rem);
+      transform: scale(1.06);
+      filter: blur(12px);
     }
-    100% {
-      transform: translateX(-50%);
+    to {
+      clip-path: inset(0 0 0 0 round 1.75rem);
+      transform: scale(1);
+      filter: blur(0);
     }
   }
 
-  .animate-fade-in {
-    animation: fade-in 0.8s ease-out both;
+  @keyframes border-spin {
+    to {
+      --border-angle: 360deg;
+    }
   }
 
   /* Hidden until useRevealOnScroll marks it visible; removing the animation
@@ -126,14 +181,6 @@
   .animate-fade-in:not(.is-visible) {
     animation: none;
     opacity: 0;
-  }
-
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
-
-  .animate-marquee {
-    animation: marquee 30s linear infinite;
   }
 
   .animation-delay-100 {
@@ -164,25 +211,6 @@
     animation-delay: 800ms;
   }
 
-  @keyframes animated-border {
-    0% {
-      stroke-dashoffset: 400;
-    }
-    100% {
-      stroke-dashoffset: -550;
-    }
-  }
-
-  .group:hover .animated-border-path {
-    animation: animated-border 1.5s linear infinite;
-  }
-
-  .animated-border:hover {
-    background-color: color-mix(in srgb, #26c4b8 15%, transparent);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 0 20px color-mix(in srgb, #26c4b8 20%, transparent);
-  }
-
   /* Respect the OS "reduce motion" setting: no looping or entrance animations. */
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -197,11 +225,5 @@
       animation-delay: 0ms !important;
       transition-duration: 0.01ms !important;
     }
-  }
-
-  .timeline-glow {
-    box-shadow: 0 0 40px
-        color-mix(in srgb, var(--color-primary) 35%, transparent),
-      0 0 80px color-mix(in srgb, var(--color-primary) 25%, transparent);
   }
 }

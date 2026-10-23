@@ -2,7 +2,7 @@ import type { AboutContent, Profile } from "@/types/content";
 
 export const profile = {
   name: "Francisco Cruz Mejía",
-  initials: "FC",
+  brand: { name: "FCruz", accent: "-Dev" },
   headline: ".NET Developer • Full Stack Developer",
   bio: "Hi, I'm Francisco Cruz Mejía — a Full Stack Developer specializing in the .NET ecosystem and React. I build RESTful APIs, microservices and cloud-ready web applications on Microsoft Azure.",
   photo: {

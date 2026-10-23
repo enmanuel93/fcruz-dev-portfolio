@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
 import { Navbar } from "@/components/layout/Navbar";
 import { CONTACT_HREF, navLinks } from "@/data/navigation";
+import { profile } from "@/data/profile";
 
 const openMenuButton = () => screen.getByRole("button", { name: "Open menu" });
 
@@ -44,23 +45,35 @@ describe("Navbar", () => {
     expect(document.getElementById("mobile-menu")).not.toBeInTheDocument();
   });
 
-  it("closes the mobile menu after choosing Contact Me", async () => {
+  it("closes the mobile menu after choosing Download CV", async () => {
     render(<Navbar />);
     await userEvent.click(openMenuButton());
 
     const mobileMenu = within(document.getElementById("mobile-menu")!);
-    await userEvent.click(mobileMenu.getByRole("link", { name: "Contact Me" }));
+    await userEvent.click(mobileMenu.getByRole("link", { name: "Download CV" }));
 
     expect(document.getElementById("mobile-menu")).not.toBeInTheDocument();
   });
 
-  it("points every Contact Me button to the contact section", async () => {
+  it("makes every Download CV button download the CV", async () => {
     render(<Navbar />);
     await userEvent.click(openMenuButton());
 
-    const contactLinks = screen.getAllByRole("link", { name: "Contact Me" });
-    expect(contactLinks).toHaveLength(2);
-    contactLinks.forEach((link) => expect(link).toHaveAttribute("href", CONTACT_HREF));
+    const cvLinks = screen.getAllByRole("link", { name: "Download CV" });
+    expect(cvLinks).toHaveLength(2);
+    cvLinks.forEach((link) => {
+      expect(link).toHaveAttribute("href", profile.cvUrl);
+      expect(link).toHaveAttribute("download");
+    });
+  });
+
+  it("links to the contact section", () => {
+    render(<Navbar />);
+
+    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
+      "href",
+      CONTACT_HREF,
+    );
   });
 
   it("switches to the solid style once the page is scrolled", () => {

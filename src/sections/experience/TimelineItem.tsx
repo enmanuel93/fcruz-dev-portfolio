@@ -1,10 +1,9 @@
 import type { ReactElement } from "react";
 import { Tag } from "@/components/ui/Tag";
 import { getAnimationDelay } from "@/lib/animation";
-import { cn } from "@/lib/cn";
 import type { Experience } from "@/types/content";
 
-const ANIMATION_STEP_MS = 150;
+const ANIMATION_STEP_MS = 120;
 
 interface TimelineItemProps {
   experience: Experience;
@@ -12,44 +11,39 @@ interface TimelineItemProps {
 }
 
 export const TimelineItem = ({ experience, index }: TimelineItemProps): ReactElement => {
-  // On desktop the cards alternate sides of the timeline, starting on the left.
-  const isLeftSide = index % 2 === 0;
-
   return (
-    <div
-      className="relative grid md:grid-cols-2 gap-8 animate-fade-in"
+    <li
+      className="relative grid gap-3 pb-6 last:pb-0 md:grid-cols-[11rem_1fr] md:gap-6 animate-fade-in"
       style={{ animationDelay: getAnimationDelay(index, ANIMATION_STEP_MS) }}
     >
-      {/* Timeline Dot */}
-      <div className="absolute left-0 md:left-1/2 top-0 w-3 h-3 bg-primary rounded-full -translate-x-1/2 ring-4 ring-background z-10">
-        {experience.current && (
-          <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-75" />
-        )}
+      <div className="flex items-center gap-3 md:items-start md:pt-6">
+        <span className="relative mt-0.5 flex size-2.5 shrink-0" aria-hidden="true">
+          {experience.current && (
+            <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
+          )}
+          <span className="relative size-2.5 rounded-full bg-accent ring-4 ring-background" />
+        </span>
+        <span className="text-sm font-medium tabular-nums text-foreground/85">
+          {experience.period}
+        </span>
       </div>
 
-      {/* Content */}
-      <div
-        className={cn(
-          "pl-8 md:pl-0",
-          isLeftSide ? "md:pr-16 md:text-right" : "md:col-start-2 md:pl-16",
-        )}
-      >
-        <div className="glass p-6 rounded-2xl border border-primary/30 hover:border-primary/50 transition-all duration-500">
-          <span className="text-sm text-primary font-medium">
-            {experience.period}
-          </span>
-          <h3 className="text-xl font-semibold mt-2">{experience.role}</h3>
-          <p className="text-muted-foreground">{experience.company}</p>
-          <p className="text-sm text-muted-foreground mt-4">
-            {experience.description}
-          </p>
-          <div className={cn("flex flex-wrap gap-2 mt-4", isLeftSide && "md:justify-end")}>
+      <div className="panel rounded-2xl p-5 transition-colors duration-300 hover:border-border-strong md:p-6">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between xl:gap-8">
+          <div className="max-w-2xl">
+            <h3 className="text-lg font-semibold">{experience.role}</h3>
+            <p className="mt-0.5 text-sm font-medium text-accent">{experience.company}</p>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              {experience.description}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5 xl:max-w-xs xl:justify-end">
             {experience.technologies.map((tech) => (
               <Tag key={tech}>{tech}</Tag>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </li>
   );
 };

@@ -1,8 +1,11 @@
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageSquareQuote, Quote } from "lucide-react";
 import { useState, type ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { testimonials } from "@/data/testimonials";
 import { cn } from "@/lib/cn";
+
+const navButtonClasses =
+  "flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground";
 
 export const Testimonials = (): ReactElement => {
   const [activeIdx, setActiveIdx] = useState<number>(0);
@@ -20,80 +23,80 @@ export const Testimonials = (): ReactElement => {
   };
 
   return (
-    <section id="testimonials" className="py-32 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2" />
-
-      <div className="container mx-auto px-6 relative z-10">
+    <section id="testimonials" className="py-20 md:py-28">
+      <div className="container mx-auto px-6">
         <SectionHeader
-          eyebrow="What People Say"
-          title="Kind words from"
-          highlight="amazing people."
+          icon={MessageSquareQuote}
+          title="Testimonials"
+          description="What people I have worked with say."
         />
 
-        <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            {/* Main Testimonial */}
-            <div className="glass p-8 rounded-3xl md:p-12 glow-border animate-fade-in animation-delay-200">
-              <div className="absolute -top-4 left-8 w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-                <Quote className="w-6 h-6 text-primary-foreground" />
+        <figure className="panel relative overflow-hidden rounded-2xl p-6 md:p-10 animate-fade-in animation-delay-100">
+          <Quote
+            className="absolute right-6 top-6 size-16 text-primary/20 md:size-24"
+            aria-hidden="true"
+          />
+          {/* key restarts the fade when the testimonial changes. */}
+          <div key={active.author} className="relative animate-fade-in is-visible">
+            <blockquote className="max-w-3xl text-xl font-medium leading-relaxed md:text-2xl">
+              "{active.quote}"
+            </blockquote>
+            <figcaption className="mt-8 flex items-center gap-4">
+              <img
+                src={active.avatar}
+                alt={active.author}
+                width={48}
+                height={48}
+                className="size-12 rounded-full object-cover ring-2 ring-accent/40"
+              />
+              <div>
+                <div className="font-semibold">{active.author}</div>
+                <div className="text-sm text-muted-foreground">{active.role}</div>
               </div>
-              <blockquote className="text-xl md:text-2xl font-medium leading-relaxed mb-8 pt-4">
-                "{active.quote}"
-              </blockquote>
+            </figcaption>
+          </div>
+        </figure>
 
-              <div className="flex items-center gap-4">
-                <img
-                  src={active.avatar}
-                  alt={active.author}
-                  className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20"
+        <div className="mt-6 flex items-center justify-between gap-4">
+          <div className="flex gap-2">
+            {testimonials.map((testimonial, idx) => (
+              <button
+                key={testimonial.author}
+                type="button"
+                aria-label={`Show testimonial ${idx + 1} of ${testimonials.length}`}
+                aria-current={idx === activeIdx}
+                onClick={() => setActiveIdx(idx)}
+                className="flex h-6 items-center"
+              >
+                <span
+                  className={cn(
+                    "block h-1.5 rounded-full transition-all duration-300",
+                    idx === activeIdx
+                      ? "w-8 bg-accent"
+                      : "w-1.5 bg-muted-foreground/40 hover:bg-muted-foreground/70",
+                  )}
                 />
-                <div>
-                  <div className="font-semibold">{active.author}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {active.role}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonials Navigation */}
-            <div className="flex items-center justify-center gap-4 mt-8">
-              <button
-                type="button"
-                aria-label="Previous testimonial"
-                className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all"
-                onClick={previous}
-              >
-                <ChevronLeft aria-hidden="true" />
               </button>
+            ))}
+          </div>
 
-              <div className="flex gap-2">
-                {testimonials.map((testimonial, idx) => (
-                  <button
-                    key={testimonial.author}
-                    type="button"
-                    aria-label={`Show testimonial ${idx + 1} of ${testimonials.length}`}
-                    aria-current={idx === activeIdx}
-                    onClick={() => setActiveIdx(idx)}
-                    className={cn(
-                      "w-2 h-2 rounded-full transition-all duration-300",
-                      idx === activeIdx
-                        ? "w-8 bg-primary"
-                        : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
-                    )}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                aria-label="Next testimonial"
-                className="p-3 rounded-full glass hover:bg-primary/10 hover:text-primary transition-all"
-                onClick={next}
-              >
-                <ChevronRight aria-hidden="true" />
-              </button>
-            </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              aria-label="Previous testimonial"
+              className={navButtonClasses}
+              onClick={previous}
+            >
+              <ChevronLeft className="size-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next testimonial"
+              className={navButtonClasses}
+              onClick={next}
+            >
+              <ChevronRight className="size-5" aria-hidden="true" />
+            </button>
           </div>
         </div>
       </div>

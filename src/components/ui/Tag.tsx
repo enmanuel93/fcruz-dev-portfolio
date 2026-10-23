@@ -3,21 +3,20 @@ import { cn } from "@/lib/cn";
 
 interface TagProps {
   children: ReactNode;
-  /** "interactive" adds a border and a hover highlight (used on project cards). */
-  variant?: "default" | "interactive";
+  /** "accent" highlights the main technology of a project. */
+  variant?: "default" | "accent";
 }
 
 const variantClasses = {
-  default: "px-3 py-1",
-  interactive:
-    "px-4 py-1.5 font-medium border border-border/50 hover:border-primary/50 hover:text-primary transition-all duration-300",
+  default: "border-border bg-surface-raised text-muted-foreground",
+  accent: "border-primary/40 bg-primary/15 text-accent",
 } as const;
 
 export const Tag = ({ children, variant = "default" }: TagProps): ReactElement => {
   return (
     <span
       className={cn(
-        "rounded-full bg-surface text-xs text-muted-foreground",
+        "inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium",
         variantClasses[variant],
       )}
     >

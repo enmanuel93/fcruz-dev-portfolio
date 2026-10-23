@@ -23,7 +23,7 @@ Single-page personal portfolio: React 19 + TypeScript + Vite + Tailwind CSS v4, 
 - `src/components/layout/` — Navbar, Footer.
 - `src/sections/<name>/` — one folder per page section; may import from `components/`, `data/`, `hooks/`, `lib/`. Section-specific subcomponents and hooks live alongside (e.g. `sections/contact/useContactForm.ts`).
 - `src/config/env.ts` is the **only** place that reads `import.meta.env` (types declared in `src/vite-env.d.ts`).
-- Optional content fields are typed optional (e.g. `Project.demoUrl?`) and the UI hides the control when absent — don't use `"#"` placeholders.
+- Optional content fields are typed optional (e.g. `Project.demoUrl?`) and the UI handles their absence (project cards show the "Live demo"/"Code" buttons disabled) — don't use `"#"` placeholders.
 - `src/app/App.tsx` composes the sections in order; section `id`s are the targets of the `#anchor` nav links (a test enforces nav hrefs match `^#[a-z]+$`).
 
 Import via the `@/` alias → `src/` (configured in both `vite.config.ts` and `tsconfig.app.json`). Use `cn()` from `@/lib/cn` (clsx + tailwind-merge) for conditional classes.

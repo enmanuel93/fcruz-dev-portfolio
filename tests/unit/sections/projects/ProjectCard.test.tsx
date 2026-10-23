@@ -37,11 +37,13 @@ describe("ProjectCard", () => {
     ).toHaveAttribute("href", project.repoUrl);
   });
 
-  it("leaves out the links the project does not have", () => {
+  it("shows disabled buttons instead of links the project does not have", () => {
     render(
       <ProjectCard project={{ ...project, demoUrl: undefined, repoUrl: undefined }} />,
     );
 
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Live demo/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Code/ })).toBeDisabled();
   });
 });

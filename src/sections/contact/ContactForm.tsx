@@ -5,9 +5,9 @@ import { cn } from "@/lib/cn";
 import { useContactForm } from "./useContactForm";
 
 const fieldClasses =
-  "w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all";
+  "w-full rounded-xl border border-border bg-background/70 px-4 py-3 text-foreground placeholder:text-muted-foreground outline-none transition-[border-color,box-shadow] focus:border-accent/70 focus:ring-2 focus:ring-primary/40";
 const invalidFieldClasses =
-  "border-red-500/60 focus:border-red-500 focus:ring-red-500";
+  "border-red-400/70 focus:border-red-400 focus:ring-red-400/30";
 
 const FieldError = ({
   id,

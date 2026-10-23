@@ -1,44 +1,41 @@
 import type { ReactElement } from "react";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { footerLinks } from "@/data/navigation";
+import { navLinks } from "@/data/navigation";
 import { profile } from "@/data/profile";
 import { socialLinks } from "@/data/socials";
+import { BrandLogo } from "./BrandLogo";
 
 export const Footer = (): ReactElement => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-12 border-t border-border">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo & Copyright */}
-          <div className="text-center md:text-left">
-            <a href="#" className="text-xl font-bold tracking-tight">
-              {profile.initials}
-              <span className="text-primary">.</span>
-            </a>
-            <p className="text-sm text-muted-foreground mt-2">
-              © {currentYear} {profile.name}. All rights reserved.
-            </p>
-          </div>
+    <footer className="border-t border-border py-10">
+      <div className="container mx-auto flex flex-col items-center gap-8 px-6 md:flex-row md:justify-between">
+        <div className="text-center md:text-left">
+          <BrandLogo />
+          <p className="mt-2 text-sm text-muted-foreground">
+            © {currentYear} {profile.brand.name}
+            {profile.brand.accent} · {profile.name}. All rights reserved.
+          </p>
+        </div>
 
-          {/* Links */}
-          <nav className="flex flex-wrap justify-center gap-6">
-            {footerLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.label}
-              </a>
+        <nav aria-label="Footer">
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              </li>
             ))}
-          </nav>
+          </ul>
+        </nav>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            <SocialLinks links={socialLinks} />
-          </div>
+        <div className="flex items-center gap-3">
+          <SocialLinks links={socialLinks} />
         </div>
       </div>
     </footer>

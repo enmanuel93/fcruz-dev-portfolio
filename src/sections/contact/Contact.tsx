@@ -1,67 +1,81 @@
 import type { ReactElement } from "react";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { contactInfo } from "@/data/contact";
 import { ContactForm } from "./ContactForm";
 
 export const Contact = (): ReactElement => {
   return (
-    <section id="contact" className="py-32 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-highlight/5 rounded-full blur-3xl" />
-      </div>
+    <section id="contact" className="py-20 md:py-28">
+      <div className="container mx-auto px-6">
+        <div className="relative overflow-hidden rounded-3xl border border-border-strong bg-gradient-to-br from-primary/20 via-surface to-surface animate-fade-in">
+          <div
+            className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-primary/25 blur-[100px]"
+            aria-hidden="true"
+          />
+          <div
+            className="dot-field pointer-events-none absolute right-8 top-8 h-32 w-48 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent)]"
+            aria-hidden="true"
+          />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <SectionHeader
-          eyebrow="Get In Touch"
-          title="Let's build"
-          highlight="something great."
-          description="Have a project in mind? I'd love to hear about it. Send me a message and let's discuss how we can work together."
-        />
+          <div className="relative grid lg:grid-cols-[1fr_1.1fr]">
+            <div className="p-6 sm:p-10 lg:p-12">
+              <h2 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+                Let's build <span className="text-accent">something great.</span>
+              </h2>
+              <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
+                Have a project in mind? I'd love to hear about it. Send me a message
+                and let's discuss how we can work together.
+              </p>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <div className="glass p-8 rounded-3xl border border-primary/30 animate-fade-in animation-delay-300">
-            <ContactForm />
-          </div>
+              <ul className="mt-8 space-y-2">
+                {contactInfo.map((item) => {
+                  const content = (
+                    <>
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background/60 text-accent">
+                        <item.icon className="size-[18px]" aria-hidden="true" />
+                      </span>
+                      <span>
+                        <span className="block text-xs text-muted-foreground">{item.label}</span>
+                        <span className="block font-medium">{item.value}</span>
+                      </span>
+                    </>
+                  );
 
-          {/* Contact Info */}
-          <div className="space-y-6 animate-fade-in animation-delay-400">
-            <div className="glass rounded-3xl p-8">
-              <h3 className="text-xl font-semibold mb-6">
-                Contact Information
-              </h3>
-              <div className="space-y-4">
-                {contactInfo.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center gap-4 p-4 rounded-xl hover:bg-surface transition-colors group"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <item.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground">
-                        {item.label}
-                      </div>
-                      <div className="font-medium">{item.value}</div>
-                    </div>
-                  </a>
-                ))}
+                  return (
+                    <li key={item.label}>
+                      {/* "#" means there is nothing to open, so it is plain text. */}
+                      {item.href === "#" ? (
+                        <div className="flex items-center gap-4 p-2">{content}</div>
+                      ) : (
+                        <a
+                          href={item.href}
+                          className="-mx-0 flex items-center gap-4 rounded-xl p-2 transition-colors hover:bg-background/40"
+                        >
+                          {content}
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="mt-8 flex items-start gap-3 rounded-2xl border border-border bg-background/40 p-4">
+                <span className="relative mt-1.5 flex size-2.5 shrink-0" aria-hidden="true">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-success/60" />
+                  <span className="relative size-2.5 rounded-full bg-success" />
+                </span>
+                <div>
+                  <p className="font-medium">Currently Available</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    I'm currently open to new opportunities and exciting projects.
+                    Whether you need a full-time engineer or a freelance consultant,
+                    let's talk!
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Availability Card */}
-            <div className="glass rounded-3xl p-8 border border-primary/30">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                <span className="font-medium">Currently Available</span>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                I'm currently open to new opportunities and exciting projects.
-                Whether you need a full-time engineer or a freelance consultant,
-                let's talk!
-              </p>
+            <div className="border-t border-border p-6 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
+              <ContactForm />
             </div>
           </div>
         </div>

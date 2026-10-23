@@ -6,8 +6,11 @@ import type { IconType } from "react-icons";
 
 export interface Profile {
   name: string;
-  /** Short monogram used as the logo in the navbar and footer. */
-  initials: string;
+  /** Logo text in the navbar and footer; `accent` is shown in violet after `name`. */
+  brand: {
+    name: string;
+    accent: string;
+  };
   headline: string;
   bio: string;
   photo: {
@@ -42,6 +45,13 @@ export interface Highlight {
   icon: LucideIcon;
   title: string;
   description: string;
+}
+
+export interface Skill {
+  name: string;
+  icon: IconType;
+  /** Brand color of the logo, tuned to stay visible on the dark tiles. */
+  color: string;
 }
 
 export interface Project {

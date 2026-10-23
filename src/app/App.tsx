@@ -7,6 +7,7 @@ import { Contact } from "@/sections/contact/Contact";
 import { Experience } from "@/sections/experience/Experience";
 import { Hero } from "@/sections/hero/Hero";
 import { Projects } from "@/sections/projects/Projects";
+import { Skills } from "@/sections/skills/Skills";
 import { Testimonials } from "@/sections/testimonials/Testimonials";
 
 export const App = (): ReactElement => {
@@ -20,6 +21,7 @@ export const App = (): ReactElement => {
         <About />
         <Projects />
         <Experience />
+        <Skills />
         <Testimonials />
         <Contact />
       </main>
