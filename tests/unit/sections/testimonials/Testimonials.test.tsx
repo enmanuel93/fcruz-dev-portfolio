@@ -1,12 +1,26 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
-import { testimonials } from "@/data/testimonials";
+import { describe, expect, it, vi } from "vitest";
+import { testimonials as mockedTestimonials } from "@/data/testimonials";
 import { Testimonials } from "@/sections/testimonials/Testimonials";
+import type { Testimonial } from "@/types/content";
 
-const first = testimonials[0];
-const second = testimonials[1];
-const last = testimonials[testimonials.length - 1];
+// Fixed test data, so the carousel stays tested whatever the real content is
+// (the section is hidden until there are real testimonials).
+vi.mock("@/data/testimonials", () => ({
+  testimonials: ["Ada", "Grace", "Linus", "Margaret"].map((name) => ({
+    quote: `${name} was great to work with.`,
+    author: name,
+    role: "Engineer",
+    avatar: `/avatars/${name.toLowerCase()}.png`,
+  })),
+}));
+
+// Typed as a plain array: the real data's literal type no longer matches the mock.
+const testimonials = mockedTestimonials as readonly Testimonial[];
+const first = testimonials[0]!;
+const second = testimonials[1]!;
+const last = testimonials[testimonials.length - 1]!;
 
 const expectShowing = (author: string): void => {
   expect(screen.getByRole("img", { name: author })).toBeInTheDocument();
@@ -54,7 +68,7 @@ describe("Testimonials", () => {
     const thirdDot = screen.getByRole("button", { name: `Show testimonial 3 of ${total}` });
     await userEvent.click(thirdDot);
 
-    expectShowing(testimonials[2].author);
+    expectShowing(testimonials[2]!.author);
     expect(thirdDot).toHaveAttribute("aria-current", "true");
     expect(
       screen.getByRole("button", { name: `Show testimonial 1 of ${total}` }),
