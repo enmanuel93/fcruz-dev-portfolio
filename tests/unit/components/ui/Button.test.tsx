@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { Button } from "@/components/ui/Button";
 
@@ -12,6 +13,19 @@ describe("Button", () => {
       "#contact",
     );
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders a client-side route link when given a to", () => {
+    render(
+      <MemoryRouter>
+        <Button to="/contact">Contact Me</Button>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole("link", { name: "Contact Me" })).toHaveAttribute(
+      "href",
+      "/contact",
+    );
   });
 
   it("renders a native button that does not submit forms by default", () => {

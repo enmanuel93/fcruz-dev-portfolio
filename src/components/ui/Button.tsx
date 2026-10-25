@@ -1,4 +1,5 @@
 import type { FC, ReactElement, ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/cn";
 
 interface BaseButtonProps {
@@ -11,8 +12,19 @@ interface BaseButtonProps {
   id?: string;
 }
 
-// With `href` it renders a link (navigation/download); without it, a native button (actions).
+// With `to` it renders a client-side route link; with `href`, a plain link (external/download);
+// without either, a native button (actions).
+interface ButtonAsRouteLinkProps extends BaseButtonProps {
+  to: string;
+  href?: never;
+  download?: never;
+  target?: never;
+  type?: never;
+  disabled?: never;
+}
+
 interface ButtonAsLinkProps extends BaseButtonProps {
+  to?: never;
   href: string;
   download?: boolean | string;
   target?: "_blank";
@@ -21,6 +33,7 @@ interface ButtonAsLinkProps extends BaseButtonProps {
 }
 
 interface ButtonAsButtonProps extends BaseButtonProps {
+  to?: undefined;
   href?: undefined;
   download?: never;
   target?: never;
@@ -28,7 +41,7 @@ interface ButtonAsButtonProps extends BaseButtonProps {
   disabled?: boolean;
 }
 
-export type ButtonProps = ButtonAsLinkProps | ButtonAsButtonProps;
+export type ButtonProps = ButtonAsRouteLinkProps | ButtonAsLinkProps | ButtonAsButtonProps;
 
 const baseClasses =
   "relative inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-200 active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:active:translate-y-0";
@@ -50,6 +63,14 @@ export const Button: FC<ButtonProps> = (props: ButtonProps): ReactElement => {
   const { className, size = "default", variant = "primary", children, onClick, id } = props;
 
   const classes = cn(baseClasses, variantClasses[variant], sizeClasses[size], className);
+
+  if (props.to !== undefined) {
+    return (
+      <Link to={props.to} id={id} className={classes} onClick={onClick}>
+        {children}
+      </Link>
+    );
+  }
 
   if (props.href !== undefined) {
     return (
