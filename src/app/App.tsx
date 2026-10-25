@@ -3,7 +3,6 @@ import { BrowserRouter, useLocation } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
-import { scrollToSection } from "@/lib/scrollSection";
 import { About } from "@/sections/about/About";
 import { Contact } from "@/sections/contact/Contact";
 import { Experience } from "@/sections/experience/Experience";
@@ -21,7 +20,7 @@ const ScrollToSection = (): null => {
     const sectionId = pathname.slice(1);
 
     if (sectionId) {
-      scrollToSection(sectionId);
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
