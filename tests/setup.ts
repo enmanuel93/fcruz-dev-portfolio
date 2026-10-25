@@ -19,6 +19,10 @@ class IntersectionObserverStub implements IntersectionObserver {
 
 vi.stubGlobal("IntersectionObserver", IntersectionObserverStub);
 
+// jsdom does not implement scrolling either; routing to a section scrolls to it.
+window.scrollTo = (): void => {};
+Element.prototype.scrollIntoView = (): void => {};
+
 afterEach(() => {
   cleanup();
 });

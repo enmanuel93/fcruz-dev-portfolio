@@ -1,12 +1,13 @@
 import { CodeXml } from "lucide-react";
 import type { ReactElement } from "react";
+import { Link } from "react-router-dom";
 import { profile } from "@/data/profile";
 
-// "#" scrolls back to the top of the page.
+// "/" scrolls back to the top of the page.
 export const BrandLogo = (): ReactElement => {
   return (
-    <a
-      href="#"
+    <Link
+      to="/"
       aria-label={`${profile.brand.name}${profile.brand.accent}, back to top`}
       className="group inline-flex items-center gap-2.5 text-lg font-semibold tracking-tight"
     >
@@ -18,6 +19,6 @@ export const BrandLogo = (): ReactElement => {
         {profile.brand.name}
         <span className="text-accent">{profile.brand.accent}</span>
       </span>
-    </a>
+    </Link>
   );
 };

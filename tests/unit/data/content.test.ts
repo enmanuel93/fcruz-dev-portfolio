@@ -37,9 +37,9 @@ describe("content data", () => {
     projects.forEach(({ tags }) => expectUnique(tags));
   });
 
-  it("only uses in-page anchors for navigation", () => {
+  it("only uses single-segment section routes for navigation", () => {
     navLinks.forEach(({ href }) => {
-      expect(href).toMatch(/^#[a-z]+$/);
+      expect(href).toMatch(/^\/[a-z]+$/);
     });
   });
 });

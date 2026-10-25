@@ -21,19 +21,20 @@ describe("App", () => {
 
   // Catches a renamed section id or a typo in data/navigation.ts, which would
   // otherwise leave a link that silently scrolls nowhere.
-  it("has a matching section for every in-page link", () => {
+  it("has a matching section for every section route link", () => {
     const { container } = render(<App />);
 
-    const anchors = Array.from(
-      container.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'),
+    const sectionIds = Array.from(
+      container.querySelectorAll<HTMLAnchorElement>('a[href^="/"]'),
     )
       .map((link) => link.getAttribute("href")!)
-      // "#" alone is the logo's "back to top" link.
-      .filter((href) => href !== "#");
+      // "/" alone is the logo's "back to top" link; files like the CV have an extension.
+      .filter((href) => /^\/[a-z]+$/.test(href))
+      .map((href) => href.slice(1));
 
-    expect(anchors.length).toBeGreaterThan(0);
-    new Set(anchors).forEach((href) => {
-      expect(container.querySelector(href), `no element for ${href}`).not.toBeNull();
+    expect(sectionIds.length).toBeGreaterThan(0);
+    new Set(sectionIds).forEach((id) => {
+      expect(document.getElementById(id), `no element for #${id}`).not.toBeNull();
     });
   });
 });

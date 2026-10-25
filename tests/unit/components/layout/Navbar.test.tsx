@@ -1,9 +1,17 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactElement } from "react";
+import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import { Navbar } from "@/components/layout/Navbar";
 import { CONTACT_HREF, navLinks } from "@/data/navigation";
 import { profile } from "@/data/profile";
+
+const renderNavbar = (): void => {
+  render(<Navbar />, {
+    wrapper: ({ children }): ReactElement => <MemoryRouter>{children}</MemoryRouter>,
+  });
+};
 
 const openMenuButton = () => screen.getByRole("button", { name: "Open menu" });
 
@@ -17,14 +25,14 @@ describe("Navbar", () => {
   });
 
   it("starts with the mobile menu closed", () => {
-    render(<Navbar />);
+    renderNavbar();
 
     expect(openMenuButton()).toHaveAttribute("aria-expanded", "false");
     expect(document.getElementById("mobile-menu")).not.toBeInTheDocument();
   });
 
   it("opens and closes the mobile menu from the toggle button", async () => {
-    render(<Navbar />);
+    renderNavbar();
 
     await userEvent.click(openMenuButton());
     const closeButton = screen.getByRole("button", { name: "Close menu" });
@@ -36,7 +44,7 @@ describe("Navbar", () => {
   });
 
   it("closes the mobile menu after choosing a section", async () => {
-    render(<Navbar />);
+    renderNavbar();
     await userEvent.click(openMenuButton());
 
     const mobileMenu = within(document.getElementById("mobile-menu")!);
@@ -46,7 +54,7 @@ describe("Navbar", () => {
   });
 
   it("closes the mobile menu after choosing Download CV", async () => {
-    render(<Navbar />);
+    renderNavbar();
     await userEvent.click(openMenuButton());
 
     const mobileMenu = within(document.getElementById("mobile-menu")!);
@@ -56,7 +64,7 @@ describe("Navbar", () => {
   });
 
   it("makes every Download CV button download the CV", async () => {
-    render(<Navbar />);
+    renderNavbar();
     await userEvent.click(openMenuButton());
 
     const cvLinks = screen.getAllByRole("link", { name: "Download CV" });
@@ -68,7 +76,7 @@ describe("Navbar", () => {
   });
 
   it("links to the contact section", () => {
-    render(<Navbar />);
+    renderNavbar();
 
     expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
       "href",
@@ -77,7 +85,7 @@ describe("Navbar", () => {
   });
 
   it("switches to the solid style once the page is scrolled", () => {
-    render(<Navbar />);
+    renderNavbar();
     const header = screen.getByRole("banner");
     expect(header).toHaveClass("bg-transparent");
 

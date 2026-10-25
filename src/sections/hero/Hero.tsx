@@ -43,11 +43,11 @@ export const Hero = (): ReactElement => {
           </p>
 
           <div className="mt-9 grid gap-3 sm:flex sm:flex-wrap animate-fade-in animation-delay-300">
-            <Button href={PROJECTS_HREF} size="lg">
+            <Button to={PROJECTS_HREF} size="lg">
               <FolderGit2 className="size-5" aria-hidden="true" />
               View Projects
             </Button>
-            <Button href={CONTACT_HREF} size="lg" variant="outline">
+            <Button to={CONTACT_HREF} size="lg" variant="outline">
               <MessageSquare className="size-5" aria-hidden="true" />
               Contact Me
             </Button>

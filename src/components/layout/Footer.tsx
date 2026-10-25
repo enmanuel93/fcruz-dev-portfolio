@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { Link } from "react-router-dom";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { navLinks } from "@/data/navigation";
 import { profile } from "@/data/profile";
@@ -23,12 +24,12 @@ export const Footer = (): ReactElement => {
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
+                <Link
+                  to={link.href}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
