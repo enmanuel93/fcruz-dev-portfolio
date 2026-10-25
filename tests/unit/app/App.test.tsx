@@ -1,8 +1,30 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "@/app/App";
 
 describe("App", () => {
+  afterEach(() => {
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("scrolls to the section named in the URL", () => {
+    const scrollIntoView = vi.spyOn(Element.prototype, "scrollIntoView");
+    window.history.replaceState(null, "", "/contact");
+
+    render(<App />);
+
+    expect(scrollIntoView).toHaveBeenCalledOnce();
+    expect(scrollIntoView.mock.contexts[0]).toBe(document.getElementById("contact"));
+  });
+
+  it("scrolls to the top on the root URL", () => {
+    const scrollTo = vi.spyOn(window, "scrollTo");
+
+    render(<App />);
+
+    expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+  });
+
   it("renders the page landmarks", () => {
     render(<App />);
 
