@@ -1,6 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { FreeMode } from "swiper/modules";
 import { describe, expect, it, vi } from "vitest";
 import { skills } from "@/data/skills";
 import { Skills } from "@/sections/skills/Skills";
@@ -11,9 +10,7 @@ const swiper = vi.hoisted(() => ({
   props: {} as {
     autoplay?: unknown;
     loop?: boolean;
-    freeMode?: boolean;
     grabCursor?: boolean;
-    modules?: unknown[];
   },
 }));
 
@@ -72,13 +69,6 @@ describe("Skills", () => {
       delay: 0,
       disableOnInteraction: false,
     });
-  });
-
-  it("glides freely between cards instead of snapping to each one", () => {
-    render(<Skills />);
-
-    expect(swiper.props.freeMode).toBe(true);
-    expect(swiper.props.modules).toContain(FreeMode);
   });
 
   it("uses Swiper's grab cursor", () => {

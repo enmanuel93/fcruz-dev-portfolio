@@ -1,8 +1,7 @@
 import type { ReactElement } from "react";
-import { Autoplay, FreeMode } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/free-mode";
 import type { Skill } from "@/types/content";
 
 // Time one card takes to slide past; with no autoplay delay the row never stops.
@@ -27,11 +26,10 @@ interface SkillsMarqueeProps {
 export const SkillsMarquee = ({ skills }: SkillsMarqueeProps): ReactElement => (
   <div className="animate-fade-in animation-delay-100">
     {/* No pause on hover: stopping mid-transition breaks the constant flow.
-        Free mode keeps a drag from snapping to a card; autoplay resumes after it. */}
+        Autoplay resumes after a drag. */}
     <Swiper
-      modules={[Autoplay, FreeMode]}
+      modules={[Autoplay]}
       loop
-      freeMode
       grabCursor
       speed={MARQUEE_SPEED_MS}
       autoplay={{ delay: 0, disableOnInteraction: false }}
