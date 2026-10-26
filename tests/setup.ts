@@ -19,6 +19,20 @@ class IntersectionObserverStub implements IntersectionObserver {
 
 vi.stubGlobal("IntersectionObserver", IntersectionObserverStub);
 
+// Nor matchMedia, which Swiper's breakpoints and prefersReducedMotion read.
+// Nothing matches: no media query applies and motion is allowed.
+window.matchMedia = (query: string): MediaQueryList =>
+  ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  }) as MediaQueryList;
+
 // jsdom does not implement scrolling either; routing to a section scrolls to it.
 window.scrollTo = (): void => {};
 Element.prototype.scrollIntoView = (): void => {};

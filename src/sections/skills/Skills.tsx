@@ -2,9 +2,7 @@ import { CodeXml } from "lucide-react";
 import type { ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { skills } from "@/data/skills";
-import { getAnimationDelay } from "@/lib/animation";
-
-const ANIMATION_STEP_MS = 40;
+import { SkillsMarquee } from "./SkillsMarquee";
 
 export const Skills = (): ReactElement => {
   return (
@@ -16,24 +14,33 @@ export const Skills = (): ReactElement => {
           description="The stack I use day to day, from the database to the browser."
         />
 
-        <ul className="grid auto-rows-fr grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-10">
-          {skills.map(({ name, icon: Icon, color }, idx) => (
-            <li
-              key={name}
-              className="panel group flex flex-col items-center justify-center gap-3 rounded-xl px-2 py-5 text-center transition-[border-color,transform,background-color] duration-300 hover:-translate-y-0.5 hover:border-border-strong hover:bg-surface-raised animate-fade-in"
-              style={{ animationDelay: getAnimationDelay(idx, ANIMATION_STEP_MS) }}
-            >
-              <Icon
-                className="size-8 transition-transform duration-300 group-hover:scale-110"
-                style={{ color }}
-                aria-hidden="true"
-              />
-              <span className="text-xs font-medium leading-tight text-muted-foreground transition-colors group-hover:text-foreground">
-                {name}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <SkillsMarquee skills={skills} />
+
+        {/* Skills Section */}
+        <div className="mt-20 animate-fade-in animation-delay-600">
+          <p className="text-sm text-muted-foreground mb-6 text-center">
+            Technologies I work with
+          </p>
+          <div className="relative overflow-hidden">
+            <div
+              className="absolute left-0 top-0 bottom-0 w-32
+             bg-gradient-to-r from-background to-transparent z-10"
+            />
+            <div
+              className="absolute right-0 top-0 bottom-0 w-32
+             bg-gradient-to-l from-background to-transparent z-10"
+            />
+            <div className="flex animate-marquee">
+              {[...skills, ...skills].map((skill, idx) => (
+                <div key={idx} className="flex-shrink-0 px-8 py-4">
+                  <span className="text-xl font-semibold text-muted-foreground/50 hover:text-muted-foreground transition-colors">
+                    {skill.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

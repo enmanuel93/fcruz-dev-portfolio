@@ -114,9 +114,28 @@
         border-box;
     animation: border-spin 2.5s linear infinite;
   }
+
+  /* Constant speed between slides, so the autoplaying row reads as one banner. */
+  .skills-marquee .swiper-wrapper {
+    transition-timing-function: linear;
+  }
 }
 
 @layer utilities {
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  } 
+
   @keyframes fade-in {
     from {
       opacity: 0;
