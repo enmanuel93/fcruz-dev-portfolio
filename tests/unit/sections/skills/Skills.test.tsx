@@ -1,34 +1,31 @@
 import { act, render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { skills } from "@/data/skills";
 import { Skills } from "@/sections/skills/Skills";
 
 // jsdom has no layout, so the real Swiper cannot move. This stand-in renders
-// the slides and hands the component a fake instance to drive; the tests check
-// the wiring between our controls and Swiper's API.
+// the slides and records the props, so the tests check how we configure it.
 const swiper = vi.hoisted(() => ({
-  instance: { slidePrev: vi.fn(), slideNext: vi.fn(), slideToLoop: vi.fn() },
   props: {} as {
     autoplay?: unknown;
     loop?: boolean;
-    onRealIndexChange?: (s: { realIndex: number }) => void;
+    onTouchStart?: () => void;
+    onTouchEnd?: () => void;
   },
 }));
 
 vi.mock("swiper/react", () => ({
   Swiper: ({
     children,
-    onSwiper,
+    className,
     ...props
   }: {
     children: ReactNode;
-    onSwiper: (instance: typeof swiper.instance) => void;
+    className?: string;
   }) => {
     swiper.props = props;
-    useEffect(() => onSwiper(swiper.instance), [onSwiper]);
-    return <ul>{children}</ul>;
+    return <ul className={className}>{children}</ul>;
   },
   SwiperSlide: ({
     children,
@@ -38,16 +35,6 @@ vi.mock("swiper/react", () => ({
     "aria-hidden"?: boolean;
   }) => <li aria-hidden={ariaHidden}>{children}</li>,
 }));
-
-const dotName = (position: number): string =>
-  `Go to slide ${position} of ${skills.length}`;
-
-const expectActiveDot = (position: number): void => {
-  expect(screen.getByRole("button", { name: dotName(position) })).toHaveAttribute(
-    "aria-current",
-    "true",
-  );
-};
 
 describe("Skills", () => {
   it("renders the skills twice in one row so the loop never runs out of cards", () => {
@@ -76,60 +63,26 @@ describe("Skills", () => {
     expect(swiper.props.loop).toBe(true);
   });
 
-  it("autoplays continuously when motion is allowed", () => {
+  it("autoplays continuously, even after the user drags it", () => {
     render(<Skills />);
 
-    expect(swiper.props.autoplay).toMatchObject({ delay: 0 });
+    expect(swiper.props.autoplay).toMatchObject({
+      delay: 0,
+      disableOnInteraction: false,
+    });
   });
 
-  it("does not autoplay when the OS asks for reduced motion", () => {
-    vi.spyOn(window, "matchMedia").mockReturnValue({ matches: true } as MediaQueryList);
-
+  it("shows a grab cursor that turns into grabbing while the row is held", () => {
     render(<Skills />);
+    const list = screen.getByRole("list");
 
-    expect(swiper.props.autoplay).toBe(false);
-  });
+    expect(list).toHaveClass("cursor-grab");
 
-  it("renders one dot per skill with the first one active", () => {
-    render(<Skills />);
+    act(() => swiper.props.onTouchStart?.());
+    expect(list).toHaveClass("cursor-grabbing");
+    expect(list).not.toHaveClass("cursor-grab");
 
-    expect(screen.getAllByRole("button", { name: /^Go to slide/ })).toHaveLength(
-      skills.length,
-    );
-    expectActiveDot(1);
-  });
-
-  it("slides back and forth with the arrow buttons", async () => {
-    render(<Skills />);
-
-    await userEvent.click(screen.getByRole("button", { name: "Previous Skills" }));
-    await userEvent.click(screen.getByRole("button", { name: "Next Skills" }));
-
-    expect(swiper.instance.slidePrev).toHaveBeenCalledOnce();
-    expect(swiper.instance.slideNext).toHaveBeenCalledOnce();
-  });
-
-  it("jumps to a skill when its dot is clicked", async () => {
-    render(<Skills />);
-
-    await userEvent.click(screen.getByRole("button", { name: dotName(5) }));
-
-    expect(swiper.instance.slideToLoop).toHaveBeenCalledWith(4);
-  });
-
-  it("follows the slide Swiper reports as active", () => {
-    render(<Skills />);
-
-    act(() => swiper.props.onRealIndexChange?.({ realIndex: 3 }));
-
-    expectActiveDot(4);
-  });
-
-  it("maps a card from the second copy to its skill's dot", () => {
-    render(<Skills />);
-
-    act(() => swiper.props.onRealIndexChange?.({ realIndex: skills.length + 2 }));
-
-    expectActiveDot(3);
+    act(() => swiper.props.onTouchEnd?.());
+    expect(list).toHaveClass("cursor-grab");
   });
 });

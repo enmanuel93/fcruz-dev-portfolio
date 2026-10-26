@@ -1,10 +1,8 @@
 import { useState, type ReactElement } from "react";
-import type { Swiper as SwiperInstance } from "swiper";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { CarouselControls } from "@/components/ui/CarouselControls";
-import { prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/cn";
 import type { Skill } from "@/types/content";
 
 // Time one card takes to slide past; with no autoplay delay the row never stops.
@@ -27,8 +25,9 @@ interface SkillsMarqueeProps {
 }
 
 export const SkillsMarquee = ({ skills }: SkillsMarqueeProps): ReactElement => {
-  const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
-  const [activeIdx, setActiveIdx] = useState<number>(0);
+  // Swiper cancels pointerdown, so the browser never fires mousedown on the
+  // slides; its touchStart/touchEnd events cover mouse, pen and touch instead.
+  const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
 
   return (
     <div className="animate-fade-in animation-delay-100">
@@ -37,16 +36,14 @@ export const SkillsMarquee = ({ skills }: SkillsMarqueeProps): ReactElement => {
         modules={[Autoplay]}
         loop
         speed={MARQUEE_SPEED_MS}
-        autoplay={
-          prefersReducedMotion() ? false : { delay: 0, disableOnInteraction: false }
-        }
+        autoplay={{ delay: 0, disableOnInteraction: false }}
         slidesPerView={3}
         spaceBetween={GAP_PX}
         breakpoints={BREAKPOINTS}
         wrapperTag="ul"
-        onSwiper={setSwiper}
-        onRealIndexChange={({ realIndex }) => setActiveIdx(realIndex % skills.length)}
-        className="skills-marquee py-1"
+        onTouchStart={() => setIsGrabbing(true)}
+        onTouchEnd={() => setIsGrabbing(false)}
+        className={cn("skills-marquee py-1", isGrabbing ? "cursor-grabbing" : "cursor-grab")}
       >
         {Array.from({ length: LOOP_COPIES }, (_, copy) =>
           skills.map(({ name, icon: Icon, color }) => (
@@ -55,7 +52,7 @@ export const SkillsMarquee = ({ skills }: SkillsMarqueeProps): ReactElement => {
               // The second copy only fills the loop; screen readers hear each skill once.
               aria-hidden={copy > 0 || undefined}
               tag="li"
-              className="panel group flex! h-auto! flex-col items-center justify-center gap-3 rounded-xl px-2 py-5 text-center transition-[border-color,transform,background-color] duration-300 hover:-translate-y-0.5 hover:border-border-strong hover:bg-surface-raised"
+              className="panel group flex! mt-1 h-auto! flex-col items-center justify-center gap-3 rounded-xl px-2 py-5 text-center transition-[border-color,transform,background-color] duration-300 hover:-translate-y-0.5 hover:border-border-strong hover:bg-surface-raised"
             >
               <Icon
                 className="size-8 transition-transform duration-300 group-hover:scale-110"
@@ -69,16 +66,6 @@ export const SkillsMarquee = ({ skills }: SkillsMarqueeProps): ReactElement => {
           )),
         )}
       </Swiper>
-
-      <CarouselControls
-        label="Skills"
-        count={skills.length}
-        activeIndex={activeIdx}
-        onPrevious={() => swiper?.slidePrev()}
-        onNext={() => swiper?.slideNext()}
-        onSelect={(idx) => swiper?.slideToLoop(idx)}
-        className="mt-8"
-      />
     </div>
   );
 };
