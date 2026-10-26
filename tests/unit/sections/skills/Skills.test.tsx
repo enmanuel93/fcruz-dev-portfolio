@@ -10,7 +10,11 @@ import { Skills } from "@/sections/skills/Skills";
 // the wiring between our controls and Swiper's API.
 const swiper = vi.hoisted(() => ({
   instance: { slidePrev: vi.fn(), slideNext: vi.fn(), slideToLoop: vi.fn() },
-  props: {} as { autoplay?: unknown; onRealIndexChange?: (s: { realIndex: number }) => void },
+  props: {} as {
+    autoplay?: unknown;
+    loop?: boolean;
+    onRealIndexChange?: (s: { realIndex: number }) => void;
+  },
 }));
 
 vi.mock("swiper/react", () => ({
@@ -26,7 +30,13 @@ vi.mock("swiper/react", () => ({
     useEffect(() => onSwiper(swiper.instance), [onSwiper]);
     return <ul>{children}</ul>;
   },
-  SwiperSlide: ({ children }: { children: ReactNode }) => <li>{children}</li>,
+  SwiperSlide: ({
+    children,
+    "aria-hidden": ariaHidden,
+  }: {
+    children: ReactNode;
+    "aria-hidden"?: boolean;
+  }) => <li aria-hidden={ariaHidden}>{children}</li>,
 }));
 
 const dotName = (position: number): string =>
@@ -40,14 +50,30 @@ const expectActiveDot = (position: number): void => {
 };
 
 describe("Skills", () => {
-  it("shows every skill as a card in a single carousel row", () => {
+  it("renders the skills twice in one row so the loop never runs out of cards", () => {
     render(<Skills />);
 
     const list = screen.getByRole("list");
-    expect(within(list).getAllByRole("listitem")).toHaveLength(skills.length);
+    expect(within(list).getAllByRole("listitem", { hidden: true })).toHaveLength(
+      skills.length * 2,
+    );
     for (const { name } of skills) {
-      expect(within(list).getByText(name)).toBeInTheDocument();
+      expect(within(list).getAllByText(name)).toHaveLength(2);
     }
+  });
+
+  it("exposes each skill only once to assistive technology", () => {
+    render(<Skills />);
+
+    expect(within(screen.getByRole("list")).getAllByRole("listitem")).toHaveLength(
+      skills.length,
+    );
+  });
+
+  it("loops endlessly instead of rewinding at the end", () => {
+    render(<Skills />);
+
+    expect(swiper.props.loop).toBe(true);
   });
 
   it("autoplays continuously when motion is allowed", () => {
@@ -97,5 +123,13 @@ describe("Skills", () => {
     act(() => swiper.props.onRealIndexChange?.({ realIndex: 3 }));
 
     expectActiveDot(4);
+  });
+
+  it("maps a card from the second copy to its skill's dot", () => {
+    render(<Skills />);
+
+    act(() => swiper.props.onRealIndexChange?.({ realIndex: skills.length + 2 }));
+
+    expectActiveDot(3);
   });
 });
