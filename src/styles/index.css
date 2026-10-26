@@ -115,9 +115,11 @@
     animation: border-spin 2.5s linear infinite;
   }
 
-  /* Constant speed between slides, so the autoplaying row reads as one banner. */
-  .skills-marquee .swiper-wrapper {
-    transition-timing-function: linear;
+  /* Constant speed between slides, so the autoplaying row reads as one banner.
+     Set through Swiper's variable: its unlayered stylesheet beats a rule in
+     this layer, which left the default ease and a visible stop at each card. */
+  .skills-marquee {
+    --swiper-wrapper-transition-timing-function: linear;
   }
 }
 

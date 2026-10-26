@@ -1,5 +1,6 @@
-import { act, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import type { ReactNode } from "react";
+import { FreeMode } from "swiper/modules";
 import { describe, expect, it, vi } from "vitest";
 import { skills } from "@/data/skills";
 import { Skills } from "@/sections/skills/Skills";
@@ -10,8 +11,9 @@ const swiper = vi.hoisted(() => ({
   props: {} as {
     autoplay?: unknown;
     loop?: boolean;
-    onTouchStart?: () => void;
-    onTouchEnd?: () => void;
+    freeMode?: boolean;
+    grabCursor?: boolean;
+    modules?: unknown[];
   },
 }));
 
@@ -72,17 +74,16 @@ describe("Skills", () => {
     });
   });
 
-  it("shows a grab cursor that turns into grabbing while the row is held", () => {
+  it("glides freely between cards instead of snapping to each one", () => {
     render(<Skills />);
-    const list = screen.getByRole("list");
 
-    expect(list).toHaveClass("cursor-grab");
+    expect(swiper.props.freeMode).toBe(true);
+    expect(swiper.props.modules).toContain(FreeMode);
+  });
 
-    act(() => swiper.props.onTouchStart?.());
-    expect(list).toHaveClass("cursor-grabbing");
-    expect(list).not.toHaveClass("cursor-grab");
+  it("uses Swiper's grab cursor", () => {
+    render(<Skills />);
 
-    act(() => swiper.props.onTouchEnd?.());
-    expect(list).toHaveClass("cursor-grab");
+    expect(swiper.props.grabCursor).toBe(true);
   });
 });
