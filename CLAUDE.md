@@ -39,6 +39,8 @@ Import via the `@/` alias → `src/` (configured in both `vite.config.ts` and `t
 
 Static assets (profile photo, project images, CV under `public/documents/cv/`) are in `public/` and referenced by absolute path from `src/data/`.
 
+**Deploy (Netlify):** `netlify.toml` builds to `dist/` and serves `index.html` for every route. `netlify/edge-functions/region.ts` runs before the page on each visit and sets the `region` cookie from Netlify's geolocation (`context.geo.country.code` → `regionForCountry`), so a VPN changes the profile shown; it skips static files. It is type-checked through `tsconfig.test.json` and tested in `tests/unit/netlify/`. Locally there is no cookie: use `?region=americas`, or `netlify dev --country=DO`. EmailJS's `VITE_EMAILJS_*` variables must also be set in Netlify's site settings.
+
 ## Tests
 
 - Live in `tests/unit/`, mirroring the `src/` layout; only `tests/unit/**/*.test.{ts,tsx}` is picked up. jsdom environment, Testing Library + jest-dom matchers, `restoreMocks: true`.
