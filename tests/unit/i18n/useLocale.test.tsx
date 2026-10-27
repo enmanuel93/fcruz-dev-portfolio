@@ -15,14 +15,14 @@ describe("useLocale", () => {
 
     expect(DEFAULT_LOCALE).toBe("en");
     expect(result.current.locale).toBe("en");
-    expect(result.current.content).toBe(locales.en);
+    expect(result.current.content.ui).toBe(locales.en.ui);
   });
 
   it("falls back to the default language without a provider", () => {
     const { result } = renderHook(() => useLocale());
 
     expect(result.current.locale).toBe(DEFAULT_LOCALE);
-    expect(result.current.content).toBe(locales[DEFAULT_LOCALE]);
+    expect(result.current.content.ui).toBe(locales[DEFAULT_LOCALE].ui);
   });
 
   it("keeps the page's language, title and description in the current language", () => {

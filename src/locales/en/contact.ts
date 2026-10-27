@@ -1,8 +1,14 @@
-import { contactChannels } from "@/data/contact";
+import { contactChannels, phones } from "@/data/contact";
+import type { Region } from "@/regions";
 import type { ContactInfo } from "@/types/content";
 
-export const contactInfo = [
+const contactInfoIn = (region: Region, location: string): readonly ContactInfo[] => [
   { ...contactChannels.email, label: "Email" },
-  { ...contactChannels.phone, label: "Phone" },
-  { ...contactChannels.location, label: "Location", value: "Milan, Italy" },
-] as const satisfies readonly ContactInfo[];
+  { ...phones[region], label: "Phone" },
+  { ...contactChannels.location, label: "Location", value: location },
+];
+
+export const contactInfo = {
+  europe: contactInfoIn("europe", "Milan, Italy"),
+  americas: contactInfoIn("americas", "Santo Domingo, Dominican Republic"),
+} as const satisfies Record<Region, readonly ContactInfo[]>;

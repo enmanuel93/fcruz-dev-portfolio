@@ -4,10 +4,12 @@ import type { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import { Navbar } from "@/components/layout/Navbar";
+import { cvUrls } from "@/data/cv";
 import { CONTACT_HREF } from "@/data/navigation";
 import { DEFAULT_LOCALE, locales } from "@/locales";
+import { DEFAULT_REGION } from "@/regions";
 
-const { navLinks, profile } = locales[DEFAULT_LOCALE];
+const { navLinks } = locales[DEFAULT_LOCALE];
 
 const renderNavbar = (): void => {
   render(<Navbar />, {
@@ -72,7 +74,7 @@ describe("Navbar", () => {
     const cvLinks = screen.getAllByRole("link", { name: "Download CV" });
     expect(cvLinks).toHaveLength(2);
     cvLinks.forEach((link) => {
-      expect(link).toHaveAttribute("href", profile.cvUrl);
+      expect(link).toHaveAttribute("href", cvUrls[DEFAULT_REGION][DEFAULT_LOCALE]);
       expect(link).toHaveAttribute("download");
     });
   });

@@ -1,13 +1,12 @@
 import { profileBase } from "@/data/profile";
-import type { AboutContent, Profile } from "@/types/content";
+import type { LocaleProfile } from "../types";
+import type { AboutContent } from "@/types/content";
 
 export const profile = {
   ...profileBase,
   headline: ".NET Developer • Full Stack Developer",
   bio: "Hi, I'm Francisco Cruz Mejía — a Full Stack Developer specializing in the .NET ecosystem and React. I build RESTful APIs, microservices and cloud-ready web applications on Microsoft Azure.",
-  // Files live in public/documents/cv/<locale>/; replacing a PDF needs no code change.
-  cvUrl: "/documents/cv/en/Francisco_Cruz_Mejia_NET_Developer_CV_EU.pdf",
-} as const satisfies Profile;
+} as const satisfies LocaleProfile;
 
 export const about = {
   paragraphs: [

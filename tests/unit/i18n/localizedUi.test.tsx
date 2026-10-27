@@ -6,8 +6,9 @@ import { describe, expect, it } from "vitest";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { LocaleContext } from "@/i18n/LocaleContext";
-import { locales } from "@/locales";
-import type { LocaleContent, UiText } from "@/locales/types";
+import { resolveContent } from "@/i18n/resolveContent";
+import type { SiteContent, UiText } from "@/locales/types";
+import { DEFAULT_REGION } from "@/regions";
 import { About } from "@/sections/about/About";
 import { Contact } from "@/sections/contact/Contact";
 import { Experience } from "@/sections/experience/Experience";
@@ -28,9 +29,9 @@ const mark = (value: unknown): unknown => {
   );
 };
 
-const en = locales.en;
+const en = resolveContent("en", DEFAULT_REGION);
 const ui = mark(en.ui) as UiText;
-const content: LocaleContent = { ...en, ui };
+const content: SiteContent = { ...en, ui };
 
 const renderMarked = (node: ReactNode): void => {
   render(node, {

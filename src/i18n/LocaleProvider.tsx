@@ -7,16 +7,21 @@ import {
   type ReactNode,
 } from "react";
 import { locales, type Locale } from "@/locales";
+import type { Region } from "@/regions";
 import { getInitialLocale, storeLocale } from "./detectLocale";
+import { getInitialRegion } from "./detectRegion";
 import { LocaleContext, type LocaleContextValue } from "./LocaleContext";
+import { resolveContent } from "./resolveContent";
 
 interface LocaleProviderProps {
   children: ReactNode;
 }
 
 // Holds the current language for the whole page; components read it with useLocale.
+// The content also follows the visitor's region, decided once on load.
 export const LocaleProvider = ({ children }: LocaleProviderProps): ReactElement => {
   const [locale, setLocaleState] = useState<Locale>(getInitialLocale);
+  const [region] = useState<Region>(getInitialRegion);
 
   const setLocale = useCallback((next: Locale): void => {
     setLocaleState(next);
@@ -36,8 +41,8 @@ export const LocaleProvider = ({ children }: LocaleProviderProps): ReactElement 
 
   // A new object only when the language changes, so consumers don't re-render for nothing.
   const value = useMemo<LocaleContextValue>(
-    () => ({ locale, content: locales[locale], setLocale }),
-    [locale, setLocale],
+    () => ({ locale, content: resolveContent(locale, region), setLocale }),
+    [locale, region, setLocale],
   );
 
   return <LocaleContext value={value}>{children}</LocaleContext>;

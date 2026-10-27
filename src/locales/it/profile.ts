@@ -1,12 +1,12 @@
 import { profileBase } from "@/data/profile";
-import type { AboutContent, Profile } from "@/types/content";
+import type { LocaleProfile } from "../types";
+import type { AboutContent } from "@/types/content";
 
 export const profile = {
   ...profileBase,
   headline: "Sviluppatore .NET • Sviluppatore Full Stack",
   bio: "Ciao, sono Francisco Cruz Mejía, Sviluppatore Full Stack specializzato nell'ecosistema .NET e in React. Realizzo API RESTful, microservizi e applicazioni web pronte per il cloud su Microsoft Azure.",
-  cvUrl: "/documents/cv/it/Francisco_Cruz_Mejia_NET_Developer_CV_IT.pdf",
-} as const satisfies Profile;
+} as const satisfies LocaleProfile;
 
 export const about = {
   paragraphs: [

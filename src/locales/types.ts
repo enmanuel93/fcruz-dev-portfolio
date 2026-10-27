@@ -8,6 +8,7 @@ import type {
   Project,
   Testimonial,
 } from "@/types/content";
+import type { Region } from "@/regions";
 
 // The interface text the components show around the content: headings,
 // buttons, labels. Phrases with a value in them are functions.
@@ -100,16 +101,29 @@ export interface SectionText {
   description: string;
 }
 
+/** A language's profile; the CV comes from data/cv.ts, by region. */
+export type LocaleProfile = Omit<Profile, "cvUrl">;
+
 // Everything the site says in one language. Each locale's index.ts must
 // satisfy it, so a field missing from a translation fails the build.
 export interface LocaleContent {
   ui: UiText;
-  profile: Profile;
+  profile: LocaleProfile;
   about: AboutContent;
   navLinks: readonly NavLink[];
   highlights: readonly Highlight[];
   projects: readonly Project[];
-  experiences: readonly Experience[];
+  /** The jobs each region's profile lists, newest first. */
+  experiences: Record<Region, readonly Experience[]>;
   testimonials: readonly Testimonial[];
+  /** Phone and location of the country each region's profile works from. */
+  contactInfo: Record<Region, readonly ContactInfo[]>;
+}
+
+/** What the components read: one language's content, resolved for the visitor's region. */
+export interface SiteContent
+  extends Omit<LocaleContent, "profile" | "experiences" | "contactInfo"> {
+  profile: Profile;
+  experiences: readonly Experience[];
   contactInfo: readonly ContactInfo[];
 }
