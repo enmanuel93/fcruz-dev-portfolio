@@ -45,21 +45,13 @@ export const Navbar = (): ReactElement => {
       )}
     >
       <nav className="container mx-auto flex items-center justify-between px-6">
+        {/* Brand Logo */}
         <BrandLogo />
 
+        {/* Menu */}
         <ul className="hidden items-center gap-1 lg:flex">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
-              {/* <a
-                href={href}
-                aria-current={isActive(href) ? "true" : undefined}
-                className={cn(
-                  "relative rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-300 hover:after:scale-x-100",
-                  isActive(href) && "text-foreground after:scale-x-100",
-                )}
-              >
-                {label}
-              </a> */}
               <Link
                 to={href}
                 aria-current={isActive(href) ? "true" : undefined}
@@ -74,6 +66,7 @@ export const Navbar = (): ReactElement => {
           ))}
         </ul>
 
+        {/* download button */}
         <div className="hidden lg:block">
           <Button href={profile.cvUrl} download size="sm">
             <Download className="size-4" aria-hidden="true" />
