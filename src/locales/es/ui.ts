@@ -17,7 +17,6 @@ export const ui = {
     titleAccent: "con precisión.",
     viewProjects: "Ver proyectos",
     contactMe: "Contáctame",
-    emailLabel: "Correo electrónico",
   },
   portrait: {
     yearsOfExperience: "Años de experiencia",

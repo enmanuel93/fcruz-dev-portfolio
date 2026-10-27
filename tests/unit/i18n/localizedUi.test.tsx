@@ -70,7 +70,6 @@ describe("UI text comes from the current locale", () => {
     expect(title).toHaveTextContent(ui.hero.titleAccent);
     expect(screen.getByRole("link", { name: ui.hero.viewProjects })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: ui.hero.contactMe })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: ui.hero.emailLabel })).toBeInTheDocument();
     expect(screen.getByText(ui.portrait.yearsOfExperience)).toBeInTheDocument();
     expect(screen.getByText(ui.portrait.availableForWork)).toBeInTheDocument();
     expect(screen.getByText(ui.portrait.workTypes)).toBeInTheDocument();

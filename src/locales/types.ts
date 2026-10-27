@@ -31,7 +31,6 @@ export interface UiText {
     titleAccent: string;
     viewProjects: string;
     contactMe: string;
-    emailLabel: string;
   };
   portrait: {
     yearsOfExperience: string;
