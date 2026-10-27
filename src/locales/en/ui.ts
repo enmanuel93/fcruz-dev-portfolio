@@ -7,7 +7,6 @@ export const ui = {
     closeMenu: "Close menu",
     downloadCv: "Download CV",
     language: "Language",
-    languageButton: (currentLanguage) => `Language: ${currentLanguage}`,
   },
   footer: {
     navLabel: "Footer",

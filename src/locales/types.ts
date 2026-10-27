@@ -20,8 +20,6 @@ export interface UiText {
     downloadCv: string;
     /** Names the group of language buttons in the mobile menu. */
     language: string;
-    /** Accessible name of the language menu button, e.g. "Language: English". */
-    languageButton: (currentLanguage: string) => string;
   };
   footer: {
     navLabel: string;

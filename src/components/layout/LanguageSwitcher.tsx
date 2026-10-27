@@ -4,7 +4,6 @@ import {
   useId,
   useRef,
   useState,
-  type KeyboardEvent,
   type ReactElement,
 } from "react";
 import { useLocale } from "@/i18n/useLocale";
@@ -13,7 +12,7 @@ import { LOCALES, localeNames, type Locale } from "@/locales";
 
 interface FlagProps {
   locale: Locale;
-  // Empty when the language name is already given another way (aria-label).
+  // Empty when the flag is only decorative.
   alt?: string;
 }
 
@@ -22,9 +21,9 @@ const Flag = ({ locale, alt = localeNames[locale].name }: FlagProps): ReactEleme
 );
 
 // Desktop: a button showing the current language's flag that opens a menu of
-// all of them. Keyboard: arrows/Home/End move, Escape closes, Tab leaves.
+// all of them. Closes on a choice or a press outside.
 export const LanguageMenu = (): ReactElement => {
-  const { locale, setLocale, content } = useLocale();
+  const { locale, setLocale } = useLocale();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -57,46 +56,11 @@ export const LanguageMenu = (): ReactElement => {
     close();
   };
 
-  const handleMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-    const items = itemRefs.current;
-    const current = items.indexOf(document.activeElement as HTMLButtonElement);
-    const focusAt = (index: number): void => {
-      items[(index + items.length) % items.length]?.focus();
-    };
-
-    switch (event.key) {
-      case "ArrowDown":
-        event.preventDefault();
-        focusAt(current + 1);
-        break;
-      case "ArrowUp":
-        event.preventDefault();
-        focusAt(current - 1);
-        break;
-      case "Home":
-        event.preventDefault();
-        focusAt(0);
-        break;
-      case "End":
-        event.preventDefault();
-        focusAt(items.length - 1);
-        break;
-      case "Escape":
-        event.preventDefault();
-        close();
-        break;
-      case "Tab":
-        setIsOpen(false);
-        break;
-    }
-  };
-
   return (
     <div ref={containerRef} className="relative">
       <button
         ref={buttonRef}
         type="button"
-        aria-label={content.ui.nav.languageButton(localeNames[locale].name)}
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls={isOpen ? menuId : undefined}
@@ -118,7 +82,6 @@ export const LanguageMenu = (): ReactElement => {
         <div
           id={menuId}
           role="menu"
-          onKeyDown={handleMenuKeyDown}
           className="panel absolute right-0 top-full z-10 mt-2 min-w-22 rounded-xl p-1 shadow-[0_16px_40px_-16px_rgb(0_0_0/0.8)] animate-fade-in is-visible"
         >
           {LOCALES.map((option, idx) => {

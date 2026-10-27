@@ -7,7 +7,6 @@ export const ui = {
     closeMenu: "Chiudi menu",
     downloadCv: "Scarica CV",
     language: "Lingua",
-    languageButton: (currentLanguage) => `Lingua: ${currentLanguage}`,
   },
   footer: {
     navLabel: "Piè di pagina",

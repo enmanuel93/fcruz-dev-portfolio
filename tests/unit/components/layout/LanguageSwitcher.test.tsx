@@ -18,9 +18,10 @@ const renderNavbar = (): void => {
   });
 };
 
-const languageButton = () => screen.getByRole("button", { name: /^Language: / });
+// The menu button has no accessible name (its flag is decorative).
+const languageButton = (): HTMLElement =>
+  document.querySelector<HTMLElement>('button[aria-haspopup="menu"]')!;
 const option = (name: string) => screen.getByRole("menuitemradio", { name });
-// The button's flag is decorative (alt=""), so it has no role to query by.
 const flagOf = (element: HTMLElement) => element.querySelector("img")?.getAttribute("src");
 
 describe("LanguageSwitcher", () => {
@@ -29,10 +30,9 @@ describe("LanguageSwitcher", () => {
     document.documentElement.lang = "";
   });
 
-  it("shows the current language and lists every language when opened", async () => {
+  it("shows the current flag and lists every language when opened", async () => {
     renderNavbar();
 
-    expect(languageButton()).toHaveAccessibleName("Language: English");
     expect(flagOf(languageButton())).toBe("/locales/en.png");
     expect(languageButton()).toHaveAttribute("aria-expanded", "false");
 
@@ -55,22 +55,10 @@ describe("LanguageSwitcher", () => {
 
     expect(screen.getByRole("link", { name: /Descargar CV/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sobre mí" })).toBeInTheDocument();
-    expect(flagOf(screen.getByRole("button", { name: "Idioma: Español" }))).toBe(
-      "/locales/es.png",
-    );
+    expect(flagOf(languageButton())).toBe("/locales/es.png");
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     expect(document.documentElement.lang).toBe("es");
     expect(localStorage.getItem(LOCALE_STORAGE_KEY)).toBe("es");
-  });
-
-  it("closes with Escape and returns focus to the button", async () => {
-    renderNavbar();
-
-    await userEvent.click(languageButton());
-    await userEvent.keyboard("{Escape}");
-
-    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-    expect(languageButton()).toHaveFocus();
   });
 
   it("closes when clicking anywhere else", async () => {
@@ -80,19 +68,6 @@ describe("LanguageSwitcher", () => {
     await userEvent.click(document.body);
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-  });
-
-  it("focuses the current language on open and moves with the arrow keys", async () => {
-    renderNavbar();
-
-    await userEvent.click(languageButton());
-    expect(option("English")).toHaveFocus();
-
-    await userEvent.keyboard("{ArrowDown}");
-    expect(option("Español")).toHaveFocus();
-
-    await userEvent.keyboard("{ArrowUp}{ArrowUp}");
-    expect(option("Italiano")).toHaveFocus();
   });
 
   it("offers the languages as buttons in the mobile menu", async () => {
