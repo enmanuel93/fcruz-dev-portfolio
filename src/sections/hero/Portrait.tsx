@@ -7,10 +7,10 @@ export const Portrait = (): ReactElement => {
 
   return (
     <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-sm lg:max-w-md">
-      <div
+      {/* <div
         className="dot-field pointer-events-none absolute -right-12 top-12 h-64 w-44 [mask-image:linear-gradient(to_left,black,transparent)]"
         aria-hidden="true"
-      />
+      /> */}
       <div
         className="pointer-events-none absolute inset-8 rounded-[2rem] bg-primary/45 blur-3xl"
         aria-hidden="true"
