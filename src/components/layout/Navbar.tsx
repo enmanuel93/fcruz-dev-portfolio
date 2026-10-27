@@ -6,6 +6,7 @@ import { useActiveSection } from "@/hooks/useActiveSection";
 import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
 import { BrandLogo } from "./BrandLogo";
+import { LanguageButtons, LanguageMenu } from "./LanguageSwitcher";
 // import { scrollToSection } from "@/lib/scrollSection";
 import { Link } from "react-router-dom";
 
@@ -68,12 +69,13 @@ export const Navbar = (): ReactElement => {
           ))}
         </ul>
 
-        {/* download button */}
-        <div className="hidden lg:block">
+        {/* download button and language menu */}
+        <div className="hidden items-center gap-2 lg:flex">
           <Button href={profile.cvUrl} download size="sm">
             <Download className="size-4" aria-hidden="true" />
             {ui.nav.downloadCv}
           </Button>
+          <LanguageMenu />
         </div>
 
         <button
@@ -110,6 +112,9 @@ export const Navbar = (): ReactElement => {
                 {label}
               </Link>
             ))}
+
+            {/* Switching language keeps the menu open, so the visitor sees the change. */}
+            <LanguageButtons className="mt-3" />
 
             <Button
               href={profile.cvUrl}

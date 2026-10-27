@@ -1,5 +1,13 @@
-import { useMemo, useState, type ReactElement, type ReactNode } from "react";
-import { DEFAULT_LOCALE, locales, type Locale } from "@/locales";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from "react";
+import { locales, type Locale } from "@/locales";
+import { getInitialLocale, storeLocale } from "./detectLocale";
 import { LocaleContext, type LocaleContextValue } from "./LocaleContext";
 
 interface LocaleProviderProps {
@@ -8,12 +16,22 @@ interface LocaleProviderProps {
 
 // Holds the current language for the whole page; components read it with useLocale.
 export const LocaleProvider = ({ children }: LocaleProviderProps): ReactElement => {
-  const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
+  const [locale, setLocaleState] = useState<Locale>(getInitialLocale);
+
+  const setLocale = useCallback((next: Locale): void => {
+    setLocaleState(next);
+    storeLocale(next);
+  }, []);
+
+  // Screen readers, spell checkers and hyphenation follow <html lang>.
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   // A new object only when the language changes, so consumers don't re-render for nothing.
   const value = useMemo<LocaleContextValue>(
     () => ({ locale, content: locales[locale], setLocale }),
-    [locale],
+    [locale, setLocale],
   );
 
   return <LocaleContext value={value}>{children}</LocaleContext>;
