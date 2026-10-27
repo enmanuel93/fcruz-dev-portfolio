@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { skills } from "@/data/skills";
 import { DEFAULT_LOCALE, locales } from "@/locales";
@@ -47,6 +49,10 @@ describe.each(Object.entries(locales))("%s content", (_, content) => {
     content.navLinks.forEach(({ href }) => {
       expect(href).toMatch(/^\/[a-z]+$/);
     });
+  });
+
+  it("links to a CV that exists in public/", () => {
+    expect(existsSync(join("public", content.profile.cvUrl))).toBe(true);
   });
 
   // TypeScript checks every field exists; this checks no language drops or adds an item.

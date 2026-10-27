@@ -1,9 +1,11 @@
 import { en } from "./en";
+import { es } from "./es";
+import { it } from "./it";
 import type { LocaleContent } from "./types";
 
 // Every language the site can show. Adding one here (plus its folder) is all
 // the components need; the language switcher lists these keys.
-export const locales = { en } as const satisfies Record<string, LocaleContent>;
+export const locales = { en, es, it } as const satisfies Record<string, LocaleContent>;
 
 export type Locale = keyof typeof locales;
 
