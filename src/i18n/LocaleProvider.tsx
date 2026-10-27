@@ -23,9 +23,15 @@ export const LocaleProvider = ({ children }: LocaleProviderProps): ReactElement 
     storeLocale(next);
   }, []);
 
-  // Screen readers, spell checkers and hyphenation follow <html lang>.
+  // Screen readers, spell checkers and hyphenation follow <html lang>; the tab
+  // title and description (shared links) follow too. index.html has the English ones.
   useEffect(() => {
+    const { meta } = locales[locale].ui;
     document.documentElement.lang = locale;
+    document.title = meta.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", meta.description);
   }, [locale]);
 
   // A new object only when the language changes, so consumers don't re-render for nothing.

@@ -74,5 +74,22 @@ export const ui = {
       send: "Send Message",
       sending: "Sending...",
     },
+    validation: {
+      nameTooShort: (min) => `Name must be at least ${min} characters.`,
+      nameTooLong: (max) => `Name must be at most ${max} characters.`,
+      emailRequired: "Please enter your email.",
+      emailInvalid: "Please enter a valid email address.",
+      messageTooShort: (min) => `Message must be at least ${min} characters.`,
+      messageTooLong: (max) => `Message must be at most ${max} characters.`,
+    },
+    status: {
+      success: "Message sent successfully! I'll get back to you soon.",
+      failed: "Failed to send message. Please try again later.",
+    },
+  },
+  meta: {
+    title: "FCruz-Dev | Francisco Cruz Mejía, .NET Full Stack Developer",
+    description:
+      "Portfolio of Francisco Cruz Mejía, .NET and Full Stack Developer. Projects, experience and contact.",
   },
 } satisfies UiText;

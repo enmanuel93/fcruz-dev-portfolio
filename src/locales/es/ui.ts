@@ -74,5 +74,22 @@ export const ui = {
       send: "Enviar mensaje",
       sending: "Enviando...",
     },
+    validation: {
+      nameTooShort: (min) => `El nombre debe tener al menos ${min} caracteres.`,
+      nameTooLong: (max) => `El nombre debe tener como máximo ${max} caracteres.`,
+      emailRequired: "Introduce tu correo electrónico.",
+      emailInvalid: "Introduce un correo electrónico válido.",
+      messageTooShort: (min) => `El mensaje debe tener al menos ${min} caracteres.`,
+      messageTooLong: (max) => `El mensaje debe tener como máximo ${max} caracteres.`,
+    },
+    status: {
+      success: "¡Mensaje enviado con éxito! Te responderé pronto.",
+      failed: "No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.",
+    },
+  },
+  meta: {
+    title: "FCruz-Dev | Francisco Cruz Mejía, Desarrollador .NET Full Stack",
+    description:
+      "Portafolio de Francisco Cruz Mejía, Desarrollador .NET y Full Stack. Proyectos, experiencia y contacto.",
   },
 } satisfies UiText;

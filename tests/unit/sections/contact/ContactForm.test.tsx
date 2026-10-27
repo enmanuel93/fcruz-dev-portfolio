@@ -1,17 +1,31 @@
 import emailjs from "@emailjs/browser";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactElement } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
+import { useLocale } from "@/i18n/useLocale";
+import { locales } from "@/locales";
 import { ContactForm } from "@/sections/contact/ContactForm";
 import {
   MESSAGE_MIN_LENGTH,
   NAME_MIN_LENGTH,
 } from "@/sections/contact/contactFormSchema";
-import {
-  FALLBACK_ERROR_MESSAGE,
-  MISSING_CONFIG_MESSAGE,
-  SUCCESS_MESSAGE,
-} from "@/sections/contact/useContactForm";
+import { MISSING_CONFIG_MESSAGE } from "@/sections/contact/useContactForm";
+
+const { status } = locales.en.ui.contact;
+const SUCCESS_MESSAGE = status.success;
+const FALLBACK_ERROR_MESSAGE = status.failed;
+
+// A stand-in for the navbar's switcher.
+const SwitchToSpanish = (): ReactElement => {
+  const { setLocale } = useLocale();
+  return (
+    <button type="button" onClick={() => setLocale("es")}>
+      Español
+    </button>
+  );
+};
 
 vi.mock("@emailjs/browser", () => ({ default: { send: vi.fn() } }));
 
@@ -48,6 +62,7 @@ describe("ContactForm", () => {
 
   afterEach(() => {
     testConfig.serviceId = "service_test";
+    localStorage.clear();
   });
 
   it("sends the form fields through EmailJS with the configured keys", async () => {
@@ -203,6 +218,49 @@ describe("ContactForm", () => {
       ),
     ).toBeInTheDocument();
     expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("shows its messages in the current language", async () => {
+    sendMock.mockResolvedValue({ status: 200, text: "OK" });
+    localStorage.setItem("locale", "es");
+    render(
+      <LocaleProvider>
+        <ContactForm />
+      </LocaleProvider>,
+    );
+    const es = locales.es.ui.contact;
+
+    await user.click(screen.getByRole("button", { name: es.form.send }));
+    expect(
+      await screen.findByText(es.validation.nameTooShort(NAME_MIN_LENGTH)),
+    ).toBeInTheDocument();
+    expect(screen.getByText(es.validation.emailRequired)).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(es.form.nameLabel), "Ada Lovelace");
+    await user.type(screen.getByLabelText(es.form.emailLabel), "ada@example.com");
+    await user.type(screen.getByLabelText(es.form.messageLabel), "Let's work together.");
+    await user.click(screen.getByRole("button", { name: es.form.send }));
+
+    expect(await screen.findByRole("status")).toHaveTextContent(es.status.success);
+  });
+
+  it("translates errors already on screen when the language changes", async () => {
+    render(
+      <LocaleProvider>
+        <SwitchToSpanish />
+        <ContactForm />
+      </LocaleProvider>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Send Message" }));
+    expect(await screen.findByText("Please enter your email.")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Español" }));
+
+    expect(
+      screen.getByText(locales.es.ui.contact.validation.emailRequired),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Please enter your email.")).not.toBeInTheDocument();
   });
 
   it("does not call EmailJS when the configuration is incomplete", async () => {

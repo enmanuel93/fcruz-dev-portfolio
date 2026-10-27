@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
 import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
+import { getContactErrorMessage } from "./contactFormSchema";
 import { useContactForm } from "./useContactForm";
 
 const fieldClasses =
@@ -31,7 +32,9 @@ export const ContactForm = (): ReactElement => {
   const { register, errors, isSubmitting, submitStatus, onSubmit } =
     useContactForm();
 
-  const { form: text } = useLocale().content.ui.contact;
+  const { form: text, validation } = useLocale().content.ui.contact;
+  const errorText = (code?: string): string | undefined =>
+    getContactErrorMessage(code, validation);
   const isSuccess = submitStatus.type === "success";
 
   return (
@@ -51,7 +54,7 @@ export const ContactForm = (): ReactElement => {
           aria-describedby={errors.name ? "name-error" : undefined}
           {...register("name")}
         />
-        <FieldError id="name-error" message={errors.name?.message} />
+        <FieldError id="name-error" message={errorText(errors.name?.message)} />
       </div>
       <div>
         <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -67,7 +70,7 @@ export const ContactForm = (): ReactElement => {
           aria-describedby={errors.email ? "email-error" : undefined}
           {...register("email")}
         />
-        <FieldError id="email-error" message={errors.email?.message} />
+        <FieldError id="email-error" message={errorText(errors.email?.message)} />
       </div>
       <div>
         <label htmlFor="message" className="block text-sm font-medium mb-2">
@@ -86,7 +89,7 @@ export const ContactForm = (): ReactElement => {
           aria-describedby={errors.message ? "message-error" : undefined}
           {...register("message")}
         />
-        <FieldError id="message-error" message={errors.message?.message} />
+        <FieldError id="message-error" message={errorText(errors.message?.message)} />
       </div>
 
       <Button className="w-full" type="submit" size="lg" disabled={isSubmitting}>

@@ -75,6 +75,25 @@ export interface UiText {
       send: string;
       sending: string;
     };
+    /** One message per error code of contactFormSchema; limits come from the schema. */
+    validation: {
+      nameTooShort: (min: number) => string;
+      nameTooLong: (max: number) => string;
+      emailRequired: string;
+      emailInvalid: string;
+      messageTooShort: (min: number) => string;
+      messageTooLong: (max: number) => string;
+    };
+    status: {
+      success: string;
+      /** Shown when sending fails and EmailJS gives no reason. */
+      failed: string;
+    };
+  };
+  /** The page's <title> and meta description (index.html holds the English ones). */
+  meta: {
+    title: string;
+    description: string;
   };
 }
 

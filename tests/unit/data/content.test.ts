@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { skills } from "@/data/skills";
@@ -15,6 +15,16 @@ const reference = locales[DEFAULT_LOCALE];
 describe("shared content data", () => {
   it("has unique skill names", () => {
     expectUnique(skills.map(({ name }) => name));
+  });
+
+  // index.html is what loads before React (and what crawlers without JS see).
+  it("matches index.html's title, description and lang to the default language", () => {
+    const html = readFileSync("index.html", "utf8");
+    const { meta } = reference.ui;
+
+    expect(html).toContain(`<html lang="${DEFAULT_LOCALE}">`);
+    expect(html).toContain(`<title>${meta.title}</title>`);
+    expect(html.replace(/\s+/g, " ")).toContain(`content="${meta.description}"`);
   });
 });
 

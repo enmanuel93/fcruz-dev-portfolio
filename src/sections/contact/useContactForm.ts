@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { emailJsConfig, isEmailJsConfigured } from "@/config/env";
+import { useLocale } from "@/i18n/useLocale";
 import {
   contactFormSchema,
   EMPTY_CONTACT_FORM,
@@ -14,18 +15,21 @@ export interface SubmitStatus {
   message: string;
 }
 
-export const SUCCESS_MESSAGE =
-  "Message sent successfully! I'll get back to you soon.";
-export const FALLBACK_ERROR_MESSAGE =
-  "Failed to send message. Please try again later.";
+// What happened, without the wording, so the message follows a language switch.
+type SubmitOutcome =
+  | { type: null }
+  | { type: "success" }
+  | { type: "error"; reason?: string };
+
+// Only logged for the developer, never shown to the visitor.
 export const MISSING_CONFIG_MESSAGE =
   "EmailJS configuration is missing. Please check your environment variables.";
 
-const IDLE_STATUS: SubmitStatus = { type: null, message: "" };
+const IDLE: SubmitOutcome = { type: null };
 
 // EmailJS rejects with an object like { status, text } rather than an Error,
 // so its `text` is the most useful thing to show the visitor.
-const getErrorMessage = (error: unknown): string => {
+const getErrorReason = (error: unknown): string | undefined => {
   if (
     typeof error === "object" &&
     error !== null &&
@@ -35,7 +39,7 @@ const getErrorMessage = (error: unknown): string => {
     return error.text;
   }
 
-  return FALLBACK_ERROR_MESSAGE;
+  return undefined;
 };
 
 // Kept outside the hook so the email provider can be swapped without touching
@@ -61,7 +65,8 @@ const sendContactMessage = async (values: ContactFormValues): Promise<void> => {
 };
 
 export const useContactForm = () => {
-  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(IDLE_STATUS);
+  const { status: text } = useLocale().content.ui.contact;
+  const [outcome, setOutcome] = useState<SubmitOutcome>(IDLE);
 
   // React Hook Form owns the field values (uncontrolled inputs, no re-render per
   // keystroke); Zod validates them. "onTouched" waits until a field is left
@@ -80,17 +85,24 @@ export const useContactForm = () => {
   // handleSubmit only calls this with values that passed the schema, already
   // trimmed, and prevents the native form submission itself.
   const onValidSubmit = async (values: ContactFormValues): Promise<void> => {
-    setSubmitStatus(IDLE_STATUS);
+    setOutcome(IDLE);
 
     try {
       await sendContactMessage(values);
-      setSubmitStatus({ type: "success", message: SUCCESS_MESSAGE });
+      setOutcome({ type: "success" });
       reset();
     } catch (error: unknown) {
       console.error("EmailJS error:", error);
-      setSubmitStatus({ type: "error", message: getErrorMessage(error) });
+      setOutcome({ type: "error", reason: getErrorReason(error) });
     }
   };
+
+  const submitStatus: SubmitStatus =
+    outcome.type === "success"
+      ? { type: "success", message: text.success }
+      : outcome.type === "error"
+        ? { type: "error", message: outcome.reason ?? text.failed }
+        : { type: null, message: "" };
 
   return {
     register,

@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
@@ -23,6 +23,26 @@ describe("useLocale", () => {
 
     expect(result.current.locale).toBe(DEFAULT_LOCALE);
     expect(result.current.content).toBe(locales[DEFAULT_LOCALE]);
+  });
+
+  it("keeps the page's language, title and description in the current language", () => {
+    const description = document.createElement("meta");
+    description.name = "description";
+    document.head.append(description);
+    const { result } = renderHook(() => useLocale(), { wrapper });
+
+    expect(document.documentElement.lang).toBe("en");
+    expect(document.title).toBe(locales.en.ui.meta.title);
+    expect(description.content).toBe(locales.en.ui.meta.description);
+
+    act(() => result.current.setLocale("it"));
+
+    expect(document.documentElement.lang).toBe("it");
+    expect(document.title).toBe(locales.it.ui.meta.title);
+    expect(description.content).toBe(locales.it.ui.meta.description);
+
+    description.remove();
+    localStorage.clear();
   });
 
   it("keeps the same value between renders while the language does not change", () => {
