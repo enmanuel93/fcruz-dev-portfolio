@@ -71,11 +71,11 @@ export const Navbar = (): ReactElement => {
 
         {/* download button and language menu */}
         <div className="hidden items-center gap-2 lg:flex">
+          <LanguageMenu />
           <Button href={profile.cvUrl} download size="sm">
             <Download className="size-4" aria-hidden="true" />
             {ui.nav.downloadCv}
           </Button>
-          <LanguageMenu />
         </div>
 
         <button

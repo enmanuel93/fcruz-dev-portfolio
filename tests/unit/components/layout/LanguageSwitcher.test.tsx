@@ -20,6 +20,8 @@ const renderNavbar = (): void => {
 
 const languageButton = () => screen.getByRole("button", { name: /^Language: / });
 const option = (name: string) => screen.getByRole("menuitemradio", { name });
+// The button's flag is decorative (alt=""), so it has no role to query by.
+const flagOf = (element: HTMLElement) => element.querySelector("img")?.getAttribute("src");
 
 describe("LanguageSwitcher", () => {
   afterEach(() => {
@@ -31,7 +33,7 @@ describe("LanguageSwitcher", () => {
     renderNavbar();
 
     expect(languageButton()).toHaveAccessibleName("Language: English");
-    expect(languageButton()).toHaveTextContent("EN");
+    expect(flagOf(languageButton())).toBe("/locales/en.png");
     expect(languageButton()).toHaveAttribute("aria-expanded", "false");
 
     await userEvent.click(languageButton());
@@ -53,7 +55,9 @@ describe("LanguageSwitcher", () => {
 
     expect(screen.getByRole("link", { name: /Descargar CV/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sobre mí" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Idioma: Español" })).toHaveTextContent("ES");
+    expect(flagOf(screen.getByRole("button", { name: "Idioma: Español" }))).toBe(
+      "/locales/es.png",
+    );
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     expect(document.documentElement.lang).toBe("es");
     expect(localStorage.getItem(LOCALE_STORAGE_KEY)).toBe("es");
@@ -102,6 +106,11 @@ describe("LanguageSwitcher", () => {
     expect(within(group).getByRole("button", { name: "English" })).toHaveAttribute(
       "aria-pressed",
       "true",
+    );
+    // Each button shows its own language's flag.
+    expect(within(group).getByRole("img", { name: "Italiano" })).toHaveAttribute(
+      "src",
+      "/locales/it.png",
     );
 
     await userEvent.click(within(group).getByRole("button", { name: "Italiano" }));

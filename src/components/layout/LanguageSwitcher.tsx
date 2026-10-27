@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Languages } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import {
   useEffect,
   useId,
@@ -11,7 +11,17 @@ import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
 import { LOCALES, localeNames, type Locale } from "@/locales";
 
-// Desktop: a button showing the current language ("EN") that opens a menu of
+interface FlagProps {
+  locale: Locale;
+  // Empty when the language name is already given another way (aria-label).
+  alt?: string;
+}
+
+const Flag = ({ locale, alt = localeNames[locale].name }: FlagProps): ReactElement => (
+  <img src={localeNames[locale].flag} alt={alt} width={20} height={20} />
+);
+
+// Desktop: a button showing the current language's flag that opens a menu of
 // all of them. Keyboard: arrows/Home/End move, Escape closes, Tab leaves.
 export const LanguageMenu = (): ReactElement => {
   const { locale, setLocale, content } = useLocale();
@@ -28,11 +38,13 @@ export const LanguageMenu = (): ReactElement => {
     itemRefs.current[LOCALES.indexOf(locale)]?.focus();
 
     const handlePointerDown = (event: PointerEvent): void => {
-      if (!containerRef.current?.contains(event.target as Node)) setIsOpen(false);
+      if (!containerRef.current?.contains(event.target as Node))
+        setIsOpen(false);
     };
 
     document.addEventListener("pointerdown", handlePointerDown);
-    return (): void => document.removeEventListener("pointerdown", handlePointerDown);
+    return (): void =>
+      document.removeEventListener("pointerdown", handlePointerDown);
   }, [isOpen, locale]);
 
   const close = (): void => {
@@ -91,20 +103,23 @@ export const LanguageMenu = (): ReactElement => {
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex h-9 items-center gap-1.5 rounded-xl border border-border bg-surface px-3 text-sm font-medium text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground"
       >
-        <Languages className="size-4" aria-hidden="true" />
-        {localeNames[locale].code}
+        <Flag locale={locale} alt="" />
         <ChevronDown
-          className={cn("size-3.5 transition-transform duration-200", isOpen && "rotate-180")}
+          className={cn(
+            "size-3.5 transition-transform duration-200",
+            isOpen && "rotate-180",
+          )}
           aria-hidden="true"
         />
       </button>
 
+      {/* load the diferent local flags */}
       {isOpen && (
         <div
           id={menuId}
           role="menu"
           onKeyDown={handleMenuKeyDown}
-          className="panel absolute right-0 top-full z-10 mt-2 min-w-40 rounded-xl p-1 shadow-[0_16px_40px_-16px_rgb(0_0_0/0.8)] animate-fade-in is-visible"
+          className="panel absolute right-0 top-full z-10 mt-2 min-w-22 rounded-xl p-1 shadow-[0_16px_40px_-16px_rgb(0_0_0/0.8)] animate-fade-in is-visible"
         >
           {LOCALES.map((option, idx) => {
             const isCurrent = option === locale;
@@ -126,8 +141,10 @@ export const LanguageMenu = (): ReactElement => {
                   isCurrent && "text-foreground",
                 )}
               >
-                {localeNames[option].name}
-                {isCurrent && <Check className="size-4 text-accent" aria-hidden="true" />}
+                <Flag locale={option} />
+                {isCurrent && (
+                  <Check className="size-4 text-accent" aria-hidden="true" />
+                )}
               </button>
             );
           })}
@@ -142,11 +159,17 @@ interface LanguageButtonsProps {
 }
 
 // Mobile menu: every language as its own button, no second menu to open.
-export const LanguageButtons = ({ className }: LanguageButtonsProps): ReactElement => {
+export const LanguageButtons = ({
+  className,
+}: LanguageButtonsProps): ReactElement => {
   const { locale, setLocale, content } = useLocale();
 
   return (
-    <div role="group" aria-label={content.ui.nav.language} className={cn("flex gap-2", className)}>
+    <div
+      role="group"
+      aria-label={content.ui.nav.language}
+      className={cn("flex gap-2", className)}
+    >
       {LOCALES.map((option) => (
         <button
           key={option}
@@ -155,13 +178,13 @@ export const LanguageButtons = ({ className }: LanguageButtonsProps): ReactEleme
           aria-pressed={option === locale}
           onClick={() => setLocale(option)}
           className={cn(
-            "flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
+            "flex flex-1 justify-center rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
             option === locale
               ? "border-accent/60 bg-surface text-foreground"
               : "border-border text-muted-foreground hover:bg-surface hover:text-foreground",
           )}
         >
-          {localeNames[option].name}
+          <Flag locale={option} />
         </button>
       ))}
     </div>
