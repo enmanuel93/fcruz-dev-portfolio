@@ -7,7 +7,7 @@ import { useLocale } from "@/i18n/useLocale";
 import { BrandLogo } from "./BrandLogo";
 
 export const Footer = (): ReactElement => {
-  const { navLinks } = useLocale().content;
+  const { navLinks, ui } = useLocale().content;
   const currentYear = new Date().getFullYear();
 
   return (
@@ -17,11 +17,11 @@ export const Footer = (): ReactElement => {
           <BrandLogo />
           <p className="mt-2 text-sm text-muted-foreground">
             © {currentYear} {profile.brand.name}
-            {profile.brand.accent} · {profile.name}. All rights reserved.
+            {profile.brand.accent} · {profile.name}. {ui.footer.rightsReserved}
           </p>
         </div>
 
-        <nav aria-label="Footer">
+        <nav aria-label={ui.footer.navLabel}>
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {navLinks.map((link) => (
               <li key={link.href}>

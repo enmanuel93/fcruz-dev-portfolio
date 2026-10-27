@@ -1,7 +1,10 @@
 import type { ReactElement } from "react";
 import { profileBase as profile } from "@/data/profile";
+import { useLocale } from "@/i18n/useLocale";
 
 export const Portrait = (): ReactElement => {
+  const { portrait } = useLocale().content.ui;
+
   return (
     <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-sm lg:max-w-md">
       <div
@@ -27,7 +30,7 @@ export const Portrait = (): ReactElement => {
         <div className="text-2xl font-bold tabular-nums text-accent">
           {profile.yearsOfExperience}
         </div>
-        <div className="text-xs text-muted-foreground">Years of experience</div>
+        <div className="text-xs text-muted-foreground">{portrait.yearsOfExperience}</div>
       </div>
 
       <div className="panel absolute -bottom-6 right-2 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-[0_16px_40px_-16px_rgb(0_0_0/0.8)] sm:-right-6 animate-float animation-delay-500">
@@ -36,8 +39,8 @@ export const Portrait = (): ReactElement => {
           <span className="relative size-3 rounded-full bg-success" />
         </span>
         <div>
-          <div className="text-xs text-muted-foreground">Available for work</div>
-          <div className="text-sm font-medium">Freelance / Full-time</div>
+          <div className="text-xs text-muted-foreground">{portrait.availableForWork}</div>
+          <div className="text-sm font-medium">{portrait.workTypes}</div>
         </div>
       </div>
     </div>

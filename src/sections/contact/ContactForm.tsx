@@ -1,6 +1,7 @@
 import { AlertCircle, CheckCircle, Send } from "lucide-react";
 import type { ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
+import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
 import { useContactForm } from "./useContactForm";
 
@@ -30,6 +31,7 @@ export const ContactForm = (): ReactElement => {
   const { register, errors, isSubmitting, submitStatus, onSubmit } =
     useContactForm();
 
+  const { form: text } = useLocale().content.ui.contact;
   const isSuccess = submitStatus.type === "success";
 
   return (
@@ -37,13 +39,13 @@ export const ContactForm = (): ReactElement => {
     <form className="space-y-6" noValidate onSubmit={onSubmit}>
       <div>
         <label htmlFor="name" className="block text-sm font-medium mb-2">
-          Name
+          {text.nameLabel}
         </label>
         <input
           id="name"
           type="text"
           autoComplete="name"
-          placeholder="Your name..."
+          placeholder={text.namePlaceholder}
           className={cn(fieldClasses, errors.name && invalidFieldClasses)}
           aria-invalid={errors.name ? true : undefined}
           aria-describedby={errors.name ? "name-error" : undefined}
@@ -53,13 +55,13 @@ export const ContactForm = (): ReactElement => {
       </div>
       <div>
         <label htmlFor="email" className="block text-sm font-medium mb-2">
-          Email
+          {text.emailLabel}
         </label>
         <input
           id="email"
           type="email"
           autoComplete="email"
-          placeholder="your@email.com"
+          placeholder={text.emailPlaceholder}
           className={cn(fieldClasses, errors.email && invalidFieldClasses)}
           aria-invalid={errors.email ? true : undefined}
           aria-describedby={errors.email ? "email-error" : undefined}
@@ -69,12 +71,12 @@ export const ContactForm = (): ReactElement => {
       </div>
       <div>
         <label htmlFor="message" className="block text-sm font-medium mb-2">
-          Message
+          {text.messageLabel}
         </label>
         <textarea
           id="message"
           rows={5}
-          placeholder="Your message..."
+          placeholder={text.messagePlaceholder}
           className={cn(
             fieldClasses,
             "resize-none",
@@ -89,10 +91,10 @@ export const ContactForm = (): ReactElement => {
 
       <Button className="w-full" type="submit" size="lg" disabled={isSubmitting}>
         {isSubmitting ? (
-          <>Sending...</>
+          text.sending
         ) : (
           <>
-            Send Message
+            {text.send}
             <Send className="w-5 h-5" />
           </>
         )}

@@ -7,15 +7,15 @@ import { getAnimationDelay } from "@/lib/animation";
 const ANIMATION_STEP_MS = 100;
 
 export const About = (): ReactElement => {
-  const { about, highlights } = useLocale().content;
+  const { about, highlights, ui } = useLocale().content;
 
   return (
     <section id="about" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
           icon={UserRound}
-          title="About Me"
-          description="Who I am and how I work."
+          title={ui.about.title}
+          description={ui.about.description}
         />
 
         <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">

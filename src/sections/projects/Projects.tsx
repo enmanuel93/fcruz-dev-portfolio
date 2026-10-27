@@ -11,19 +11,19 @@ import { ProjectCard } from "./ProjectCard";
 const ANIMATION_STEP_MS = 100;
 
 export const Projects = (): ReactElement => {
-  const { projects } = useLocale().content;
+  const { projects, ui } = useLocale().content;
 
   return (
     <section id="projects" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
           icon={FolderOpen}
-          title="Featured Projects"
-          description="Production systems I have designed and built, from government platforms to e-commerce."
+          title={ui.projects.title}
+          description={ui.projects.description}
           action={
             <AnimatedBorderButton href={profile.allProjectsUrl} target="_blank">
               <FaGithub className="size-4" aria-hidden="true" />
-              View All Projects
+              {ui.projects.viewAll}
               <ExternalLink className="size-3.5 text-muted-foreground" aria-hidden="true" />
             </AnimatedBorderButton>
           }

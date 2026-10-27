@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { FaGithub } from "react-icons/fa";
 import { Tag } from "@/components/ui/Tag";
+import { useLocale } from "@/i18n/useLocale";
 import type { Project } from "@/types/content";
 
 interface ProjectCardProps {
@@ -15,22 +16,25 @@ const linkClasses =
 interface ProjectLinkProps {
   href?: string;
   label: string;
+  /** Tooltip of the disabled button shown while there is no URL. */
+  comingSoon: string;
   children: ReactNode;
 }
 
 // A link when the URL exists; otherwise the same button, disabled, so the card layout stays put.
-const ProjectLink = ({ href, label, children }: ProjectLinkProps): ReactElement =>
+const ProjectLink = ({ href, label, comingSoon, children }: ProjectLinkProps): ReactElement =>
   href ? (
     <a href={href} aria-label={label} className={linkClasses}>
       {children}
     </a>
   ) : (
-    <button type="button" disabled title="Link coming soon" className={linkClasses}>
+    <button type="button" disabled title={comingSoon} className={linkClasses}>
       {children}
     </button>
   );
 
 export const ProjectCard = ({ project, style }: ProjectCardProps): ReactElement => {
+  const { projects: text } = useLocale().content.ui;
   const [mainTag, ...otherTags] = project.tags;
 
   return (
@@ -65,15 +69,20 @@ export const ProjectCard = ({ project, style }: ProjectCardProps): ReactElement 
         )}
 
         <div className="mt-auto flex flex-wrap justify-end gap-2 pt-5">
-          <ProjectLink href={project.demoUrl} label={`View ${project.title} live demo`}>
-            Live demo
+          <ProjectLink
+            href={project.demoUrl}
+            label={text.liveDemoLabel(project.title)}
+            comingSoon={text.linkComingSoon}
+          >
+            {text.liveDemo}
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </ProjectLink>
           <ProjectLink
             href={project.repoUrl}
-            label={`View ${project.title} source code on GitHub`}
+            label={text.codeLabel(project.title)}
+            comingSoon={text.linkComingSoon}
           >
-            Code
+            {text.code}
             <FaGithub className="size-4" aria-hidden="true" />
           </ProjectLink>
         </div>

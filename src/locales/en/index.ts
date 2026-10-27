@@ -6,8 +6,10 @@ import { navLinks } from "./navigation";
 import { about, profile } from "./profile";
 import { projects } from "./projects";
 import { testimonials } from "./testimonials";
+import { ui } from "./ui";
 
 export const en = {
+  ui,
   profile,
   about,
   navLinks,

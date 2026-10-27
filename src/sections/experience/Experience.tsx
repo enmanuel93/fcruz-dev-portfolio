@@ -10,20 +10,20 @@ import { TimelineItem } from "./TimelineItem";
 const linkedIn = socialLinks.find(({ label }) => label === "LinkedIn");
 
 export const Experience = (): ReactElement => {
-  const { experiences } = useLocale().content;
+  const { experiences, ui } = useLocale().content;
 
   return (
     <section id="experience" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
           icon={BriefcaseBusiness}
-          title="Work Experience"
-          description="Where I have built software, newest first."
+          title={ui.experience.title}
+          description={ui.experience.description}
           action={
             linkedIn && (
               <AnimatedBorderButton href={linkedIn.href} target="_blank">
                 <FaLinkedin className="size-4 text-[#4f9fe8]" aria-hidden="true" />
-                View more on LinkedIn
+                {ui.experience.viewMoreOnLinkedIn}
               </AnimatedBorderButton>
             )
           }

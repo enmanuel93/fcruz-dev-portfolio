@@ -16,7 +16,7 @@ const MOBILE_MENU_ID = "mobile-menu";
 const SECTION_IDS = NAV_HREFS.map((href) => href.slice(1));
 
 export const Navbar = (): ReactElement => {
-  const { navLinks, profile } = useLocale().content;
+  const { navLinks, profile, ui } = useLocale().content;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const activeSection = useActiveSection(SECTION_IDS);
@@ -72,13 +72,13 @@ export const Navbar = (): ReactElement => {
         <div className="hidden lg:block">
           <Button href={profile.cvUrl} download size="sm">
             <Download className="size-4" aria-hidden="true" />
-            Download CV
+            {ui.nav.downloadCv}
           </Button>
         </div>
 
         <button
           type="button"
-          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-label={isMobileMenuOpen ? ui.nav.closeMenu : ui.nav.openMenu}
           aria-expanded={isMobileMenuOpen}
           aria-controls={MOBILE_MENU_ID}
           className="flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-foreground lg:hidden"
@@ -118,7 +118,7 @@ export const Navbar = (): ReactElement => {
               onClick={closeMobileMenu}
             >
               <Download className="size-4" aria-hidden="true" />
-              Download CV
+              {ui.nav.downloadCv}
             </Button>
           </div>
         </div>

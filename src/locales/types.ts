@@ -9,9 +9,81 @@ import type {
   Testimonial,
 } from "@/types/content";
 
+// The interface text the components show around the content: headings,
+// buttons, labels. Phrases with a value in them are functions.
+export interface UiText {
+  /** Accessible name of the logo link, e.g. "FCruz-Dev, back to top". */
+  brandLogoLabel: (brand: string) => string;
+  nav: {
+    openMenu: string;
+    closeMenu: string;
+    downloadCv: string;
+  };
+  footer: {
+    navLabel: string;
+    rightsReserved: string;
+  };
+  hero: {
+    /** The h1 is `titleStart` followed by `titleAccent` in violet. */
+    titleStart: string;
+    titleAccent: string;
+    viewProjects: string;
+    contactMe: string;
+    emailLabel: string;
+  };
+  portrait: {
+    yearsOfExperience: string;
+    availableForWork: string;
+    workTypes: string;
+  };
+  about: SectionText;
+  projects: SectionText & {
+    viewAll: string;
+    liveDemo: string;
+    code: string;
+    linkComingSoon: string;
+    liveDemoLabel: (projectTitle: string) => string;
+    codeLabel: (projectTitle: string) => string;
+  };
+  experience: SectionText & {
+    viewMoreOnLinkedIn: string;
+  };
+  skills: SectionText;
+  testimonials: SectionText & {
+    previous: string;
+    next: string;
+    showTestimonial: (position: number, total: number) => string;
+  };
+  contact: {
+    /** The h2 is `titleStart` followed by `titleAccent` in violet. */
+    titleStart: string;
+    titleAccent: string;
+    intro: string;
+    availableTitle: string;
+    availableText: string;
+    form: {
+      nameLabel: string;
+      namePlaceholder: string;
+      emailLabel: string;
+      emailPlaceholder: string;
+      messageLabel: string;
+      messagePlaceholder: string;
+      send: string;
+      sending: string;
+    };
+  };
+}
+
+/** A SectionHeader's title and description. */
+export interface SectionText {
+  title: string;
+  description: string;
+}
+
 // Everything the site says in one language. Each locale's index.ts must
 // satisfy it, so a field missing from a translation fails the build.
 export interface LocaleContent {
+  ui: UiText;
   profile: Profile;
   about: AboutContent;
   navLinks: readonly NavLink[];

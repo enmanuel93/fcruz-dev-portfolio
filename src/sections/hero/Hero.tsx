@@ -11,14 +11,14 @@ import type { SocialLink } from "@/types/content";
 import { FloatingDots } from "./FloatingDots";
 import { Portrait } from "./Portrait";
 
-// The social profiles plus a direct email link, reusing the email from the contact data.
-const heroLinks: readonly SocialLink[] = [
-  ...socialLinks,
-  { icon: FaEnvelope, href: contactChannels.email.href, label: "Email" },
-];
-
 export const Hero = (): ReactElement => {
-  const { profile } = useLocale().content;
+  const { profile, ui } = useLocale().content;
+
+  // The social profiles plus a direct email link, reusing the email from the contact data.
+  const heroLinks: readonly SocialLink[] = [
+    ...socialLinks,
+    { icon: FaEnvelope, href: contactChannels.email.href, label: ui.hero.emailLabel },
+  ];
 
   return (
     <section className="relative overflow-hidden pb-20 pt-32 lg:pb-28 lg:pt-40">
@@ -35,8 +35,8 @@ export const Hero = (): ReactElement => {
           </span>
 
           <h1 className="mt-6 max-w-2xl text-[2.6rem] font-bold leading-[1.05] tracking-[-0.035em] sm:text-6xl xl:text-7xl animate-fade-in animation-delay-100">
-            Crafting digital experiences{" "}
-            <span className="text-accent">with precision.</span>
+            {ui.hero.titleStart}{" "}
+            <span className="text-accent">{ui.hero.titleAccent}</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground animate-fade-in animation-delay-200">
@@ -46,11 +46,11 @@ export const Hero = (): ReactElement => {
           <div className="mt-9 grid gap-3 sm:flex sm:flex-wrap animate-fade-in animation-delay-300">
             <Button to={PROJECTS_HREF} size="lg">
               <FolderGit2 className="size-5" aria-hidden="true" />
-              View Projects
+              {ui.hero.viewProjects}
             </Button>
             <Button to={CONTACT_HREF} size="lg" variant="outline">
               <MessageSquare className="size-5" aria-hidden="true" />
-              Contact Me
+              {ui.hero.contactMe}
             </Button>
           </div>
 

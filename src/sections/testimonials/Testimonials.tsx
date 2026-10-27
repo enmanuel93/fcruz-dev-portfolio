@@ -8,7 +8,7 @@ const navButtonClasses =
   "flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground";
 
 export const Testimonials = (): ReactElement => {
-  const { testimonials } = useLocale().content;
+  const { testimonials, ui } = useLocale().content;
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const active = testimonials[activeIdx];
 
@@ -28,8 +28,8 @@ export const Testimonials = (): ReactElement => {
       <div className="container mx-auto px-6">
         <SectionHeader
           icon={MessageSquareQuote}
-          title="Testimonials"
-          description="What people I have worked with say."
+          title={ui.testimonials.title}
+          description={ui.testimonials.description}
         />
 
         <figure className="panel relative overflow-hidden rounded-2xl p-6 md:p-10 animate-fade-in animation-delay-100">
@@ -64,7 +64,7 @@ export const Testimonials = (): ReactElement => {
               <button
                 key={testimonial.author}
                 type="button"
-                aria-label={`Show testimonial ${idx + 1} of ${testimonials.length}`}
+                aria-label={ui.testimonials.showTestimonial(idx + 1, testimonials.length)}
                 aria-current={idx === activeIdx}
                 onClick={() => setActiveIdx(idx)}
                 className="flex h-6 items-center"
@@ -84,7 +84,7 @@ export const Testimonials = (): ReactElement => {
           <div className="flex gap-2">
             <button
               type="button"
-              aria-label="Previous testimonial"
+              aria-label={ui.testimonials.previous}
               className={navButtonClasses}
               onClick={previous}
             >
@@ -92,7 +92,7 @@ export const Testimonials = (): ReactElement => {
             </button>
             <button
               type="button"
-              aria-label="Next testimonial"
+              aria-label={ui.testimonials.next}
               className={navButtonClasses}
               onClick={next}
             >

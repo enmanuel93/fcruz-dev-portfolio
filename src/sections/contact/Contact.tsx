@@ -3,7 +3,7 @@ import { useLocale } from "@/i18n/useLocale";
 import { ContactForm } from "./ContactForm";
 
 export const Contact = (): ReactElement => {
-  const { contactInfo } = useLocale().content;
+  const { contactInfo, ui } = useLocale().content;
 
   return (
     <section id="contact" className="py-20 md:py-28">
@@ -21,11 +21,11 @@ export const Contact = (): ReactElement => {
           <div className="relative grid lg:grid-cols-[1fr_1.1fr]">
             <div className="p-6 sm:p-10 lg:p-12">
               <h2 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">
-                Let's build <span className="text-accent">something great.</span>
+                {ui.contact.titleStart}{" "}
+                <span className="text-accent">{ui.contact.titleAccent}</span>
               </h2>
               <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
-                Have a project in mind? I'd love to hear about it. Send me a message
-                and let's discuss how we can work together.
+                {ui.contact.intro}
               </p>
 
               <ul className="mt-8 space-y-2">
@@ -66,11 +66,9 @@ export const Contact = (): ReactElement => {
                   <span className="relative size-2.5 rounded-full bg-success" />
                 </span>
                 <div>
-                  <p className="font-medium">Currently Available</p>
+                  <p className="font-medium">{ui.contact.availableTitle}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    I'm currently open to new opportunities and exciting projects.
-                    Whether you need a full-time engineer or a freelance consultant,
-                    let's talk!
+                    {ui.contact.availableText}
                   </p>
                 </div>
               </div>
