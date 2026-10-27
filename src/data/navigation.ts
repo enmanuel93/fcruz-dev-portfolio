@@ -3,21 +3,17 @@ import type { NavLink } from "@/types/content";
 export const CONTACT_HREF = "/contact";
 export const PROJECTS_HREF = "/projects";
 
-export const navLinks_1 = [
-  { href: "#about", label: "About" },
-  { href: PROJECTS_HREF, label: "Projects" },
-  { href: "#experience", label: "Experience" },
-  { href: "#skills", label: "Skills" },
-  // { href: "#testimonials", label: "Testimonials" },
-  { href: CONTACT_HREF, label: "Contact" },
-] as const satisfies readonly NavLink[];
+// Section routes in menu order, the same in every language.
+export const NAV_HREFS = [
+  "/about",
+  PROJECTS_HREF,
+  "/experience",
+  "/skills",
+  CONTACT_HREF,
+] as const;
 
+export type NavHref = (typeof NAV_HREFS)[number];
 
-export const navLinks = [
-  { href: "/about", label: "About" },
-  { href: PROJECTS_HREF, label: "Projects" },
-  { href: "/experience", label: "Experience" },
-  { href: "/skills", label: "Skills" },
-  // { href: "/testimonials", label: "Testimonials" },
-  { href: CONTACT_HREF, label: "Contact" },
-] as const satisfies readonly NavLink[];
+// Each locale names every route; a missing label is a type error.
+export const buildNavLinks = (labels: Record<NavHref, string>): NavLink[] =>
+  NAV_HREFS.map((href) => ({ href, label: labels[href] }));

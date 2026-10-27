@@ -1,12 +1,13 @@
 import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { navLinks } from "@/data/navigation";
-import { profile } from "@/data/profile";
+import { profileBase as profile } from "@/data/profile";
 import { socialLinks } from "@/data/socials";
+import { useLocale } from "@/i18n/useLocale";
 import { BrandLogo } from "./BrandLogo";
 
 export const Footer = (): ReactElement => {
+  const { navLinks } = useLocale().content;
   const currentYear = new Date().getFullYear();
 
   return (

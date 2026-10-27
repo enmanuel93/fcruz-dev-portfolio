@@ -1,13 +1,14 @@
 import { UserRound } from "lucide-react";
 import type { ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { highlights } from "@/data/highlights";
-import { about } from "@/data/profile";
+import { useLocale } from "@/i18n/useLocale";
 import { getAnimationDelay } from "@/lib/animation";
 
 const ANIMATION_STEP_MS = 100;
 
 export const About = (): ReactElement => {
+  const { about, highlights } = useLocale().content;
+
   return (
     <section id="about" className="py-20 md:py-28">
       <div className="container mx-auto px-6">

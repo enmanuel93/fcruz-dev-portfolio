@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { About } from "@/sections/about/About";
 import { Contact } from "@/sections/contact/Contact";
 import { Experience } from "@/sections/experience/Experience";
@@ -18,20 +19,22 @@ export const App = (): ReactElement => {
   // Every section stays on one page; the URL only decides where to scroll.
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <BrowserRouter>
-        <ScrollToSection />
-        <Navbar />
-        <main>
-          <Hero />
-          <About />
-          <Projects />
-          <Experience />
-          <Skills />
-          {/* <Testimonials /> */}
-          <Contact />
-        </main>
-        <Footer />
-      </BrowserRouter>
+      <LocaleProvider>
+        <BrowserRouter>
+          <ScrollToSection />
+          <Navbar />
+          <main>
+            <Hero />
+            <About />
+            <Projects />
+            <Experience />
+            <Skills />
+            {/* <Testimonials /> */}
+            <Contact />
+          </main>
+          <Footer />
+        </BrowserRouter>
+      </LocaleProvider>
     </div>
   );
 };

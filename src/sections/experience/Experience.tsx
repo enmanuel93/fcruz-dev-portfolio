@@ -3,13 +3,15 @@ import type { ReactElement } from "react";
 import { FaLinkedin } from "react-icons/fa";
 import { AnimatedBorderButton } from "@/components/ui/AnimatedBorderButton";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { experiences } from "@/data/experience";
 import { socialLinks } from "@/data/socials";
+import { useLocale } from "@/i18n/useLocale";
 import { TimelineItem } from "./TimelineItem";
 
 const linkedIn = socialLinks.find(({ label }) => label === "LinkedIn");
 
 export const Experience = (): ReactElement => {
+  const { experiences } = useLocale().content;
+
   return (
     <section id="experience" className="py-20 md:py-28">
       <div className="container mx-auto px-6">

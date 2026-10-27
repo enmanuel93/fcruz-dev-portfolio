@@ -3,14 +3,16 @@ import type { ReactElement } from "react";
 import { FaGithub } from "react-icons/fa";
 import { AnimatedBorderButton } from "@/components/ui/AnimatedBorderButton";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { profile } from "@/data/profile";
-import { projects } from "@/data/projects";
+import { profileBase as profile } from "@/data/profile";
+import { useLocale } from "@/i18n/useLocale";
 import { getAnimationDelay } from "@/lib/animation";
 import { ProjectCard } from "./ProjectCard";
 
 const ANIMATION_STEP_MS = 100;
 
 export const Projects = (): ReactElement => {
+  const { projects } = useLocale().content;
+
   return (
     <section id="projects" className="py-20 md:py-28">
       <div className="container mx-auto px-6">

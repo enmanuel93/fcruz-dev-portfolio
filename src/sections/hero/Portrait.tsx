@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { profile } from "@/data/profile";
+import { profileBase as profile } from "@/data/profile";
 
 export const Portrait = (): ReactElement => {
   return (

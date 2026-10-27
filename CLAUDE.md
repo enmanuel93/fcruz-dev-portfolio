@@ -16,12 +16,15 @@ Single-page personal portfolio: React 19 + TypeScript + Vite + Tailwind CSS v4, 
 
 ## Architecture
 
-**Content is separate from UI.** All personal content (profile, projects, experience, testimonials, skills, socials, nav links, contact info) lives in `src/data/*.ts`, typed by interfaces in `src/types/content.ts`. To change what the site says, edit `src/data/`, not components. Each piece of information exists exactly once (e.g. one socials array shared by Hero/Footer, one nav array shared by Navbar/Footer).
+**Content is separate from UI, and split by language.** Typed by interfaces in `src/types/content.ts`; to change what the site says, edit content files, not components. Each piece of information exists exactly once:
+- `src/data/*.ts` — what reads the same in every language: skills, socials, icons, URLs, images, technologies, contact values, the name/brand/photo (`profileBase`), and the section routes (`NAV_HREFS`).
+- `src/locales/<locale>/*.ts` — the text of one language. Each file spreads the shared part from `src/data` and adds the text (e.g. `{ ...projectAssets.realEstateOffice, title, description }`); `locales/<locale>/index.ts` must `satisfies LocaleContent` (`src/locales/types.ts`), so a missing translation fails the build. `src/locales/index.ts` lists the locales and `DEFAULT_LOCALE`.
+- Components read the current language's content with `useLocale().content` (`src/i18n/`); `LocaleProvider` wraps the app in `App`. Without a provider (single-component tests) it falls back to `DEFAULT_LOCALE`.
 
 **Layering rules** (from `NUEVA-ESTRUCTURA.md`):
 - `src/components/ui/` — generic primitives; must **not** import from `data/` or `sections/`.
 - `src/components/layout/` — Navbar, Footer.
-- `src/sections/<name>/` — one folder per page section; may import from `components/`, `data/`, `hooks/`, `lib/`. Section-specific subcomponents and hooks live alongside (e.g. `sections/contact/useContactForm.ts`).
+- `src/sections/<name>/` — one folder per page section; may import from `components/`, `data/`, `hooks/`, `i18n/`, `lib/`. Section-specific subcomponents and hooks live alongside (e.g. `sections/contact/useContactForm.ts`).
 - `src/config/env.ts` is the **only** place that reads `import.meta.env` (types declared in `src/vite-env.d.ts`).
 - Optional content fields are typed optional (e.g. `Project.demoUrl?`) and the UI handles their absence (project cards show the "Live demo"/"Code" buttons disabled) — don't use `"#"` placeholders.
 - `src/app/App.tsx` composes the sections in order; section `id`s are the targets of the `#anchor` nav links (a test enforces nav hrefs match `^#[a-z]+$`).
@@ -38,7 +41,7 @@ Static assets (profile photo, project images, CV under `public/documents/cv/`) a
 
 - Live in `tests/unit/`, mirroring the `src/` layout; only `tests/unit/**/*.test.{ts,tsx}` is picked up. jsdom environment, Testing Library + jest-dom matchers, `restoreMocks: true`.
 - `tests/setup.ts` stubs `IntersectionObserver` globally (jsdom lacks it); tests that assert on observer behavior install their own stub.
-- `tests/unit/data/content.test.ts` checks that fields used as React keys are unique (project titles, testimonial authors, etc.) — keys use content fields, not array indices.
+- `tests/unit/data/content.test.ts` runs for every locale: fields used as React keys are unique (project titles, testimonial authors, etc. — keys use content fields, not array indices), and each locale lists the same items as the default one.
 - Tests are type-checked through `tsconfig.test.json` (adds `node` types).
 
 ## Conventions

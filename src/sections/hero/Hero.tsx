@@ -3,22 +3,23 @@ import type { ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { FaEnvelope } from "react-icons/fa";
-import { contactInfo } from "@/data/contact";
+import { contactChannels } from "@/data/contact";
 import { CONTACT_HREF, PROJECTS_HREF } from "@/data/navigation";
-import { profile } from "@/data/profile";
 import { socialLinks } from "@/data/socials";
+import { useLocale } from "@/i18n/useLocale";
 import type { SocialLink } from "@/types/content";
 import { FloatingDots } from "./FloatingDots";
 import { Portrait } from "./Portrait";
 
-const email = contactInfo.find(({ label }) => label === "Email");
-
 // The social profiles plus a direct email link, reusing the email from the contact data.
-const heroLinks: readonly SocialLink[] = email
-  ? [...socialLinks, { icon: FaEnvelope, href: email.href, label: "Email" }]
-  : socialLinks;
+const heroLinks: readonly SocialLink[] = [
+  ...socialLinks,
+  { icon: FaEnvelope, href: contactChannels.email.href, label: "Email" },
+];
 
 export const Hero = (): ReactElement => {
+  const { profile } = useLocale().content;
+
   return (
     <section className="relative overflow-hidden pb-20 pt-32 lg:pb-28 lg:pt-40">
       <div

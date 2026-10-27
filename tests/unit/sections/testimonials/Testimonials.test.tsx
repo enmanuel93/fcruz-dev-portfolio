@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { testimonials as mockedTestimonials } from "@/data/testimonials";
+import { testimonials as mockedTestimonials } from "@/locales/en/testimonials";
 import { Testimonials } from "@/sections/testimonials/Testimonials";
 import type { Testimonial } from "@/types/content";
 
 // Fixed test data, so the carousel stays tested whatever the real content is
 // (the section is hidden until there are real testimonials).
-vi.mock("@/data/testimonials", () => ({
+vi.mock("@/locales/en/testimonials", () => ({
   testimonials: ["Ada", "Grace", "Linus", "Margaret"].map((name) => ({
     quote: `${name} was great to work with.`,
     author: name,

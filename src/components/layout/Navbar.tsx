@@ -1,9 +1,9 @@
 import { Download, Menu, X } from "lucide-react";
 import { useEffect, useState, type ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
-import { navLinks } from "@/data/navigation";
-import { profile } from "@/data/profile";
+import { NAV_HREFS } from "@/data/navigation";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
 import { BrandLogo } from "./BrandLogo";
 // import { scrollToSection } from "@/lib/scrollSection";
@@ -12,9 +12,11 @@ import { Link } from "react-router-dom";
 // Past this many pixels of scroll, the navbar switches to its solid style.
 const SCROLL_THRESHOLD = 50;
 const MOBILE_MENU_ID = "mobile-menu";
-const SECTION_IDS = navLinks.map(({ href }) => href.slice(1));
+// From the language-independent routes, so the observed sections stay put when the language changes.
+const SECTION_IDS = NAV_HREFS.map((href) => href.slice(1));
 
 export const Navbar = (): ReactElement => {
+  const { navLinks, profile } = useLocale().content;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const activeSection = useActiveSection(SECTION_IDS);

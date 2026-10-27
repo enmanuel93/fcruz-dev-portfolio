@@ -1,7 +1,7 @@
 import { CodeXml } from "lucide-react";
 import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { profile } from "@/data/profile";
+import { profileBase as profile } from "@/data/profile";
 
 // "/" scrolls back to the top of the page.
 export const BrandLogo = (): ReactElement => {

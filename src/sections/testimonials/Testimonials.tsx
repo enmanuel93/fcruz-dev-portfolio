@@ -1,13 +1,14 @@
 import { ChevronLeft, ChevronRight, MessageSquareQuote, Quote } from "lucide-react";
 import { useState, type ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { testimonials } from "@/data/testimonials";
+import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
 
 const navButtonClasses =
   "flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground";
 
 export const Testimonials = (): ReactElement => {
+  const { testimonials } = useLocale().content;
   const [activeIdx, setActiveIdx] = useState<number>(0);
   const active = testimonials[activeIdx];
 

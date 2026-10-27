@@ -4,8 +4,10 @@ import type { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import { Navbar } from "@/components/layout/Navbar";
-import { CONTACT_HREF, navLinks } from "@/data/navigation";
-import { profile } from "@/data/profile";
+import { CONTACT_HREF } from "@/data/navigation";
+import { DEFAULT_LOCALE, locales } from "@/locales";
+
+const { navLinks, profile } = locales[DEFAULT_LOCALE];
 
 const renderNavbar = (): void => {
   render(<Navbar />, {

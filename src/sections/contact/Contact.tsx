@@ -1,8 +1,10 @@
 import type { ReactElement } from "react";
-import { contactInfo } from "@/data/contact";
+import { useLocale } from "@/i18n/useLocale";
 import { ContactForm } from "./ContactForm";
 
 export const Contact = (): ReactElement => {
+  const { contactInfo } = useLocale().content;
+
   return (
     <section id="contact" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
