@@ -56,6 +56,39 @@ describe("getInitialLocale", () => {
   });
 });
 
+// The same rules, narrowed to the languages of the visitor's region.
+describe("getInitialLocale within a region's languages", () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it("keeps a stored language the region offers", () => {
+    setBrowserLanguages(["en-US"]);
+    localStorage.setItem(LOCALE_STORAGE_KEY, "it");
+
+    expect(getInitialLocale(["en", "es", "it"])).toBe("it");
+  });
+
+  it("skips a stored language the region doesn't offer", () => {
+    setBrowserLanguages(["en-US"]);
+    localStorage.setItem(LOCALE_STORAGE_KEY, "it");
+
+    expect(getInitialLocale(["en"])).toBe("en");
+  });
+
+  it("skips browser languages the region doesn't offer", () => {
+    setBrowserLanguages(["es-DO", "it", "en-US"]);
+
+    expect(getInitialLocale(["en"])).toBe("en");
+  });
+
+  it("falls back to English when none of the browser languages are offered", () => {
+    setBrowserLanguages(["es-DO"]);
+
+    expect(getInitialLocale(["en"])).toBe("en");
+  });
+});
+
 describe("storeLocale", () => {
   afterEach(() => {
     localStorage.clear();

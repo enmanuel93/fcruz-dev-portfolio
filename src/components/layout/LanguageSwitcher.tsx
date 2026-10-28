@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
-import { LOCALES, localeNames, type Locale } from "@/locales";
+import { localeNames, type Locale } from "@/locales";
 
 interface FlagProps {
   locale: Locale;
@@ -21,9 +21,11 @@ const Flag = ({ locale, alt = localeNames[locale].name }: FlagProps): ReactEleme
 );
 
 // Desktop: a button showing the current language's flag that opens a menu of
-// all of them. Closes on a choice or a press outside.
-export const LanguageMenu = (): ReactElement => {
-  const { locale, setLocale } = useLocale();
+// the region's languages. Closes on a choice or a press outside. Renders
+// nothing when the region only has one language — a menu with a single
+// option is just noise.
+export const LanguageMenu = (): ReactElement | null => {
+  const { locale, availableLocales, setLocale } = useLocale();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -34,7 +36,7 @@ export const LanguageMenu = (): ReactElement => {
   useEffect(() => {
     if (!isOpen) return;
 
-    itemRefs.current[LOCALES.indexOf(locale)]?.focus();
+    itemRefs.current[availableLocales.indexOf(locale)]?.focus();
 
     const handlePointerDown = (event: PointerEvent): void => {
       if (!containerRef.current?.contains(event.target as Node))
@@ -44,7 +46,7 @@ export const LanguageMenu = (): ReactElement => {
     document.addEventListener("pointerdown", handlePointerDown);
     return (): void =>
       document.removeEventListener("pointerdown", handlePointerDown);
-  }, [isOpen, locale]);
+  }, [isOpen, locale, availableLocales]);
 
   const close = (): void => {
     setIsOpen(false);
@@ -55,6 +57,9 @@ export const LanguageMenu = (): ReactElement => {
     setLocale(next);
     close();
   };
+
+  // After the hooks, never before: React needs the same hooks on every render.
+  if (availableLocales.length < 2) return null;
 
   return (
     <div ref={containerRef} className="relative">
@@ -84,7 +89,7 @@ export const LanguageMenu = (): ReactElement => {
           role="menu"
           className="panel absolute right-0 top-full z-10 mt-2 min-w-22 rounded-xl p-1 shadow-[0_16px_40px_-16px_rgb(0_0_0/0.8)] animate-fade-in is-visible"
         >
-          {LOCALES.map((option, idx) => {
+          {availableLocales.map((option, idx) => {
             const isCurrent = option === locale;
 
             return (
@@ -121,11 +126,14 @@ interface LanguageButtonsProps {
   className?: string;
 }
 
-// Mobile menu: every language as its own button, no second menu to open.
+// Mobile menu: each of the region's languages as its own button, no second
+// menu to open. Like the desktop menu, it disappears with a single language.
 export const LanguageButtons = ({
   className,
-}: LanguageButtonsProps): ReactElement => {
-  const { locale, setLocale, content } = useLocale();
+}: LanguageButtonsProps): ReactElement | null => {
+  const { locale, availableLocales, setLocale, content } = useLocale();
+
+  if (availableLocales.length < 2) return null;
 
   return (
     <div
@@ -133,7 +141,7 @@ export const LanguageButtons = ({
       aria-label={content.ui.nav.language}
       className={cn("flex gap-2", className)}
     >
-      {LOCALES.map((option) => (
+      {availableLocales.map((option) => (
         <button
           key={option}
           type="button"

@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { cvUrls } from "@/data/cv";
 import { skills } from "@/data/skills";
 import { resolveContent } from "@/i18n/resolveContent";
-import { DEFAULT_LOCALE, LOCALES, locales } from "@/locales";
+import { DEFAULT_LOCALE, LOCALES, LOCALES_BY_REGION, locales } from "@/locales";
 import { REGIONS } from "@/regions";
 
 // The components use these fields as React keys. A duplicate would not crash,
@@ -27,6 +27,11 @@ describe("shared content data", () => {
     Object.values(urls).forEach((url) => {
       expect(existsSync(join("public", url))).toBe(true);
     });
+  });
+
+  // Without it, a region could end up with no language to fall back to.
+  it.each(Object.entries(LOCALES_BY_REGION))("offers the default language in %s", (_, available) => {
+    expect(available).toContain(DEFAULT_LOCALE);
   });
 
   // index.html is what loads before React (and what crawlers without JS see).

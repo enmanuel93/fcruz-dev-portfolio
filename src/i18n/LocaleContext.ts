@@ -1,11 +1,13 @@
 import { createContext } from "react";
-import { DEFAULT_LOCALE, type Locale } from "@/locales";
+import { DEFAULT_LOCALE, LOCALES_BY_REGION, type Locale } from "@/locales";
 import type { SiteContent } from "@/locales/types";
 import { DEFAULT_REGION } from "@/regions";
 import { resolveContent } from "./resolveContent";
 
 export interface LocaleContextValue {
   locale: Locale;
+  /** What the visitor's region offers; the switcher lists only these. */
+  availableLocales: readonly Locale[];
   content: SiteContent;
   setLocale: (locale: Locale) => void;
 }
@@ -14,6 +16,7 @@ export interface LocaleContextValue {
 // site reads in the default language and region, and can't switch.
 export const LocaleContext = createContext<LocaleContextValue>({
   locale: DEFAULT_LOCALE,
+  availableLocales: LOCALES_BY_REGION[DEFAULT_REGION],
   content: resolveContent(DEFAULT_LOCALE, DEFAULT_REGION),
   setLocale: () => {},
 });

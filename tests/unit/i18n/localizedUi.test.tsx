@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { LocaleContext } from "@/i18n/LocaleContext";
 import { resolveContent } from "@/i18n/resolveContent";
+import { LOCALES } from "@/locales";
 import type { SiteContent, UiText } from "@/locales/types";
 import { DEFAULT_REGION } from "@/regions";
 import { About } from "@/sections/about/About";
@@ -36,7 +37,9 @@ const content: SiteContent = { ...en, ui };
 const renderMarked = (node: ReactNode): void => {
   render(node, {
     wrapper: ({ children }): ReactElement => (
-      <LocaleContext value={{ locale: "en", content, setLocale: () => {} }}>
+      <LocaleContext
+        value={{ locale: "en", availableLocales: LOCALES, content, setLocale: () => {} }}
+      >
         <MemoryRouter>{children}</MemoryRouter>
       </LocaleContext>
     ),

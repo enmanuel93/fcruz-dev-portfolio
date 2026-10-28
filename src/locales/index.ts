@@ -1,3 +1,4 @@
+import type { Region } from "@/regions";
 import { en } from "./en";
 import { es } from "./es";
 import { it } from "./it";
@@ -22,6 +23,15 @@ export const localeNames = {
   es: { flag: "/locales/es.png", name: "Español" },
   it: { flag: "/locales/it.png", name: "Italiano" },
 } as const satisfies Record<Locale, { flag: string; name: string }>;
+
+// Which languages each region gets. The Americas profile only has an English
+// CV, so offering Spanish or Italian there would promise something we can't
+// hand over. Add "es" here once a Spanish one exists. DEFAULT_LOCALE has to be
+// in every list: it's the fallback when nothing else fits.
+export const LOCALES_BY_REGION = {
+  europe: ["en", "es", "it"],
+  americas: ["en"],
+} as const satisfies Record<Region, readonly Locale[]>;
 
 // In switcher order.
 export const LOCALES = Object.keys(locales) as Locale[];
