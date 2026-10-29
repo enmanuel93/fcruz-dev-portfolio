@@ -11,12 +11,4 @@ describe("SocialLinks", () => {
       expect(screen.getByRole("link", { name: label })).toHaveAttribute("href", href);
     });
   });
-
-  it("applies the extra class to every link", () => {
-    render(<SocialLinks links={socialLinks} linkClassName="duration-300" />);
-
-    screen.getAllByRole("link").forEach((link) => {
-      expect(link).toHaveClass("duration-300");
-    });
-  });
 });

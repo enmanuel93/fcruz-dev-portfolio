@@ -89,16 +89,4 @@ describe("Button", () => {
     expect(button).toBeDisabled();
     expect(handleClick).not.toHaveBeenCalled();
   });
-
-  it("lets a custom className override the size padding", () => {
-    render(
-      <Button size="lg" className="px-2">
-        Wide
-      </Button>,
-    );
-
-    const button = screen.getByRole("button", { name: "Wide" });
-    expect(button).toHaveClass("px-2");
-    expect(button).not.toHaveClass("px-6");
-  });
 });

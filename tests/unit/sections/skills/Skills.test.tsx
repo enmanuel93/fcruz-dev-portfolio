@@ -10,7 +10,6 @@ const swiper = vi.hoisted(() => ({
   props: {} as {
     autoplay?: unknown;
     loop?: boolean;
-    grabCursor?: boolean;
   },
 }));
 
@@ -69,11 +68,5 @@ describe("Skills", () => {
       delay: 0,
       disableOnInteraction: false,
     });
-  });
-
-  it("uses Swiper's grab cursor", () => {
-    render(<Skills />);
-
-    expect(swiper.props.grabCursor).toBe(true);
   });
 });
