@@ -9,6 +9,6 @@ export const profileBase = {
     src: "/profile-photo.jpg",
     alt: "Francisco Cruz Mejía",
   },
-  yearsOfExperience: "+7",
+  yearsOfExperience: "7+",
   allProjectsUrl: "https://github.com/enmanuel93?tab=repositories",
 } as const satisfies Omit<Profile, "headline" | "bio" | "cvUrl">;

@@ -13,8 +13,8 @@ export const ui = {
     rightsReserved: "All rights reserved.",
   },
   hero: {
-    titleStart: "Crafting digital experiences",
-    titleAccent: "with precision.",
+    titleStart: "I build the backends people",
+    titleAccent: "rely on every day.",
     viewProjects: "View Projects",
     contactMe: "Contact Me",
   },
@@ -55,13 +55,12 @@ export const ui = {
     showTestimonial: (position, total) => `Show testimonial ${position} of ${total}`,
   },
   contact: {
-    titleStart: "Let's build",
-    titleAccent: "something great.",
+    titleStart: "Let's",
+    titleAccent: "talk.",
     intro:
-      "Have a project in mind? I'd love to hear about it. Send me a message and let's discuss how we can work together.",
-    availableTitle: "Currently Available",
-    availableText:
-      "I'm currently open to new opportunities and exciting projects. Whether you need a full-time engineer or a freelance consultant, let's talk!",
+      "Write me about the project or the role, and I'll answer within a day or two.",
+    availableTitle: "Open to work",
+    availableText: "Full-time or freelance, remote or on-site.",
     form: {
       nameLabel: "Name",
       namePlaceholder: "Your name...",

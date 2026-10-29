@@ -23,10 +23,6 @@ export const About = (): ReactElement => {
                 {paragraph}
               </p>
             ))}
-
-            <blockquote className="mt-8 border-l border-accent/60 pl-5 text-lg font-medium leading-relaxed text-foreground">
-              “{about.mission}”
-            </blockquote>
           </div>
 
           <ul className="panel divide-y divide-border self-start rounded-2xl">

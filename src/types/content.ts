@@ -27,7 +27,6 @@ export interface Profile {
 
 export interface AboutContent {
   paragraphs: readonly string[];
-  mission: string;
 }
 
 export interface NavLink {

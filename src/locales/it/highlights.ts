@@ -3,27 +3,27 @@ import type { Highlight } from "@/types/content";
 
 export const highlights = [
   {
-    icon: highlightIcons.cleanCode,
-    title: "Codice pulito",
+    icon: highlightIcons.users,
+    title: "Oltre 10.000 utenti",
     description:
-      "Design pattern, principi SOLID e Clean Architecture per un codice che resta manutenibile.",
+      "L'Ufficio Virtuale del Registro Immobiliare permette ai cittadini di gestire le pratiche immobiliari e pagare online.",
   },
   {
-    icon: highlightIcons.fullStack,
-    title: "Full Stack",
+    icon: highlightIcons.payments,
+    title: "Pagamenti asincroni",
     description:
-      "Dalle API e microservizi in ASP.NET Core alle interfacce in React, end to end.",
+      "Ho spostato l'elaborazione dei pagamenti su RabbitMQ, così una risposta lenta della banca non blocca l'utente.",
   },
   {
-    icon: highlightIcons.cloud,
-    title: "Cloud e DevOps",
+    icon: highlightIcons.caching,
+    title: "Risposte più rapide",
     description:
-      "Pipeline CI/CD con Azure DevOps e deployment su Azure App Service.",
+      "Ho messo in cache con Redis le query più frequenti per alleggerire SQL Server.",
   },
   {
-    icon: highlightIcons.teamwork,
-    title: "Lavoro di squadra Agile",
+    icon: highlightIcons.releases,
+    title: "Rilasci automatizzati",
     description:
-      "Abituato ad ambienti dinamici e team Scrum, orientato ai risultati.",
+      "Pipeline CI/CD su Azure DevOps con deploy su Azure App Service.",
   },
 ] as const satisfies readonly Highlight[];

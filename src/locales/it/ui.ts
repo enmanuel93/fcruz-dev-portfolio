@@ -13,8 +13,8 @@ export const ui = {
     rightsReserved: "Tutti i diritti riservati.",
   },
   hero: {
-    titleStart: "Creo esperienze digitali",
-    titleAccent: "con precisione.",
+    titleStart: "Costruisco i backend su cui le persone",
+    titleAccent: "contano ogni giorno.",
     viewProjects: "Vedi i progetti",
     contactMe: "Contattami",
   },
@@ -55,13 +55,12 @@ export const ui = {
     showTestimonial: (position, total) => `Mostra testimonianza ${position} di ${total}`,
   },
   contact: {
-    titleStart: "Costruiamo",
-    titleAccent: "qualcosa di grande.",
+    titleStart: "Scrivimi e",
+    titleAccent: "ne parliamo.",
     intro:
-      "Hai un progetto in mente? Mi piacerebbe saperne di più. Scrivimi un messaggio e parliamo di come possiamo lavorare insieme.",
-    availableTitle: "Attualmente disponibile",
-    availableText:
-      "Sono aperto a nuove opportunità e progetti stimolanti. Che tu cerchi un ingegnere a tempo pieno o un consulente freelance, parliamone!",
+      "Raccontami il progetto o la posizione e ti rispondo entro un giorno o due.",
+    availableTitle: "Disponibile a lavorare",
+    availableText: "A tempo pieno o freelance, da remoto o in sede.",
     form: {
       nameLabel: "Nome",
       namePlaceholder: "Il tuo nome...",

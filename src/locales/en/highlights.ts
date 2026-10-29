@@ -3,27 +3,27 @@ import type { Highlight } from "@/types/content";
 
 export const highlights = [
   {
-    icon: highlightIcons.cleanCode,
-    title: "Clean Code",
+    icon: highlightIcons.users,
+    title: "10,000+ users",
     description:
-      "Design patterns, SOLID principles and Clean Architecture for code that stays maintainable.",
+      "The Virtual Real Estate Registration Office lets citizens handle property procedures and pay online.",
   },
   {
-    icon: highlightIcons.fullStack,
-    title: "Full Stack",
+    icon: highlightIcons.payments,
+    title: "Async payments",
     description:
-      "From ASP.NET Core APIs and microservices to React interfaces, end to end.",
+      "Moved payment processing to RabbitMQ so a slow bank response doesn't block the user.",
   },
   {
-    icon: highlightIcons.cloud,
-    title: "Cloud & DevOps",
+    icon: highlightIcons.caching,
+    title: "Faster responses",
     description:
-      "CI/CD pipelines with Azure DevOps and deployments on Azure App Service.",
+      "Cached frequent queries with Redis to take load off SQL Server.",
   },
   {
-    icon: highlightIcons.teamwork,
-    title: "Agile Teamwork",
+    icon: highlightIcons.releases,
+    title: "Automated releases",
     description:
-      "Used to dynamic environments and Scrum teams, focused on results.",
+      "CI/CD pipelines on Azure DevOps, deploying to Azure App Service.",
   },
 ] as const satisfies readonly Highlight[];

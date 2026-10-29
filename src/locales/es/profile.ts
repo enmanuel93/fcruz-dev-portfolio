@@ -14,6 +14,4 @@ export const about = {
     "Diseño APIs RESTful y microservicios con ASP.NET Core, trabajo con SQL Server, Redis y RabbitMQ, y despliego mediante pipelines CI/CD en Microsoft Azure. En el frontend, construyo interfaces responsivas con React, TypeScript y Tailwind CSS.",
     "Soy un profesional orientado a resultados, habituado a entornos dinámicos y equipos Agile (Scrum), y me apoyo en patrones de diseño, principios SOLID y Clean Architecture para que los sistemas sigan siendo mantenibles.",
   ],
-  mission:
-    "Mi misión es crear software fiable y mantenible que resuelva problemas reales, como una plataforma que permite a más de 10.000 ciudadanos realizar trámites inmobiliarios en línea.",
 } as const satisfies AboutContent;
