@@ -1,5 +1,6 @@
 import { Download, Menu, X } from "lucide-react";
 import { useEffect, useState, type ReactElement } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { NAV_HREFS } from "@/data/navigation";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -7,8 +8,6 @@ import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/cn";
 import { BrandLogo } from "./BrandLogo";
 import { LanguageButtons, LanguageMenu } from "./LanguageSwitcher";
-// import { scrollToSection } from "@/lib/scrollSection";
-import { Link } from "react-router-dom";
 
 // Past this many pixels of scroll, the navbar switches to its solid style.
 const SCROLL_THRESHOLD = 50;
@@ -48,10 +47,8 @@ export const Navbar = (): ReactElement => {
       )}
     >
       <nav className="container mx-auto flex items-center justify-between px-6">
-        {/* Brand Logo */}
         <BrandLogo />
 
-        {/* Menu */}
         <ul className="hidden items-center gap-1 lg:flex">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
@@ -69,7 +66,6 @@ export const Navbar = (): ReactElement => {
           ))}
         </ul>
 
-        {/* download button and language menu */}
         <div className="hidden items-center gap-2 lg:flex">
           <LanguageMenu />
           <Button href={profile.cvUrl} download size="sm">

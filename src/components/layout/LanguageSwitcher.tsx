@@ -82,7 +82,6 @@ export const LanguageMenu = (): ReactElement | null => {
         />
       </button>
 
-      {/* load the diferent local flags */}
       {isOpen && (
         <div
           id={menuId}

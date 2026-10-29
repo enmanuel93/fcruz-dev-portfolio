@@ -1,15 +1,12 @@
 import { useEffect } from "react";
 
+// Adds `is-visible` to every `.animate-fade-in` element while it is on screen
+// and removes it when it leaves, so the entrance animation replays on return.
 export const useRevealOnScroll = (): void => {
   useEffect(() => {
-    // Detect when elements enter or leave the viewport.
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        // this code show the element when visible.
-        entry.target.classList.toggle(
-          "is-visible",
-          entry.isIntersecting
-        );
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
       });
     });
 
@@ -26,8 +23,7 @@ export const useRevealOnScroll = (): void => {
     const mutationObserver = new MutationObserver(observeElements);
     mutationObserver.observe(document.body, { childList: true, subtree: true });
 
-    //clean the component unmount
-    return () => {
+    return (): void => {
       mutationObserver.disconnect();
       observer.disconnect();
     };
