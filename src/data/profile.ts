@@ -6,7 +6,7 @@ export const profileBase = {
   name: "Francisco Cruz Mejía",
   brand: { name: "FCruz", accent: "-Dev" },
   photo: {
-    src: "/profile-photo.jpg",
+    src: "/profile-photo.webp",
     alt: "Francisco Cruz Mejía",
   },
   yearsOfExperience: "7+",

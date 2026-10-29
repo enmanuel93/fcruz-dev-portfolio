@@ -7,7 +7,7 @@ import type { Project } from "@/types/content";
 export const projectAssets = {
   // This site. No demoUrl until it is deployed.
   portfolio: {
-    image: "/projects/my-portfolio.png",
+    image: "/projects/my-portfolio.webp",
     tags: ["React", "TypeScript", "Tailwind CSS", "Vite", "Vitest", "Netlify"],
     repoUrl: "https://github.com/enmanuel93/fcruz-dev-portfolio",
   },

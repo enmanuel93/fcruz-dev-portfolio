@@ -33,7 +33,7 @@ describe("LanguageSwitcher", () => {
   it("shows the current flag and lists every language when opened", async () => {
     renderNavbar();
 
-    expect(flagOf(languageButton())).toBe("/locales/en.png");
+    expect(flagOf(languageButton())).toBe("/locales/en.webp");
     expect(languageButton()).toHaveAttribute("aria-expanded", "false");
 
     await userEvent.click(languageButton());
@@ -55,7 +55,7 @@ describe("LanguageSwitcher", () => {
 
     expect(screen.getByRole("link", { name: /Descargar CV/ })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sobre mí" })).toBeInTheDocument();
-    expect(flagOf(languageButton())).toBe("/locales/es.png");
+    expect(flagOf(languageButton())).toBe("/locales/es.webp");
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     expect(document.documentElement.lang).toBe("es");
     expect(localStorage.getItem(LOCALE_STORAGE_KEY)).toBe("es");
@@ -85,7 +85,7 @@ describe("LanguageSwitcher", () => {
     // Each button shows its own language's flag.
     expect(within(group).getByRole("img", { name: "Italiano" })).toHaveAttribute(
       "src",
-      "/locales/it.png",
+      "/locales/it.webp",
     );
 
     await userEvent.click(within(group).getByRole("button", { name: "Italiano" }));

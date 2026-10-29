@@ -19,9 +19,9 @@ export const DEFAULT_LOCALE: Locale = "en";
 // name written in that language itself (never translated), which screen
 // readers announce instead of the flag.
 export const localeNames = {
-  en: { flag: "/locales/en.png", name: "English" },
-  es: { flag: "/locales/es.png", name: "Español" },
-  it: { flag: "/locales/it.png", name: "Italiano" },
+  en: { flag: "/locales/en.webp", name: "English" },
+  es: { flag: "/locales/es.webp", name: "Español" },
+  it: { flag: "/locales/it.webp", name: "Italiano" },
 } as const satisfies Record<Locale, { flag: string; name: string }>;
 
 // Which languages each region gets. The Americas profile only has an English
