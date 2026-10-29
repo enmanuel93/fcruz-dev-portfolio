@@ -1,7 +1,7 @@
-import { ExternalLink, FolderOpen } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { ReactElement } from "react";
 import { FaGithub } from "react-icons/fa";
-import { AnimatedBorderButton } from "@/components/ui/AnimatedBorderButton";
+import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { profileBase as profile } from "@/data/profile";
 import { useLocale } from "@/i18n/useLocale";
@@ -17,15 +17,14 @@ export const Projects = (): ReactElement => {
     <section id="projects" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
-          icon={FolderOpen}
           title={ui.projects.title}
           description={ui.projects.description}
           action={
-            <AnimatedBorderButton href={profile.allProjectsUrl} target="_blank">
+            <Button href={profile.allProjectsUrl} target="_blank" variant="outline" size="sm">
               <FaGithub className="size-4" aria-hidden="true" />
               {ui.projects.viewAll}
               <ExternalLink className="size-3.5 text-muted-foreground" aria-hidden="true" />
-            </AnimatedBorderButton>
+            </Button>
           }
         />
 

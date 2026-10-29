@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { Tag } from "@/components/ui/Tag";
 import { getAnimationDelay } from "@/lib/animation";
+import { cn } from "@/lib/cn";
 import type { Experience } from "@/types/content";
 
 const ANIMATION_STEP_MS = 120;
@@ -17,12 +18,14 @@ export const TimelineItem = ({ experience, index }: TimelineItemProps): ReactEle
       style={{ animationDelay: getAnimationDelay(index, ANIMATION_STEP_MS) }}
     >
       <div className="flex items-center gap-3 md:items-start md:pt-6">
-        <span className="relative mt-0.5 flex size-2.5 shrink-0" aria-hidden="true">
-          {experience.current && (
-            <span className="absolute inset-0 animate-ping rounded-full bg-accent/70" />
+        {/* Filled for the job I'm still in, hollow for the ones that ended. */}
+        <span
+          className={cn(
+            "mt-0.5 size-2.5 shrink-0 rounded-full ring-4 ring-background",
+            experience.current ? "bg-accent" : "border-2 border-accent bg-background",
           )}
-          <span className="relative size-2.5 rounded-full bg-accent ring-4 ring-background" />
-        </span>
+          aria-hidden="true"
+        />
         <span className="text-sm font-medium tabular-nums text-foreground/85">
           {experience.period}
         </span>

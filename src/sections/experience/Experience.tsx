@@ -1,7 +1,6 @@
-import { BriefcaseBusiness } from "lucide-react";
 import type { ReactElement } from "react";
 import { FaLinkedin } from "react-icons/fa";
-import { AnimatedBorderButton } from "@/components/ui/AnimatedBorderButton";
+import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { socialLinks } from "@/data/socials";
 import { useLocale } from "@/i18n/useLocale";
@@ -16,15 +15,14 @@ export const Experience = (): ReactElement => {
     <section id="experience" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
-          icon={BriefcaseBusiness}
           title={ui.experience.title}
           description={ui.experience.description}
           action={
             linkedIn && (
-              <AnimatedBorderButton href={linkedIn.href} target="_blank">
+              <Button href={linkedIn.href} target="_blank" variant="outline" size="sm">
                 <FaLinkedin className="size-4 text-[#4f9fe8]" aria-hidden="true" />
                 {ui.experience.viewMoreOnLinkedIn}
-              </AnimatedBorderButton>
+              </Button>
             )
           }
         />
@@ -32,7 +30,7 @@ export const Experience = (): ReactElement => {
         <div className="relative">
           {/* The rail behind the timeline dots (desktop only). */}
           <div
-            className="absolute bottom-6 left-[0.3125rem] top-7 hidden w-px bg-gradient-to-b from-accent/70 via-border-strong to-transparent md:block"
+            className="absolute bottom-6 left-[0.3125rem] top-7 hidden w-px bg-border-strong md:block"
             aria-hidden="true"
           />
           <ol>

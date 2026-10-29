@@ -23,17 +23,7 @@
   --color-muted-foreground: #9a98b0;
   --color-success: #3ddc84;
 
-  --radius: 0.75rem;
-
-  --animate-fade-in: fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-float: float 5s ease-in-out infinite;
-  --animate-portrait-reveal: portrait-reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-}
-
-@property --border-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
+  --animate-fade-in: fade-in 0.5s ease-out both;
 }
 
 @layer base {
@@ -86,35 +76,6 @@
     border-bottom: 1px solid var(--color-border);
   }
 
-  .dot-field {
-    background-image: radial-gradient(
-      color-mix(in srgb, var(--color-accent) 45%, transparent) 1.2px,
-      transparent 1.2px
-    );
-    background-size: 18px 18px;
-  }
-
-  /* A violet light that runs around the border on hover (AnimatedBorderButton). */
-  .animated-border {
-    border: 1px solid transparent;
-    background:
-      linear-gradient(var(--color-background), var(--color-background)) padding-box,
-      linear-gradient(var(--color-border-strong), var(--color-border-strong)) border-box;
-  }
-
-  .animated-border:hover {
-    background:
-      linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
-      conic-gradient(
-          from var(--border-angle),
-          var(--color-border-strong) 0deg 250deg,
-          var(--color-accent) 310deg,
-          var(--color-border-strong) 360deg
-        )
-        border-box;
-    animation: border-spin 2.5s linear infinite;
-  }
-
   /* Constant speed between slides, so the autoplaying row reads as one banner.
      Set through Swiper's variable: its unlayered stylesheet beats a rule in
      this layer, which left the default ease and a visible stop at each card. */
@@ -127,59 +88,11 @@
   @keyframes fade-in {
     from {
       opacity: 0;
-      transform: translateY(16px);
-      filter: blur(6px);
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
-      filter: blur(0);
-    }
-  }
-
-  @keyframes slow-drift {
-    0%,
-    100% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(20px, -30px);
-    }
-    50% {
-      transform: translate(-15px, -20px);
-    }
-    75% {
-      transform: translate(30px, 10px);
-    }
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  /* The hero portrait opens from the bottom up while it settles into focus. */
-  @keyframes portrait-reveal {
-    from {
-      clip-path: inset(100% 0 0 0 round 1.75rem);
-      transform: scale(1.06);
-      filter: blur(12px);
-    }
-    to {
-      clip-path: inset(0 0 0 0 round 1.75rem);
-      transform: scale(1);
-      filter: blur(0);
-    }
-  }
-
-  @keyframes border-spin {
-    to {
-      --border-angle: 360deg;
     }
   }
 
@@ -204,18 +117,6 @@
 
   .animation-delay-400 {
     animation-delay: 400ms;
-  }
-
-  .animation-delay-500 {
-    animation-delay: 500ms;
-  }
-
-  .animation-delay-600 {
-    animation-delay: 600ms;
-  }
-
-  .animation-delay-800 {
-    animation-delay: 800ms;
   }
 
   /* Respect the OS "reduce motion" setting: no looping or entrance animations. */

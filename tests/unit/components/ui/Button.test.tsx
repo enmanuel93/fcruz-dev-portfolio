@@ -15,6 +15,26 @@ describe("Button", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
+  it("protects the opener when a link opens in a new tab", () => {
+    render(
+      <Button href="https://github.com/" target="_blank" variant="outline">
+        View All Projects
+      </Button>,
+    );
+
+    const link = screen.getByRole("link", { name: "View All Projects" });
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
+  it("does not add rel to links that open in the same tab", () => {
+    render(<Button href="/documents/cv.pdf" download>Download CV</Button>);
+
+    const link = screen.getByRole("link", { name: "Download CV" });
+    expect(link).toHaveAttribute("download");
+    expect(link).not.toHaveAttribute("rel");
+  });
+
   it("renders a client-side route link when given a to", () => {
     render(
       <MemoryRouter>

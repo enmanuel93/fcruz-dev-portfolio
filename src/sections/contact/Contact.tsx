@@ -8,17 +8,8 @@ export const Contact = (): ReactElement => {
   return (
     <section id="contact" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
-        <div className="relative overflow-hidden rounded-3xl border border-border-strong bg-gradient-to-br from-primary/20 via-surface to-surface animate-fade-in">
-          <div
-            className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-primary/25 blur-[100px]"
-            aria-hidden="true"
-          />
-          <div
-            className="dot-field pointer-events-none absolute right-8 top-8 h-32 w-48 opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent)]"
-            aria-hidden="true"
-          />
-
-          <div className="relative grid lg:grid-cols-[1fr_1.1fr]">
+        <div className="panel rounded-3xl animate-fade-in">
+          <div className="grid lg:grid-cols-[1fr_1.1fr]">
             <div className="p-6 sm:p-10 lg:p-12">
               <h2 className="text-3xl font-bold leading-tight tracking-tight md:text-4xl">
                 {ui.contact.titleStart}{" "}
@@ -61,10 +52,7 @@ export const Contact = (): ReactElement => {
               </ul>
 
               <div className="mt-8 flex items-start gap-3 rounded-2xl border border-border bg-background/40 p-4">
-                <span className="relative mt-1.5 flex size-2.5 shrink-0" aria-hidden="true">
-                  <span className="absolute inset-0 animate-ping rounded-full bg-success/60" />
-                  <span className="relative size-2.5 rounded-full bg-success" />
-                </span>
+                <span className="mt-1.5 size-2.5 shrink-0 rounded-full bg-success" aria-hidden="true" />
                 <div>
                   <p className="font-medium">{ui.contact.availableTitle}</p>
                   <p className="mt-1 text-sm text-muted-foreground">

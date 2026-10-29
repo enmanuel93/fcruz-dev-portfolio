@@ -5,20 +5,13 @@ import { SocialLinks } from "@/components/ui/SocialLinks";
 import { CONTACT_HREF, PROJECTS_HREF } from "@/data/navigation";
 import { socialLinks } from "@/data/socials";
 import { useLocale } from "@/i18n/useLocale";
-import { FloatingDots } from "./FloatingDots";
 import { Portrait } from "./Portrait";
 
 export const Hero = (): ReactElement => {
   const { profile, ui } = useLocale().content;
 
   return (
-    <section className="relative overflow-hidden pb-20 pt-32 lg:pb-28 lg:pt-40">
-      <div
-        className="pointer-events-none absolute -top-40 right-0 size-[42rem] rounded-full bg-primary/15 blur-[120px]"
-        aria-hidden="true"
-      />
-      <FloatingDots />
-
+    <section className="relative pb-20 pt-32 lg:pb-28 lg:pt-40">
       <div className="container relative mx-auto grid items-center gap-16 px-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
         <div>
           <span className="inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-3.5 py-1.5 text-sm font-medium text-accent animate-fade-in">

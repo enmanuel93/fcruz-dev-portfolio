@@ -1,4 +1,3 @@
-import { CodeXml } from "lucide-react";
 import type { ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { skills } from "@/data/skills";
@@ -12,7 +11,6 @@ export const Skills = (): ReactElement => {
     <section id="skills" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
-          icon={CodeXml}
           title={ui.skills.title}
           description={ui.skills.description}
         />

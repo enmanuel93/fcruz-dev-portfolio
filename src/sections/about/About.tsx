@@ -1,4 +1,3 @@
-import { UserRound } from "lucide-react";
 import type { ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { useLocale } from "@/i18n/useLocale";
@@ -13,7 +12,6 @@ export const About = (): ReactElement => {
     <section id="about" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
-          icon={UserRound}
           title={ui.about.title}
           description={ui.about.description}
         />

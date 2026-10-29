@@ -39,7 +39,7 @@ export const ProjectCard = ({ project, style }: ProjectCardProps): ReactElement 
 
   return (
     <article
-      className="panel group flex w-full max-w-md flex-col rounded-2xl p-3 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-[0_24px_48px_-24px] hover:shadow-primary/40 animate-fade-in"
+      className="panel group flex w-full max-w-md flex-col rounded-2xl p-3 transition-colors duration-300 hover:border-border-strong animate-fade-in"
       style={style}
     >
       <div className="overflow-hidden rounded-xl border border-border bg-surface-raised">
@@ -47,7 +47,7 @@ export const ProjectCard = ({ project, style }: ProjectCardProps): ReactElement 
           src={project.image}
           alt={project.title}
           loading="lazy"
-          className="h-50 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          className="h-50 w-full object-cover"
         />
       </div>
 

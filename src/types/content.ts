@@ -69,7 +69,7 @@ export interface Experience {
   company: string;
   description: string;
   technologies: readonly string[];
-  /** The current job gets a pulsing dot on the timeline. */
+  /** The current job gets a filled dot on the timeline; past ones a hollow one. */
   current: boolean;
 }
 

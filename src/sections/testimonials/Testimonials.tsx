@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, MessageSquareQuote, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { useState, type ReactElement } from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { useLocale } from "@/i18n/useLocale";
@@ -27,7 +27,6 @@ export const Testimonials = (): ReactElement => {
     <section id="testimonials" className="py-20 md:py-28">
       <div className="container mx-auto px-6">
         <SectionHeader
-          icon={MessageSquareQuote}
           title={ui.testimonials.title}
           description={ui.testimonials.description}
         />

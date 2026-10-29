@@ -44,11 +44,10 @@ interface ButtonAsButtonProps extends BaseButtonProps {
 export type ButtonProps = ButtonAsRouteLinkProps | ButtonAsLinkProps | ButtonAsButtonProps;
 
 const baseClasses =
-  "relative inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-[background-color,border-color,color,box-shadow,transform] duration-200 active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:active:translate-y-0";
+  "relative inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-[background-color,border-color,color,transform] duration-200 active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:active:translate-y-0";
 
 const variantClasses = {
-  primary:
-    "bg-primary text-primary-foreground shadow-[0_8px_24px_-10px] shadow-primary/70 hover:bg-primary-hover hover:shadow-primary/90",
+  primary: "bg-primary text-primary-foreground hover:bg-primary-hover",
   outline:
     "border border-border-strong text-foreground hover:border-accent/60 hover:bg-surface",
 } as const;
