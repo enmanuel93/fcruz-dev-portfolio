@@ -46,7 +46,8 @@ for (const line of lines(git('diff', '--cached', '-U0', '--no-color'))) {
   if (/^\+(<{7}|={7}|>{7})( |$)/.test(line)) errors.push(`Conflict marker in ${currentFile}`)
 }
 
-for (const entry of lines(git('diff', '--cached', '--numstat'))) {
+// Deleted files have no staged blob to measure, so they are left out.
+for (const entry of lines(git('diff', '--cached', '--numstat', '--diff-filter=d'))) {
   const [added, , file] = entry.split('\t')
   if (added === '-') {
     const size = Number(git('cat-file', '-s', `:${file}`))
