@@ -63,7 +63,7 @@ describe("UI text comes from the current locale", () => {
     renderMarked(<Footer />);
 
     expect(screen.getByRole("navigation", { name: ui.footer.navLabel })).toBeInTheDocument();
-    expect(screen.getByText(new RegExp(ui.footer.rightsReserved))).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(ui.footer.builtBy("Francisco Cruz Mejía")))).toBeInTheDocument();
   });
 
   it("Hero and portrait", () => {

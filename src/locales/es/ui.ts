@@ -10,7 +10,7 @@ export const ui = {
   },
   footer: {
     navLabel: "Pie de página",
-    rightsReserved: "Todos los derechos reservados.",
+    builtBy: (name) => `Hecho por ${name}.`,
   },
   hero: {
     titleStart: "Construyo los backends en los que la gente",

@@ -24,7 +24,8 @@ export interface UiText {
   };
   footer: {
     navLabel: string;
-    rightsReserved: string;
+    /** Credit line after the copyright, e.g. "Built by Francisco Cruz Mejía." */
+    builtBy: (name: string) => string;
   };
   hero: {
     /** The h1 is `titleStart` followed by `titleAccent` in violet. */

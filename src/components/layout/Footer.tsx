@@ -17,7 +17,7 @@ export const Footer = (): ReactElement => {
           <BrandLogo />
           <p className="mt-2 text-sm text-muted-foreground">
             © {currentYear} {profile.brand.name}
-            {profile.brand.accent} · {profile.name}. {ui.footer.rightsReserved}
+            {profile.brand.accent}. {ui.footer.builtBy(profile.name)}
           </p>
         </div>
 
