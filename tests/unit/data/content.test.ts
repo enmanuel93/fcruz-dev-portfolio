@@ -13,6 +13,9 @@ const expectUnique = (values: readonly string[]): void => {
   expect(new Set(values).size).toBe(values.length);
 };
 
+// Where the site is published; link previews need absolute URLs.
+const SITE_URL = "https://fcruzdev.netlify.app/";
+
 // Every language as a visitor from every region sees it.
 const versions = LOCALES.flatMap((locale) =>
   REGIONS.map((region) => [`${locale} (${region})`, locale, region] as const),
@@ -42,6 +45,24 @@ describe("shared content data", () => {
     expect(html).toContain(`<html lang="${DEFAULT_LOCALE}">`);
     expect(html).toContain(`<title>${meta.title}</title>`);
     expect(html.replace(/\s+/g, " ")).toContain(`content="${meta.description}"`);
+  });
+
+  // What LinkedIn, WhatsApp or X show when the link is shared. Their crawlers
+  // don't run JavaScript, so the tags have to be in index.html itself.
+  it("describes the site for link previews, with absolute URLs", () => {
+    const html = readFileSync("index.html", "utf8").replace(/\s+/g, " ");
+    const tag = (key: string): string | undefined =>
+      html.match(new RegExp(`(?:property|name)="${key}" content="([^"]*)"`))?.[1];
+    const { meta } = locales[DEFAULT_LOCALE].ui;
+
+    expect(tag("og:title")).toBe(meta.title);
+    expect(tag("og:description")).toBe(meta.description);
+    expect(tag("og:url")).toBe(SITE_URL);
+    expect(tag("twitter:card")).toBe("summary_large_image");
+
+    const image = tag("og:image") ?? "";
+    expect(image.startsWith(SITE_URL)).toBe(true);
+    expect(existsSync(join("public", image.slice(SITE_URL.length)))).toBe(true);
   });
 });
 

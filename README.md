@@ -2,6 +2,8 @@
 
 The personal portfolio of **Francisco Cruz Mejía**, .NET and full stack developer: who I am, the work I have done, the stack I use, my CV and a way to get in touch.
 
+**Live site:** <https://fcruzdev.netlify.app/>
+
 ![The portfolio's hero section](public/projects/my-portfolio.webp)
 
 ## Features
@@ -110,6 +112,7 @@ Components never hard-code text; they read it from the current language.
 - **A new project** goes in `src/data/projects.ts` (image, tags, links), with its title and description added in each language. Without a `demoUrl` or `repoUrl`, that button is shown disabled.
 - **Testimonials** are in `src/locales/<language>/testimonials.ts`. The section stays hidden while the list is empty.
 - **Images** are WebP, about twice their on-screen size, to keep the page light.
+- **The link preview** (what LinkedIn, WhatsApp or X show when the URL is shared) is set by the Open Graph tags in `index.html`, with the image `public/og-image.jpg` (1200×630). The tags use absolute URLs, so they change if the domain does.
 
 ## Tests
 

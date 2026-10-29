@@ -21,5 +21,5 @@ export default async (_request: Request, context: EdgeContext): Promise<Response
 // Only the page (any route, since every route serves it), not its files.
 export const config = {
   path: "/*",
-  excludedPath: ["/assets/*", "/documents/*", "/locales/*", "/projects/*", "/*.svg", "/*.webp"],
+  excludedPath: ["/assets/*", "/documents/*", "/locales/*", "/projects/*", "/*.svg", "/*.webp", "/*.jpg"],
 };
