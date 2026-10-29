@@ -6,6 +6,6 @@ export const projects = [
     ...projectAssets.portfolio,
     title: "FCruz-Dev Professional Portfolio",
     description:
-      "Mi portafolio profesional, disponible en inglés, español e italiano. Desarrollado con React y TypeScript, con estilos en Tailwind CSS y cubierto por pruebas unitarias.",
+      "Mi portafolio profesional, desarrollado con React y TypeScript, con estilos en Tailwind CSS y cubierto por pruebas unitarias.",
   },
 ] as const satisfies readonly Project[];
