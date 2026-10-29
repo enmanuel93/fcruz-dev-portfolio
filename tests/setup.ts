@@ -19,8 +19,8 @@ class IntersectionObserverStub implements IntersectionObserver {
 
 vi.stubGlobal("IntersectionObserver", IntersectionObserverStub);
 
-// Nor matchMedia, which Swiper's breakpoints and prefersReducedMotion read.
-// Nothing matches: no media query applies and motion is allowed.
+// Nor matchMedia, which Swiper's breakpoints read.
+// Nothing matches, so no breakpoint applies.
 window.matchMedia = (query: string): MediaQueryList =>
   ({
     matches: false,
