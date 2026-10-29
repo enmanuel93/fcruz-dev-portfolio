@@ -3,9 +3,9 @@ import type { Project } from "@/types/content";
 
 export const projects = [
   {
-    ...projectAssets.realEstateOffice,
-    title: "Virtual Real Estate Registration Office",
+    ...projectAssets.portfolio,
+    title: "FCruz-Dev Professional Portfolio",
     description:
-      "Lets citizens handle property and land procedures online, track their requests and pay electronically. Serves over 10,000 active users.",
+      "My professional portfolio, available in English, Spanish and Italian. Built with React and TypeScript, styled with Tailwind CSS and covered by unit tests.",
   },
 ] as const satisfies readonly Project[];

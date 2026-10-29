@@ -3,9 +3,9 @@ import type { Project } from "@/types/content";
 
 export const projects = [
   {
-    ...projectAssets.realEstateOffice,
-    title: "Ufficio Virtuale del Registro Immobiliare",
+    ...projectAssets.portfolio,
+    title: "FCruz-Dev Professional Portfolio",
     description:
-      "Consente ai cittadini di gestire online le pratiche per proprietà e terreni, monitorare le proprie richieste ed effettuare pagamenti elettronici. Conta oltre 10.000 utenti attivi.",
+      "Il mio portfolio professionale, disponibile in inglese, spagnolo e italiano. Sviluppato con React e TypeScript, con stili in Tailwind CSS e coperto da test unitari.",
   },
 ] as const satisfies readonly Project[];

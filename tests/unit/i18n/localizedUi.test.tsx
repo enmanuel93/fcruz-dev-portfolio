@@ -94,10 +94,13 @@ describe("UI text comes from the current locale", () => {
     expect(screen.getByText(ui.projects.description)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: new RegExp(ui.projects.viewAll) })).toBeInTheDocument();
 
-    // The real project has no demo/repo URL, so both buttons are the disabled kind.
+    // The portfolio has a repo but isn't deployed yet: "Code" is a link and
+    // "Live demo" the disabled button, so both kinds of label get checked.
     const liveDemo = screen.getByRole("button", { name: new RegExp(ui.projects.liveDemo) });
     expect(liveDemo).toHaveAttribute("title", ui.projects.linkComingSoon);
-    expect(screen.getByRole("button", { name: new RegExp(ui.projects.code) })).toBeDisabled();
+    expect(
+      screen.getByRole("link", { name: ui.projects.codeLabel(project.title) }),
+    ).toHaveAttribute("href", project.repoUrl);
     expect(ui.projects.liveDemoLabel(project.title)).toContain(project.title);
   });
 
