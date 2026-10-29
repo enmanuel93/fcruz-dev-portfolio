@@ -60,6 +60,8 @@ export interface Project {
   tags: readonly string[];
   demoUrl?: string;
   repoUrl?: string;
+  /** No "Live demo" button at all, e.g. for this portfolio, whose demo is the page itself. */
+  hideDemo?: boolean;
 }
 
 export interface Experience {

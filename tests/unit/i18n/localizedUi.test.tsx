@@ -36,7 +36,21 @@ const ui = mark(en.ui) as UiText;
 const sampleTestimonials = [
   { quote: "Great to work with.", author: "Ada", role: "Engineer", avatar: "/ada.webp" },
 ];
-const content: SiteContent = { ...en, ui, testimonials: sampleTestimonials };
+// The portfolio card has no "Live demo" button, so add a deployed project
+// without a repo: together they show every kind of project link.
+const sampleProject = {
+  title: "Weather App",
+  description: "Forecasts for any city.",
+  image: "/weather.webp",
+  tags: ["React"],
+  demoUrl: "https://weather.example.com",
+};
+const content: SiteContent = {
+  ...en,
+  ui,
+  testimonials: sampleTestimonials,
+  projects: [...en.projects, sampleProject],
+};
 
 const renderMarked = (node: ReactNode): void => {
   render(node, {
@@ -92,20 +106,20 @@ describe("UI text comes from the current locale", () => {
 
   it("Projects and project cards", () => {
     renderMarked(<Projects />);
-    const [project] = en.projects;
+    const [portfolio] = en.projects;
 
     expect(heading(ui.projects.title)).toBeInTheDocument();
     expect(screen.getByText(ui.projects.description)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: new RegExp(ui.projects.viewAll) })).toBeInTheDocument();
 
-    // The portfolio has a repo but isn't deployed yet: "Code" is a link and
-    // "Live demo" the disabled button, so both kinds of label get checked.
-    const liveDemo = screen.getByRole("button", { name: new RegExp(ui.projects.liveDemo) });
-    expect(liveDemo).toHaveAttribute("title", ui.projects.linkComingSoon);
     expect(
-      screen.getByRole("link", { name: ui.projects.codeLabel(project.title) }),
-    ).toHaveAttribute("href", project.repoUrl);
-    expect(ui.projects.liveDemoLabel(project.title)).toContain(project.title);
+      screen.getByRole("link", { name: ui.projects.codeLabel(portfolio.title) }),
+    ).toHaveAttribute("href", portfolio.repoUrl);
+    expect(
+      screen.getByRole("link", { name: ui.projects.liveDemoLabel(sampleProject.title) }),
+    ).toHaveTextContent(ui.projects.liveDemo);
+    const code = screen.getByRole("button", { name: new RegExp(ui.projects.code) });
+    expect(code).toHaveAttribute("title", ui.projects.linkComingSoon);
   });
 
   it("Experience", () => {

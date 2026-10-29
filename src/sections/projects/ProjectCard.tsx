@@ -69,14 +69,16 @@ export const ProjectCard = ({ project, style }: ProjectCardProps): ReactElement 
         )}
 
         <div className="mt-auto flex flex-wrap justify-end gap-2 pt-5">
-          <ProjectLink
-            href={project.demoUrl}
-            label={text.liveDemoLabel(project.title)}
-            comingSoon={text.linkComingSoon}
-          >
-            {text.liveDemo}
-            <ArrowUpRight className="size-4" aria-hidden="true" />
-          </ProjectLink>
+          {!project.hideDemo && (
+            <ProjectLink
+              href={project.demoUrl}
+              label={text.liveDemoLabel(project.title)}
+              comingSoon={text.linkComingSoon}
+            >
+              {text.liveDemo}
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </ProjectLink>
+          )}
           <ProjectLink
             href={project.repoUrl}
             label={text.codeLabel(project.title)}

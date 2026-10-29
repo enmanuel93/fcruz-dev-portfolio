@@ -46,4 +46,14 @@ describe("ProjectCard", () => {
     expect(screen.getByRole("button", { name: /Live demo/ })).toBeDisabled();
     expect(screen.getByRole("button", { name: /Code/ })).toBeDisabled();
   });
+
+  it("leaves out the Live demo button when the project hides it", () => {
+    render(<ProjectCard project={{ ...project, hideDemo: true }} />);
+
+    expect(screen.queryByRole("link", { name: /live demo/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Live demo/ })).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "View Weather App source code on GitHub" }),
+    ).toBeInTheDocument();
+  });
 });
