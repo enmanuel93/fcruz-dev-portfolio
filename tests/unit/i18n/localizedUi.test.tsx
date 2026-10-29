@@ -32,7 +32,11 @@ const mark = (value: unknown): unknown => {
 
 const en = resolveContent("en", DEFAULT_REGION);
 const ui = mark(en.ui) as UiText;
-const content: SiteContent = { ...en, ui };
+// The real site has no testimonials yet, so give the section one to render.
+const sampleTestimonials = [
+  { quote: "Great to work with.", author: "Ada", role: "Engineer", avatar: "/ada.webp" },
+];
+const content: SiteContent = { ...en, ui, testimonials: sampleTestimonials };
 
 const renderMarked = (node: ReactNode): void => {
   render(node, {
@@ -131,7 +135,7 @@ describe("UI text comes from the current locale", () => {
     expect(screen.getByRole("button", { name: testimonials.next })).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: testimonials.showTestimonial(1, en.testimonials.length),
+        name: testimonials.showTestimonial(1, content.testimonials.length),
       }),
     ).toBeInTheDocument();
   });

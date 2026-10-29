@@ -2,6 +2,7 @@ import { type ReactElement } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { ScrollToSection } from "@/components/ui/ScrollToSection";
 import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { About } from "@/sections/about/About";
@@ -10,8 +11,7 @@ import { Experience } from "@/sections/experience/Experience";
 import { Hero } from "@/sections/hero/Hero";
 import { Projects } from "@/sections/projects/Projects";
 import { Skills } from "@/sections/skills/Skills";
-import { ScrollToSection } from "@/components/ui/ScrollToSection";
-// import { Testimonials } from "@/sections/testimonials/Testimonials";
+import { Testimonials } from "@/sections/testimonials/Testimonials";
 
 export const App = (): ReactElement => {
   useRevealOnScroll();
@@ -29,7 +29,7 @@ export const App = (): ReactElement => {
             <Projects />
             <Experience />
             <Skills />
-            {/* <Testimonials /> */}
+            <Testimonials />
             <Contact />
           </main>
           <Footer />

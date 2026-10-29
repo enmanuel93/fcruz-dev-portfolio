@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { LocaleContext } from "@/i18n/LocaleContext";
+import { resolveContent } from "@/i18n/resolveContent";
+import { LOCALES } from "@/locales";
 import { testimonials as mockedTestimonials } from "@/locales/en/testimonials";
 import { Testimonials } from "@/sections/testimonials/Testimonials";
 import type { Testimonial } from "@/types/content";
@@ -73,5 +76,18 @@ describe("Testimonials", () => {
     expect(
       screen.getByRole("button", { name: `Show testimonial 1 of ${total}` }),
     ).toHaveAttribute("aria-current", "false");
+  });
+
+  it("renders nothing until there are testimonials", () => {
+    const content = { ...resolveContent("en", "europe"), testimonials: [] };
+    const { container } = render(
+      <LocaleContext
+        value={{ locale: "en", availableLocales: LOCALES, content, setLocale: () => {} }}
+      >
+        <Testimonials />
+      </LocaleContext>,
+    );
+
+    expect(container).toBeEmptyDOMElement();
   });
 });

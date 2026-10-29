@@ -7,10 +7,10 @@ import { cn } from "@/lib/cn";
 const navButtonClasses =
   "flex size-10 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-colors hover:border-accent/60 hover:text-foreground";
 
-export const Testimonials = (): ReactElement => {
+// The section only appears once there is at least one testimonial.
+export const Testimonials = (): ReactElement | null => {
   const { testimonials, ui } = useLocale().content;
   const [activeIdx, setActiveIdx] = useState<number>(0);
-  const active = testimonials[activeIdx];
 
   // Both directions wrap around, so the carousel never hits a dead end.
   const next = (): void => {
@@ -22,6 +22,10 @@ export const Testimonials = (): ReactElement => {
       (prev) => (prev - 1 + testimonials.length) % testimonials.length,
     );
   };
+
+  if (testimonials.length === 0) return null;
+
+  const active = testimonials[activeIdx];
 
   return (
     <section id="testimonials" className="py-20 md:py-28">
