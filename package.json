@@ -1,7 +1,14 @@
 {
-  "name": "manudev-portfolio",
+  "name": "fcruz-dev-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio of Francisco Cruz Mejía, .NET and full stack developer.",
+  "author": "Francisco Cruz Mejía",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enmanuel93/fcruz-dev-portfolio.git"
+  },
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
