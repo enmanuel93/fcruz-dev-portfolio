@@ -35,16 +35,15 @@ export const Contact = (): ReactElement => {
 
                   return (
                     <li key={item.label}>
-                      {/* "#" means there is nothing to open, so it is plain text. */}
-                      {item.href === "#" ? (
-                        <div className="flex items-center gap-4 p-2">{content}</div>
-                      ) : (
+                      {item.href ? (
                         <a
                           href={item.href}
-                          className="-mx-0 flex items-center gap-4 rounded-xl p-2 transition-colors hover:bg-background/40"
+                          className="flex items-center gap-4 rounded-xl p-2 transition-colors hover:bg-background/40"
                         >
                           {content}
                         </a>
+                      ) : (
+                        <div className="flex items-center gap-4 p-2">{content}</div>
                       )}
                     </li>
                   );

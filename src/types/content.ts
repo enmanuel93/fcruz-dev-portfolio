@@ -17,7 +17,7 @@ export interface Profile {
     src: string;
     alt: string;
   };
-  /** Shown as a badge next to the photo, e.g. "+5". */
+  /** Shown as a badge next to the photo, e.g. "7+". */
   yearsOfExperience: string;
   /** Public URL of a file in public/documents, downloaded by the "Download CV" button. */
   cvUrl: string;
@@ -83,5 +83,6 @@ export interface ContactInfo {
   icon: LucideIcon;
   label: string;
   value: string;
-  href: string;
+  /** What the entry opens (mailto:, tel:); without one it is plain text. */
+  href?: string;
 }

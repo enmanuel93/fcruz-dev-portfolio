@@ -3,7 +3,7 @@ import type { Region } from "@/regions";
 import type { ContactInfo } from "@/types/content";
 
 // How to reach me, the same in every language; each locale adds the labels
-// (and the location's name). An href of "#" renders as plain text.
+// (and the location's name).
 export const contactChannels = {
   email: {
     icon: Mail,
@@ -12,7 +12,6 @@ export const contactChannels = {
   },
   location: {
     icon: MapPin,
-    href: "#",
   },
 } as const satisfies Record<string, Partial<ContactInfo>>;
 

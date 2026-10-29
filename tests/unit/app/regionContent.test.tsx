@@ -54,7 +54,8 @@ describe("content by region", () => {
       "href",
       "tel:+393347929602",
     );
-    expect(screen.getByText("Milan, Italy")).toBeInTheDocument();
+    // A place has nothing to open, so it is plain text, not a link.
+    expect(screen.getByText("Milan, Italy").closest("a")).toBeNull();
   });
 
   it("shows the Dominican phone and Santo Domingo in the Americas", () => {
@@ -89,7 +90,7 @@ describe("languages by region", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  // The most common case down there: a Spanish browser, no earlier visit.
+  // The usual first visit from Latin America: a Spanish browser, nothing stored.
   it("shows the Americas in English even to a Spanish browser", () => {
     vi.spyOn(navigator, "languages", "get").mockReturnValue(["es-DO", "es"]);
     window.history.replaceState(null, "", "/?region=americas");
