@@ -1,3 +1,8 @@
+# Dependencies and build output
+node_modules
+dist
+dist-ssr
+
 # Logs
 logs
 *.log
@@ -7,25 +12,36 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Environment variables: only the example is committed
+.env
+.env.*
+!.env.example
 *.local
 
-# Editor directories and files
+# Netlify CLI
+.netlify
+
+# Editors and OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# Environment variables
-.env
-.env.local
+# Local tooling and notes, kept out of the repository
+.agents/
+.claude/
+.impeccable/
+skills-lock.json
+CLAUDE.md
+DESIGN.md
+PRODUCT.md
+NUEVA-ESTRUCTURA.md
 
-# Markdown
-.NUEVA-ESTRUCTURA.md
+# Text copies of the CVs (the site only serves the PDFs)
+public/documents/**/*.md
